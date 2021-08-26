@@ -169,7 +169,8 @@ Cela devrait vous afficher l'ensemble des commandes utilisables. Les plus import
 Pour le moment, nous utiliserons le langage Java qui est le langage par défaut d'Antlr. 
 
 Compilez avec la commande :
-```java -jar antlr-4.9.2-complete.jar expr.g4 -no-listener -no-visitor -o ./src/parser
+```
+java -jar antlr-4.9.2-complete.jar expr.g4 -no-listener -no-visitor -o ./src/parser
 ```
 
 Si tout se passe bien, cela devrait générer dans le dossier src un sous dossier parser ainsi que 2 classes java :

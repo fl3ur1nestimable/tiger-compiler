@@ -156,7 +156,7 @@ Pour cette partie, il est necessaire de posseder un JDK dans sa version 14. Pour
 
 Pour cela, il sufit d'éxécuter le jar situé dans le dossier lib.
 
-```
+```bash
 java -jar antlr-4.9.2-complete.jar
 ```
 
@@ -169,7 +169,7 @@ Cela devrait vous afficher l'ensemble des commandes utilisables. Les plus import
 Pour le moment, nous utiliserons le langage Java qui est le langage par défaut d'Antlr. 
 
 Compilez avec la commande :
-```
+```bash
 java -jar antlr-4.9.2-complete.jar expr.g4 -no-listener -no-visitor -o ./src/parser
 ```
 
@@ -185,7 +185,7 @@ Ces deux classes permettent d'analyser un texte et de vérifier s'il peut être 
 Le parser généré par Antlr utilise les instructions suivantes:
 
 
-```            
+```java        
 CharStream input = CharStreams.fromFileName(testFile);
 exprLexer lexer = new exprLexer(input); 
 CommonTokenStream stream = new CommonTokenStream(lexer);
@@ -197,7 +197,7 @@ On utilise ensuite le lexer pour transformer la chaine de départ en chaine de t
 
 Pour récupérer l'arbre syntaxique, il suffit d'exécuter la commande suivante:
 
-```
+```java
 ProgramContext program = parser.program();
 ```
 

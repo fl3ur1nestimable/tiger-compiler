@@ -71,7 +71,7 @@ Cette rêgle doit suivre les contraintes suivantes:
 
 Creez une rêgle __instruction__ qui contiendra l'ensemble des instructions du langage. Pour le moment, la seule instruction que nous connaissons est l'affectation, nous allons en ajouter dans les parties suivantes.
 
-Ajoutez ensuite la rêgle __programme__ qui correspond à une suite non nulle d'instructions terminé par le charactère spécial __EOF__ (ne l'oubliez pas sinon tout va planter).
+Modfier ensuite la rêgle __program__ en commentaires qui correspond à une suite non nulle d'instructions terminé par le charactère spécial __EOF__ (ne l'oubliez pas sinon tout va planter à la fin).
 
 Cette rêgle sera la racine de notre grammaire (nous verrons ça plus tard).
 
@@ -83,7 +83,7 @@ Ajoutez une rêgle premettant l'écriture d'une instruction conditionelle __if__
 
 Le if obéit aux contraintes suivantes:
 * La condition est soit une expression, soit une variable
-
+* La partie ```else {instruction+}``` est optionelle
 Ajoutez ensuite cette rêgle dans la liste des instructions
 
 #### d - Instruction d'affichage Print

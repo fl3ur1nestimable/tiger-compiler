@@ -122,40 +122,37 @@ Ajoutez cette règle dans votre grammaire (dans la partie lexicale, c'est à dir
 En première année, vous avez travaillé sur l'analyse syntaxique descendante en MI. Durant l'un des TD, on vous a présenté le concept de priorisation d'opérateur. Comme un petit rappel ne fait jamais de mal, nous vous proposons l'exercice suivant:
 
 Ecrivez l'arbre syntaxique correspondant à l'expression arithmétique __2*3+4__ en utilisant la grammaire suivante:
-A -> B (*|+) A 
-     B       
-B -> idf 
-     int
+A -> B (*|+) A | B   
+B -> idf | int 
 
-Vous devez remarquer que l'ordre des opérateurs n'est pas respecté, la multiplication se trouvant "plus haut" dans l'arbre que l'addition. 
+Vous devez remarquer dans l'arbre syntaxique que l'ordre des opérateurs n'est pas respecté, la multiplication se trouvant "plus haut" dans l'arbre que l'addition. 
+Durant l'exécution, le calcul 3+4 sera donc effectué avant le calcul 2*3, ce qui ne respecte pas la priorité des opérateurs * et +.
 
-Durant l'exécution, le calcul 3+4 sera donc effectué avant le calcul 2*3, ce qui ne respecte pas la priorité des opérateurs.
-
-Il faut donc utiliser une méthode pour prioriser l'opérateur * sur l'opérateur +.
+Il faut donc intégrer cette priorité supérieure de la multiplication vis à vis de l'addition dans la grammaire.
 
 Pour cela, on décompose la première règle en plusieurs sous règles (une par niveau de priorité). Cela donne la grammaire :
 A -> B + A | B
 B -> C * B | C
 C -> idf | int
 
-De cette façon, l'opérateur + apparaîtra toujours avant l'opérateur * dans l'arbre syntaxique, et plus tard dans l'arbre abstrait (AST).
+De cette façon, l'opérateur + apparaîtra toujours avant l'opérateur * dans l'arbre syntaxique (et donc aussi dans l'arbre abstrait).
 
-#### b - Implémentation dans la grammaire expr
+#### b - Implémentation de la grammaire expr
 
 Antlr permet d'éviter l'utilisation de grammaire récursive comme celle de la partie précédente. Nous pouvons à la place utiliser l'étoile __*__ pour écrire toutes les opérations de la même priorité sur une seule règle. Dans la règle exp, vous devrez avoir quelque chose de la forme :
 ```exp : (INT|IDF) ( ('+'|'-'|'*'|'/')   (INT|IDF) )* ;```
 
-Dans cette règle, les opérateurs sont ajoutés les uns à la suite des autres. Bien que cette façon de faire soit contre-intuitive (on aimerait construire l'arbre de priorité tout de suite), elle simplifiera énormément l'écriture de l'AST dans les prochains TP.
+Dans cette règle, les opérateurs sont ajoutés les uns à la suite des autres. Bien que cette façon de faire soit contre-intuitive (on aimerait construire l'arbre de priorité tout de suite), elle simplifiera énormément l'écriture de l'arbre abstrait dans les prochains TP.
 
-En vous appuyant sur ce principe, priorisez les opérateurs de la rêgle exp.
+En vous appuyant sur ce principe, priorisez les opérateurs de la règle exp.
 
 
 ## Partie 3 : Compilation de la grammaire et tests
 
 
-#### a - compilation du parser
+#### a - Compilation du parser
 
-Nous avons terminé l'écriture de notre grammaire, il serait temps de la lancer pour voir si ça fonctionne, non ?
+Nous avons terminé l'écriture de notre grammaire, il serait temps la lancer la construction de l'analyseur syntaxique pour voir si ça fonctionne, non ?
 
 Pour cette partie, il est nécessaire de posséder un JDK dans sa version 14. Pour l'installation du jdk, référez-vous aux liens suivants[INSERER LIEN JAVA]
 
@@ -179,16 +176,16 @@ Compilez avec la commande :
 java -jar antlr-4.9.2-complete.jar expr.g4 -no-listener -no-visitor -o ./src/parser
 ```
 
-Si tout se passe bien, cela devrait générer dans le dossier src un sous dossier parser ainsi que 2 classes java :
-* ```exprLexer.java``` : L'analyseur lexical
-* ```exprParser.java``` : L'analyseur syntaxique
+Si tout se passe bien, cette commande doit générer dans le dossier src un sous dossier parser ainsi que 2 classes java :
+* ```exprLexer.java``` : qui est l'analyseur lexical construit
+* ```exprParser.java``` : qui est l'analyseur syntaxique produit (tables LL(k)).
 
 Ces deux classes permettent d'analyser un texte et de vérifier s'il peut être reconnu par la grammaire expr.
 
 
 #### b - Utilisation du parser
 
-Le parser généré par Antlr utilise les instructions suivantes:
+Le parser généré par Antlr utilise les instructions suivantes (présentes dans la fonction main() du programme "principal").
 
 
 ```java        
@@ -201,7 +198,7 @@ exprParser parser = new exprParser(stream);
 Le programme lit d'abord une chaîne de caractères, puis il la passe à l'analyseur lexical (ligne 2). Ceci permet de transformer la chaîne de caractères en une suite de mots (ou token) du langage (par exemple __'if'__).
 On utilise ensuite le lexer pour transformer la chaîne de départ en chaîne de token (ligne 3). Pour finir, on analyse syntaxiquement (parse) la chaine de Token grâce à la classe de parser générée par antlr.
 
-Pour récupérer l'arbre syntaxique, il suffit d'exécuter la commande suivante:
+La ligne suivante permet d'obtenir l'arbre syntaxique : 
 
 ```java
 ProgramContext program = parser.program();
@@ -218,7 +215,7 @@ Pour l'afficher, nous utilisons un petit code situé dans la fonction main().
 La classe Main à la racine de src contient tout ce qui est nécessaire pour tester notre parser. Essayez de compiler Main.java avec la commande :
 ```javac -target 14 -cp ./lib/antlr-4.9.2-complete.jar:./src ./src/Main.java -d ./bin```
 
-Normalement, vous devriez avoir une erreur de compilation car java ne reconnait pas exprLexer et exprParser. En effet, ces deux fichiers ne se trouvent pas dans un package, donc Java ne les reconnait pas. Pour corriger, nous allons modifier le fichier expr.g4 pour lui préciser d'ajouter des headers lorsqu'il compile la grammaire.
+Normalement, vous devriez avoir une erreur de compilation car java ne reconnait pas exprLexer et exprParser. En effet, ces deux fichiers ne se trouvent pas dans un package, donc Java ne les reconnaît pas. Pour corriger cela, nous allons modifier le fichier expr.g4 pour lui préciser d'ajouter des headers lorsqu'il compile la grammaire.
 
 Au début du fichier expr.g4 (après la définition du nom de la grammaire), ajoutez les lignes suivantes : 
 ```

@@ -175,11 +175,13 @@ Cela devrait vous afficher l'ensemble des commandes utilisables. Les plus import
 Pour le moment, nous utiliserons le langage Java qui est le langage par défaut d'Antlr. 
 
 Compilez avec la commande :
+
 ```bash
 java -jar antlr-4.9.2-complete.jar expr.g4 -no-listener -no-visitor -o ./src/parser
 ```
 
 Si tout se passe bien, cette commande doit générer dans le dossier src un sous dossier parser ainsi que 2 classes java :
+
 * ```exprLexer.java``` : qui est l'analyseur lexical construit
 * ```exprParser.java``` : qui est l'analyseur syntaxique produit (tables LL(k)).
 
@@ -216,11 +218,13 @@ Pour l'afficher, nous utilisons un petit code situé dans la fonction main().
 
 
 La classe Main à la racine de src contient tout ce qui est nécessaire pour tester notre parser. Essayez de compiler Main.java avec la commande :
+
 ```javac -target 14 -cp ./lib/antlr-4.9.2-complete.jar:./src ./src/Main.java -d ./bin```
 
 Normalement, vous devriez avoir une erreur de compilation car java ne reconnait pas exprLexer et exprParser. En effet, ces deux fichiers ne se trouvent pas dans un package, donc Java ne les reconnaît pas. Pour corriger cela, nous allons modifier le fichier expr.g4 pour lui préciser d'ajouter des headers lorsqu'il compile la grammaire.
 
 Au début du fichier expr.g4 (après la définition du nom de la grammaire), ajoutez les lignes suivantes : 
+
 ```
 @header{
 package parser;
@@ -232,6 +236,7 @@ Recompilez ensuite la grammaire, puis réexécutez la commande précédente. Vou
 
 
 Vous pouvez tester avec les deux programmes du dossier examples avec la commande : 
+
 ```
 java -cp ./lib/antlr-4.9.2-complete.jar:./bin Main ./examples/good.exp
 ```

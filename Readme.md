@@ -75,10 +75,10 @@ Créez une rêgle __instruction__ qui contiendra l'ensemble des instructions du 
 
 Modfiez ensuite la rêgle __program__ en commentaires qui correspond à une suite non nulle d'instructions terminées par le caractère spécial __EOF__ (ne l'oubliez pas sinon vous aurez des erreurs à la fin).
 
-Cette règle sera l'axiome de notre grammaire (nous verrons ça plus tard).
+Cette règle sera l'axiome de notre grammaire (nous verrons cela plus tard).
 
 
-#### d - Instruction conditionnelle If
+#### e - Instruction conditionnelle If
 
 Ajoutez une règle permettant l'écriture d'une instruction conditionnelle __if__ dont la syntaxe sera la suivante : 
 ``` if (condition) {instruction+} else {instruction+}```
@@ -88,20 +88,21 @@ Le if obéit aux contraintes suivantes:
 * La partie ```else {instruction+}``` est optionnelle
 Ajoutez ensuite cette rêgle dans la liste des instructions
 
-#### d - Instruction d'affichage Print
+#### f - Instruction d'affichage Print
 
 Ajoutez une règle print qui obéit à la syntaxe suivante: 
 ```print valeur ;```
 
-La règle print obéit aux contraintes suivantes : 
+La règle print obéit respecte la sémantique  suivante : 
 * La valeur est soit une expression, soit une variable
 
-Ajoutez ensuite cette règle à la liste des instructions
+Ajoutez ensuite cette règle à la liste des instructions.
 
-#### e - Ignorer certains caractères
+#### g- Ignorer certains caractères 
 
-Lorsque l'on écrit dans un langage de programmation, on ignore les espaces et les retours à la ligne (bon sauf en Python). 
-Espacer les identificateur et les lignes  permet une meilleure lisibilité du code.
+Lorsque l'on écrit dans un langage de programmation, on utilise souvent les espaces et les retours à la ligne.
+Espacer les identificateurs et les lignes  permet une meilleure lisibilité du code. Cependant, ces symboles 
+ne sont pas des unités lexicales, ils ne doivent pas être traités par l'analyseur syntaxique.
 
 Il faut donc dire au lexer d'ignorer certains caractères lors de l'analyse.
 
@@ -110,8 +111,8 @@ Antlr permet de réaliser cette opération grâce à  l'instruction suivante:
 WS : [\n]+ -> skip ;
 ```
 
-Cette instruction permet de dire a l'analyseur lexical d'ignorer les caractères de l'expression régulière ```[\n]+```. 
-Cette règle permet donc d'ignorer les retours à la ligne.
+Cette instruction permet de dire à l'analyseur lexical d'ignorer les caractères de l'expression régulière ```[\n]+```. 
+Cette règle permet ainsi d'ignorer les retours à la ligne.
 
 Ajoutez cette règle dans votre grammaire (dans la partie lexicale, c'est à dire à la fin du fichier) et modifiez-la pour ignorer les tabulations et les espaces.
 

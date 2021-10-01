@@ -4,13 +4,13 @@
 
 L'objectif de ce TP est l'apprentissage et la mise en oeuvre de l'utilisation d'Antlr.
 
-Antlr est un générateur d’analyseur syntaxique descendant. Il permet de générer un parseur de langage a partir d'une grammaire.
+Antlr est un générateur d’analyseur syntaxique descendant. Il permet de générer un "parseur" de langage à partir d'une grammaire.
 
-Pour ce TP, nous utiliserons la version 4 d'Antlr. En première année, vous avez étudié les analyseurs syntaxiques LL(1). Antlr permet de générer des analyseurs LL(*). Cela signifie que l'analyseur connait le nombre minimum de caractères nécessaires à lire pour pouvoir analyser un texte sans ambiguïté. Grâce à cela, nous alons pouvoir écrire les grammaires beaucoup plus simplement.
+Pour ce TP, nous utiliserons la version 4 d'Antlr. En première année, vous avez étudié les analyseurs syntaxiques LL(1). Antlr permet de générer des analyseurs LL(*). Cela signifie que l'analyseur connaît le nombre minimum de caractères nécessaires à lire pour pouvoir analyser un texte sans ambiguïté. Grâce à cela, nous allons pouvoir écrire les grammaires beaucoup plus simplement.
 
 ## Partie 0 : Préambule
 
-Ce repo git contient déjà le jar d'Antlr. 
+Ce dépôt git contient déjà le jar d'Antlr. 
 
 Notez que plusieurs IDE comme visual studio code ou Jetbrains InteliJ possèdent des extensions qui facilitent le dévelopement avec Antlr. Nous vous invitons à les installer. 
 

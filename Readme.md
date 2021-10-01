@@ -73,11 +73,11 @@ Cette règle doit respecter la syntaxe suivante :
 
 #### d - Instruction et programme
 
-Créez une rêgle __instruction__ qui contiendra l'ensemble des instructions du langage. Pour le moment, la seule instruction que nous connaissons est l'affectation, nous allons en ajouter dans les parties suivantes.
+Créez une règle __instruction__ qui contiendra l'ensemble des instructions du langage. Pour le moment, la seule instruction que nous connaissons est l'affectation, nous allons en ajouter dans les parties suivantes.
 
 Modfiez ensuite la rêgle __program__ en commentaires qui correspond à une suite non nulle d'instructions terminées par le caractère spécial __EOF__ (ne l'oubliez pas sinon vous aurez des erreurs à la fin).
 
-Cette règle sera l'axiome de notre grammaire (nous verrons cela plus tard).
+Cette règle sera l'axiome de notre grammaire.
 
 
 #### e - Instruction conditionnelle If
@@ -87,18 +87,21 @@ Ajoutez une règle permettant l'écriture d'une instruction conditionnelle __if_
 
 Le if obéit aux contraintes suivantes:
 * La condition est soit une expression, soit une variable
-* La partie ```else {instruction+}``` est optionnelle
-Ajoutez ensuite cette rêgle dans la liste des instructions.
+* La partie ```else {instruction+}``` est optionnelle.
+
+Ajoutez cette règle dans la liste des instructions.
 
 #### f - Instruction d'affichage Print
 
 Ajoutez une règle print qui obéit à la syntaxe suivante: 
+
 ```print valeur ;```
 
 La règle print obéit respecte la sémantique  suivante : 
+
 * La valeur est soit une expression, soit une variable
 
-Ajoutez ensuite cette règle à la liste des instructions.
+Ajoutez cette règle à la liste des instructions.
 
 #### g- Ignorer certains caractères 
 

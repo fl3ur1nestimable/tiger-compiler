@@ -30,9 +30,9 @@ Il est important de noter que la grammaire doit avoir le même nom que le fichie
 Une règle grammaticale se construit de la façon suivante: 
 ```nom_de_la_regle : contenu ; ```
 
-ainsi, la règle grammaticale A -> AB s'écrit dans antlr sous la forme:
+ainsi, la règle grammaticale A -> A B s'écrit dans antlr sous la forme:
 
-```a : ab ;```
+```a : a b ;```
 
 On peut remarquer deux types de règles différentes. 
 Les règles "en majuscules" (comme par exemple la règle INT)  permettent de décrire les terminaux de la grammaire. On les appelle les règles d'analyse lexicale.

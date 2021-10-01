@@ -6,7 +6,7 @@ L'objectif de ce TP est l'apprentissage et la mise en oeuvre de l'utilisation d'
 
 Antlr est un générateur d’analyseur syntaxique descendant. Il permet de générer un "parseur" de langage à partir d'une grammaire.
 
-Pour ce TP, nous utiliserons la version 4 d'Antlr. En première année, vous avez étudié les analyseurs syntaxiques LL(1). Antlr permet de générer des analyseurs LL(*). Cela signifie que l'analyseur connaît le nombre minimum de caractères nécessaires à lire pour pouvoir analyser un texte sans ambiguïté. Grâce à cela, nous allons pouvoir écrire les grammaires beaucoup plus simplement.
+Pour ce TP, nous utiliserons la version 4 d'Antlr. En première année, vous avez étudié les analyseurs syntaxiques LL(1). Antlr permet de générer des analyseurs LL(*). Cela signifie que l'analyseur connaît le nombre minimum de caractères nécessaires à lire pour pouvoir analyser un texte. Grâce à cela, nous allons pouvoir écrire les grammaires beaucoup plus simplement.
 
 ## Partie 0 : Préambule
 

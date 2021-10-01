@@ -24,12 +24,14 @@ Ouvrir le fichier __expr.g4__ situé à la racine du projet.
 Le fichier commence par le nom de la grammaire.
 
 ```grammar expr;```. 
+
 Il est important de noter que la grammaire doit avoir le même nom que le fichier.
 
 Une règle grammaticale se construit de la façon suivante: 
 ```nom_de_la_regle : contenu ; ```
 
 ainsi, la règle grammaticale A -> AB s'écrit dans antlr sous la forme:
+
 ```a : ab ;```
 
 On peut remarquer deux types de règles différentes. 
@@ -43,7 +45,7 @@ On peut remarquer les choses suivantes :
 * La syntaxe des expressions régulières (?, +, *) est également utilisable dans Antlr.
 * Chaque règle se termine par un ;
 * Il est nécessaire de différencier les règles terminales (en majuscule) des règles non terminales (en minuscule). Dans le fichier contenant la grammaire, les régles décrivant les unités lexicales sont placées habituellement à la fin du fichier. 
-* Dans les règles terminales, on peux utiliser la syntaxe .. pour désigner un ensemble de caractères. (‘0’..’9’) signifie l’ensemble des caractères entre 0 et 9. 
+* Dans les règles terminales, on peut utiliser la syntaxe .. pour désigner un ensemble de caractères. (‘0’..’9’) signifie l’ensemble des caractères entre 0 et 9. 
 * La barre verticale | est un OU, elle permet de lister deux alternatives pour une même règle (et même à l’intérieur d’une règle). 
 On reconnait dans cette notation la syntaxe des expressions régulières (regexp) vue dans le module "Shell".
 
@@ -54,7 +56,7 @@ Bon, il est temps de pratiquer un peu maintenant.
 
 En vous appuyant sur la grammaire expr, écrivez la règle de lexer permettant de definir les identifiants (on la notera IDF). Ils obéissent aux règles suivante :
 * Un identifiant peut contenir des lettres, des chiffres et le caractère '_'
-* Un identifiant ne peux pas commencer par un chiffre
+* Un identifiant ne peut pas commencer par un chiffre
 
 #### c - Affectation de variable
 
@@ -86,7 +88,7 @@ Ajoutez une règle permettant l'écriture d'une instruction conditionnelle __if_
 Le if obéit aux contraintes suivantes:
 * La condition est soit une expression, soit une variable
 * La partie ```else {instruction+}``` est optionnelle
-Ajoutez ensuite cette rêgle dans la liste des instructions
+Ajoutez ensuite cette rêgle dans la liste des instructions.
 
 #### f - Instruction d'affichage Print
 

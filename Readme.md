@@ -1,4 +1,4 @@
-# TP Projet compilation des languages 
+# TP Projet compilation des langages 
 
 ## Introduction
 
@@ -15,7 +15,7 @@ Ce dépôt git contient déjà le jar d'Antlr.
 Notez que plusieurs IDE comme visual studio code ou Jetbrains InteliJ possèdent des extensions qui facilitent le dévelopement avec Antlr. Nous vous invitons à les installer. 
 
 
-## Partie 1 : première grammaire
+## Partie 1 : Première grammaire
 
 #### a - Etude de la grammaire
 

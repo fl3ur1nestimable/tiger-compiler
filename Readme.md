@@ -76,7 +76,7 @@ Modfier ensuite la rêgle __program__ en commentaires qui correspond à une suit
 Cette rêgle sera la racine de notre grammaire (nous verrons ça plus tard).
 
 
-#### d - Instruction conditionelle If
+#### e - Instruction conditionelle If
 
 Ajoutez une rêgle premettant l'écriture d'une instruction conditionelle __if__ dont la syntaxe sera : 
 ``` if (condition) {instruction+} else {instruction+}```
@@ -86,7 +86,7 @@ Le if obéit aux contraintes suivantes:
 * La partie ```else {instruction+}``` est optionelle
 Ajoutez ensuite cette rêgle dans la liste des instructions
 
-#### d - Instruction d'affichage Print
+#### f - Instruction d'affichage Print
 Ajoutez une rêgle print qui obéit à la syntaxe suivante: 
 ```print valeur ;```
 
@@ -95,7 +95,7 @@ La rêgle print obéit aux contraintes suivantes :
 
 Ajoutez ensuite cette rêgle à la liste des instructions
 
-#### e - Ignorer certains charactères
+#### g - Ignorer certains charactères
 
 Lorsque l'on écrit dans un langage de programmation, on ignore les espaces et les retours à la ligne (bon sauf en Python). Cela permet une meilleure lisibilité du code.
 
@@ -147,18 +147,71 @@ En vous apuyant sur ce principe, prioriser les oppérateurs de la rêgle exp
 ## Partie 3 : Compilation de la grammaire et tests
 
 
-#### a - compilation du parser
-
 Nous avons terminé l'écriture de notre grammaire, il serait temps de la lancer pour voir si ça marche non ?
 
-Pour cette partie, il est necessaire de posseder un JDK dans sa version 14. Pour l'instalation du jdk, référez vous aux liens suivants[INSERER LIEN JAVA]
+#### a - installation de java
 
+Dans cette partie, nous allons installer java en version 17 (pour ceux qui l'on déjà, vous pouvez passer à la suite).
+Vérifiez bien que 
+##### i. Sur linux (ubuntu, debian, popOs ...)
 
-Pour cela, il sufit d'éxécuter le jar situé dans le dossier lib.
-
+On met à jour le répository distant :
 ```bash
-java -jar antlr-4.9.2-complete.jar
+sudo apt update
+ ```
+on installe ensuite le jdk dans sa version 16:
+```bash
+sudo apt install openjdk-17-jdk
+ ```
+
+Ensuite, on va définir mettre à jour le jdk utilisé par défaut :
+```bash
+sudo update-alternatives --config java
+ ```
+
+Choisissez le numéro correspondant à la version 17 de java que vous venez d'installer.
+
+'Normalement', tout devrait fonctionner.
+
+##### ii. Linux (Arch, Manjaro)
+
+On installe le jdk (dans sa dernière version) à l'aide du gestionnaire de packet Pacman:
+```bash
+sudo pacman -S jdk-openjdk
+ ```
+
+Pour changer la version de base de java, un tutoriel est disponible en suivant ce [lien](https://archived.forum.manjaro.org/t/how-to-change-default-java-without-resorting-to-witchcraft/110840/2).
+
+
+##### iii. Mac
+
+On installe le jdk en utilisant le gestionnaire de packet homebrew. Tappez la commande suivante dans un terminal :
+```bash
+brew install java
+ ```
+
+
+
+##### iv. Windows
+
+Vous devriez changer d'os ^^.
+
+Blague à part, pour ceux qui ne l'on pas encore installé, vous pouvez télécharger la bonne version du jdk en suivant ce [lien](https://www.oracle.com/java/technologies/downloads/#jdk17-windows). Télécharger l'installeur et lancez l'installation.
+
+Pour changer la version par default de java, le site happycoders propose un petit tutoriel [ici](https://www.happycoders.eu/java/how-to-switch-multiple-java-versions-windows/). Vous devez changer la variable d'environnement ```JAVA_HOME``` pour le path de votre version du jdk (en temps normal, ce sera ```C:\Program Files\Java\jdk-17```).
+
+Pour tester la version, utilisez la commande : 
+```dos
+java -v
+ ```
+
+#### b - compilation du parser
+
+Dans cette partie, nous alons générer un parseur à partir de votre grammaire. Pour cela, utilisons d'abord la commande suivante : 
+
 ```
+java -jar ./lib/antlr-4.9.2-complete.jar
+ ```
 
 Cela devrait vous afficher l'ensemble des commandes utilisables. Les plus importantes sont :
 * ```-o [path]``` qui permet de choisir la destination des fichiers compilés par antlr
@@ -168,9 +221,14 @@ Cela devrait vous afficher l'ensemble des commandes utilisables. Les plus import
 
 Pour le moment, nous utiliserons le langage Java qui est le langage par défaut d'Antlr. 
 
-Compilez avec la commande :
+Sur __Linux__, compilez avec la commande :
 ```bash
-java -jar antlr-4.9.2-complete.jar expr.g4 -no-listener -no-visitor -o ./src/parser
+java -jar ./lib/antlr-4.9.2-complete.jar expr.g4 -no-listener -no-visitor -o ./src/parser
+```
+
+Sur __Windows__, compilez avec la commande : 
+```bash
+java -jar ./lib/antlr-4.9.2-complete.jar expr.g4 -no-listener -no-visitor -o ./src/parser
 ```
 
 Si tout se passe bien, cela devrait générer dans le dossier src un sous dossier parser ainsi que 2 classes java :
@@ -206,11 +264,11 @@ L'objet program représente la racine de l'arbre syntaxique.
 Pour l'afficher, nous utilisons un petit code situé dans le main.
 
 
-#### c - Affichage de l'arbre syntaxique
+#### c - Affichage de l'arbre syntaxique (Linux)
 
 
 La classe Main à la racine de src contient tout ce qui est necessaire pour tester notre parser. Essayer de compiler Main.java avec la commande :
-```javac -target 14 -cp ./lib/antlr-4.9.2-complete.jar:./src ./src/Main.java -d ./bin```
+```javac  -cp ./lib/antlr-4.9.2-complete.jar:./src ./src/Main.java -d ./bin```
 
 Normalement, vous devriez avoir une erreur de compilation car java ne reconnais pas le exprLexer et exprParser. En effet, ces deux fichiers ne se trouve pas dans un package, donc Java ne les reconnais pas. Pour corriger, nous allons modifier le fichier expr.g4 pour lui préciser d'ajouter des headers lorsqu'il compile la grammaire.
 
@@ -219,7 +277,7 @@ Au début du fichier expr.g4 (après la définition du nom de la grammaire), ajo
 @header{
 package parser;
 }
-```
+ ```
 
 Recompilez ensuite la grammaire, puis réexécutez la commande précédente. Vous devriez générez des fichier .class dans le dossier bin
 
@@ -233,6 +291,8 @@ java -cp ./lib/antlr-4.9.2-complete.jar:./bin Main ./examples/good.exp
 ```
 java -cp ./lib/antlr-4.9.2-complete.jar:./bin Main ./examples/bad.exp
 ```
+
+#### d - Affichage de l'arbre syntaxique (Windows)
 
 
 

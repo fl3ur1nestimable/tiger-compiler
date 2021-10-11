@@ -11,6 +11,9 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 
+import parser.*;
+import parser.exprParser.ProgramContext;
+
 public class Main {
 
     public static void main(String[] args){
@@ -30,7 +33,7 @@ public class Main {
             CommonTokenStream stream = new CommonTokenStream(lexer);
             exprParser parser = new exprParser(stream);
 
-            programContext program = parser.program();
+            ProgramContext program = parser.program();
 
             // code d'affichage de l'arbre syntaxique
             JFrame frame = new JFrame("Antlr AST");
@@ -45,7 +48,8 @@ public class Main {
             frame.setVisible(true);
 
 
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             e.printStackTrace();
         }
         catch (RecognitionException e) {

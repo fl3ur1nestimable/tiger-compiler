@@ -113,7 +113,7 @@ Il faut donc dire au lexer d'ignorer certains caractères lors de l'analyse.
 
 Antlr permet de réaliser cette opération grâce à  l'instruction suivante:
 ```
-WS : [\n]+ -> skip ;
+WS : '\n'+ -> skip ;
 ```
 
 Cette instruction permet de dire à l'analyseur lexical d'ignorer les caractères de l'expression régulière ```[\n]+```. 
@@ -149,8 +149,6 @@ Antlr permet d'éviter l'utilisation de grammaire récursive comme celle de la p
 ```exp : (INT|IDF) ( ('+'|'-'|'*'|'/')   (INT|IDF) )* ;```
 
 Dans cette règle, les opérateurs sont ajoutés les uns à la suite des autres. Bien que cette façon de faire soit contre-intuitive (on aimerait construire l'arbre de priorité tout de suite), elle simplifiera énormément l'écriture de l'arbre abstrait dans les prochains TP.
-
-En vous appuyant sur ce principe, priorisez les opérateurs de la règle exp.
 
 
 ## Partie 3 : Compilation de la grammaire et tests
@@ -280,7 +278,7 @@ Pour l'afficher, nous utilisons un petit code situé dans la fonction main().
 
 La classe Main à la racine de src contient tout ce qui est nécessaire pour tester notre parser. Essayez de compiler Main.java avec la commande :
 
-```javac -target 14 -cp ./lib/antlr-4.9.2-complete.jar:./src ./src/Main.java -d ./bin```
+```javac  -cp ./lib/antlr-4.9.2-complete.jar:./src ./src/Main.java -d ./bin```
 
 Normalement, vous devriez avoir une erreur de compilation car java ne reconnait pas exprLexer et exprParser. En effet, ces deux fichiers ne se trouvent pas dans un package, donc Java ne les reconnaît pas. Pour corriger cela, nous allons modifier le fichier expr.g4 pour lui préciser d'ajouter des headers lorsqu'il compile la grammaire.
 
@@ -309,7 +307,33 @@ java -cp ./lib/antlr-4.9.2-complete.jar:./bin Main ./examples/bad.exp
 #### d - Affichage de l'arbre syntaxique (Windows)
 
 
+La classe Main à la racine de src contient tout ce qui est nécessaire pour tester notre parser. Essayez de compiler Main.java avec la commande :
 
+```javac  -cp "./lib/antlr-4.9.2-complete.jar;./src" ./src/Main.java -d ./bin```
+
+Normalement, vous devriez avoir une erreur de compilation car java ne reconnait pas exprLexer et exprParser. En effet, ces deux fichiers ne se trouvent pas dans un package, donc Java ne les reconnaît pas. Pour corriger cela, nous allons modifier le fichier expr.g4 pour lui préciser d'ajouter des headers lorsqu'il compile la grammaire.
+
+Au début du fichier expr.g4 (après la définition du nom de la grammaire), ajoutez les lignes suivantes : 
+
+```
+@header{
+package parser;
+}
+ ```
+
+Recompilez ensuite la grammaire, puis réexécutez la commande précédente. Vous devriez générer des fichiers .class dans le dossier bin
+
+
+
+Vous pouvez tester avec les deux programmes du dossier examples avec la commande : 
+
+```
+java -cp "./lib/antlr-4.9.2-complete.jar;./bin" Main ./examples/good.exp
+```
+
+```
+java -cp "./lib/antlr-4.9.2-complete.jar;./bin" Main ./examples/bad.exp
+```
 
 
 

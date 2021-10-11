@@ -1,7 +1,7 @@
 grammar expr;
 
 
-//program : ACOMPLETER ;
+program : A COMPLETER ;
 
 exp : INT (('+'|'-'|'*'|'/') INT)* ;
 

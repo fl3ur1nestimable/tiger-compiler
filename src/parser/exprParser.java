@@ -1,4 +1,4 @@
-// Generated from expr.g4 by ANTLR 4.9.2
+// Generated from expr.g by ANTLR 4.9.2
 
     package parser;
 
@@ -79,7 +79,7 @@ public class exprParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "expr.g4"; }
+	public String getGrammarFileName() { return "expr.g"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

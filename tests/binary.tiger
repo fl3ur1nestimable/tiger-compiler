@@ -1,0 +1,9 @@
+a + b -c *5
+
+precedence6 : precedence6 ':=' precedence5 | precedence5;
+precedence5 : precedence5 '|' precedence4 | precedence4;
+precedence4 : precedence4 '&' precedence3 | precedence3;
+precedence3 : precedence3 ('<>' | '=' | '>=' | '<=' | '>' | '<') precedence2 | precedence2;
+precedence2 : precedence2 ('+' | '-') precedence1 | precedence1;
+precedence1 : precedence1 ('*' | '/') precedence0 | precedence0;
+precedence0 : expr | (precedence6);

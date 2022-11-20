@@ -6,7 +6,7 @@ grammar tiger;
 //min regles
 program : expr EOF;
 
-expr : STRING|integer|'nil'|lvalue|assignement|negation|expr ('*' | '/') expr| expr ('+' | '-') expr| expr ('<>' | '=' | '>=' | '<=' | '>' | '<') expr| expr ('&' | '|') expr|assignement|ifthenelse|ifthen|whiledo|for_|'break'|functionCall|'('expr_seq')'|
+expr : STRING|integer|'nil'|lvalue|assignement|negation|expr ('*' | '/') expr| expr ('+' | '-') expr| expr ('<>' | '=' | '>=' | '<=' | '>' | '<') expr| expr ('&' | '|') expr|assignement|ifthenelse|ifthen|whiledo|for_|'break'|functionCall|'('expr_seq*')'|
        type_IDF'{'field_list*'}'|type_IDF'['expr'] of 'expr|let_in_end|stdlib;
 
 negation :'- 'expr ;
@@ -19,7 +19,7 @@ field_list : IDF' = 'expr|field_list' , 'IDF' = 'expr;
 
 lvalue : IDF | lvalue'.'IDF|lvalue'['expr']';
 
-functionCall : IDF'('expr_list*')';
+functionCall : IDF'('expr_list?')';
 
 assignement : lvalue':='expr;
 
@@ -28,7 +28,7 @@ ifthen : 'if 'expr' then 'expr;
 whiledo : 'while 'expr' do 'expr;
 for_:'for 'IDF':='expr' to 'expr' do 'expr;
 
-let_in_end : 'let'declaration_list'in'expr_seq'end';
+let_in_end : 'let'declaration_list'in'expr_seq?'end';
 
 declaration_list :  declaration | declaration_list declaration;
 declaration : type_declaration | variable_declaration | function_declaration;

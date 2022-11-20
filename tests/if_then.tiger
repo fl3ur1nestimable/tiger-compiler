@@ -1,0 +1,14 @@
+let 
+    var x:=1
+in
+    if 1 then 2;
+    if x=1 then 2;
+    if break then 3;
+    if "yio" then 3;
+    if yio then 3;
+    if louis then "antoine";
+    if x=1 then (y=3);
+    if x=1 then ();
+    if x=1 then if x=1 then (y=3);
+    if if x=1 then 2 then ()
+end

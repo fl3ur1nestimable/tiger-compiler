@@ -1,0 +1,14 @@
+let 
+
+    function try() =
+    (if 1 then 2;
+    if 2 then 3;
+    break)
+    
+
+in
+try();
+if try() then break;
+break
+
+end

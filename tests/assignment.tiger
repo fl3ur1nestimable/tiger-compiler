@@ -1,0 +1,14 @@
+let 
+    var N:=8
+    var row:=intArray[N] of 0
+    var x:=n
+
+in
+    if x:=8 then 1 else 0;
+    N:=nil;
+    x:=louis;
+    N:="louis";
+    N.at:= (2);
+    N[1]:= if 1 then 4 else 7
+
+end

@@ -1,0 +1,8 @@
+let 
+    var N:=8
+
+in
+    while a do 2;
+    while x=1 do print("hello");
+    while (while 7 do 8) do (while 7 do 8)
+end

@@ -184,8 +184,11 @@ public class tigerParser extends Parser {
 		public FunctionCallContext functionCall() {
 			return getRuleContext(FunctionCallContext.class,0);
 		}
-		public Expr_seqContext expr_seq() {
-			return getRuleContext(Expr_seqContext.class,0);
+		public List<Expr_seqContext> expr_seq() {
+			return getRuleContexts(Expr_seqContext.class);
+		}
+		public Expr_seqContext expr_seq(int i) {
+			return getRuleContext(Expr_seqContext.class,i);
 		}
 		public Type_IDFContext type_IDF() {
 			return getRuleContext(Type_IDFContext.class,0);

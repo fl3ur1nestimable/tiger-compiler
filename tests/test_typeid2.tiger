@@ -1,0 +1,5 @@
+let
+    type Point={x:int,y:int,z:int}
+in
+    Point [4] of Point
+end

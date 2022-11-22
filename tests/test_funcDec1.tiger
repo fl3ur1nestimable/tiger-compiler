@@ -1,0 +1,7 @@
+let
+    function myfunc(x:int):int = (
+        print("a")
+    )
+in
+    myfunc(0)
+end

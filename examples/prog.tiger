@@ -1,4 +1,4 @@
-let 
+let /*8 reines*/
     var N:=8
     type intArray = array of int
     var row:=intArray[N] of 0

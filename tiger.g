@@ -23,10 +23,10 @@ functionCall : IDF'('expr_list?')';
 
 assignement : lvalue':='expr;
 
-ifthenelse : 'if 'expr' then 'expr' else 'expr;
-ifthen : 'if 'expr' then 'expr;
+ifthenelse : 'if 'expr'then'expr'else'expr;
+ifthen : 'if 'expr'then'expr;
 whiledo : 'while'expr'do'expr;
-for_:'for 'IDF':='expr'to'expr'do'expr;
+for_:'for'IDF':='expr'to'expr'do'expr;
 
 let_in_end : 'let'declaration_list'in'expr_seq?'end';
 
@@ -41,7 +41,7 @@ type_IDF : IDF;
 
 variable_declaration : 'var 'IDF':='expr |'var 'IDF':'type_IDF':='expr;
 
-function_declaration : 'function 'IDF '('type_fields*') =' expr | 'function 'IDF '('type_fields*'):'type_IDF ' =' expr;
+function_declaration : 'function' IDF '(' type_fields? ')' (':' type_IDF)? '=' expr; 
 
 stdlib :print_|printi|flush_|exit_|getchar_|chr_|substring_|concat_|ord_|size_|not_|ifthen|ifthenelse;
 
@@ -60,8 +60,8 @@ not_ : 'not('expr')';
 // maj
 IDF : ('a'..'z'|'A'..'Z')(('a'..'z'|'A'..'Z'|'_'|INT)*) ;
 INT : '0'..'9'+;
-ESC : 'n'|'t'|'"'|'\\';
-ESCAPE_SEQ : '\\'ESC;
-STRING : '"'([ -~]|ESCAPE_SEQ)*'"';
-COMMENT : '/*'.*?'*/';
+STRING :  '"'
+    (' '..'!'|'#'..'['|']'..'~'|'\\'('n'|'t'|'"'|'\\'|'^''@'..'_'|'0''0'..'9''0'..'9'|'1' ('0'..'1''0'..'9'|'2''0'..'7')|(' '|'\t'|'\n'|'\r'|'\f')+'\\'))*'"';
+COMMENT : (
+        '/*'.*?(COMMENT.*?)*?'*/');
 WS : ('\n'|'\t'|' '|'\r'|'\f'|COMMENT)+ -> skip ; 

@@ -1,3 +1,4 @@
+/*test*/
 let 
     var N:=8
     var row:=intArray[N] of 0

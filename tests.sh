@@ -1,21 +1,12 @@
 java -jar ./lib/antlr-4.9.2-complete.jar tiger.g -no-listener -no-visitor -o ./src/parser
 javac  -cp ./lib/antlr-4.9.2-complete.jar:./src ./src/Main.java -d ./bin
 echo "Running Tests"
-for file in $(ls -A tests/$dir)
+for file in $(ls -A tests/base_pass/$dir)
 	do
 		if [[ $file =~ \.tiger$ ]]
 		then
             echo "Testing $file"
-            java -cp ./lib/antlr-4.9.2-complete.jar:./bin Main ./tests/$dir/$file
-            #if the test worked, then go to the next one
-            if [ $? -eq 0 ]
-            then
-                echo "Test $file passed"
-                continue
-            else
-                echo "Test $file failed"
-                continue
-            fi
+            timeout 1s java -cp ./lib/antlr-4.9.2-complete.jar:./bin Main ./tests/base_pass/$dir/$file
         fi
     done
 
@@ -25,15 +16,16 @@ for file in $(ls -A tests/mac/$dir)
         if [[ $file =~ \.tiger$ ]]
         then
             echo "Testing $file"
-            java -cp ./lib/antlr-4.9.2-complete.jar:./bin Main ./tests/mac/$dir/$file
-            #if the test worked, then go to the next one
-            if [ $? -eq 0 ]
-            then
-                echo "Test $file passed"
-                continue
-            else
-                echo "Test $file failed"
-                continue
-            fi
+            timeout 1s java -cp ./lib/antlr-4.9.2-complete.jar:./bin Main ./tests/mac/$dir/$file
         fi
+    done
+
+echo "Running Algo Tests"
+for file in $(ls -A tests/algos/$dir)
+    do
+        if [[ $file =~ \.tiger$ ]]
+            then
+                echo "Testing $file"
+                timeout 1s java -cp ./lib/antlr-4.9.2-complete.jar:./bin Main ./tests/algos/$dir/$file
+            fi
     done

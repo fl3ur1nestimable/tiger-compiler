@@ -1,4 +1,4 @@
-// Generated from tiger.g by ANTLR 4.9.2
+// Generated from ./tiger.g by ANTLR 4.9.2
 
     package parser;
 
@@ -132,6 +132,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_program; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitProgram(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ProgramContext program() throws RecognitionException {
@@ -165,6 +170,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expr; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitExpr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExprContext expr() throws RecognitionException {
@@ -199,6 +209,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_or; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitOr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final OrContext or() throws RecognitionException {
@@ -252,6 +267,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_and; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitAnd(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AndContext and() throws RecognitionException {
@@ -305,6 +325,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_compare; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitCompare(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final CompareContext compare() throws RecognitionException {
@@ -367,6 +392,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_plus; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitPlus(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PlusContext plus() throws RecognitionException {
@@ -429,6 +459,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_mult; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitMult(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MultContext mult() throws RecognitionException {
@@ -510,14 +545,14 @@ public class tigerParser extends Parser {
 		public Type_IDFContext type_IDF() {
 			return getRuleContext(Type_IDFContext.class,0);
 		}
-		public Field_listContext field_list() {
-			return getRuleContext(Field_listContext.class,0);
-		}
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
+		}
+		public Field_listContext field_list() {
+			return getRuleContext(Field_listContext.class,0);
 		}
 		public Let_in_endContext let_in_end() {
 			return getRuleContext(Let_in_endContext.class,0);
@@ -529,6 +564,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_value; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitValue(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ValueContext value() throws RecognitionException {
@@ -538,7 +578,7 @@ public class tigerParser extends Parser {
 		try {
 			setState(156);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
@@ -640,46 +680,53 @@ public class tigerParser extends Parser {
 				{
 				setState(141);
 				type_IDF();
-				setState(142);
-				match(T__16);
-				setState(144);
+				setState(152);
 				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==IDF) {
+				switch (_input.LA(1)) {
+				case T__16:
 					{
-					setState(143);
-					field_list(0);
+					setState(142);
+					match(T__16);
+					setState(144);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+					if (_la==IDF) {
+						{
+						setState(143);
+						field_list(0);
+						}
 					}
-				}
 
-				setState(146);
-				match(T__17);
+					setState(146);
+					match(T__17);
+					}
+					break;
+				case T__18:
+					{
+					setState(147);
+					match(T__18);
+					setState(148);
+					expr();
+					setState(149);
+					match(T__19);
+					setState(150);
+					expr();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+				}
 				}
 				break;
 			case 14:
 				enterOuterAlt(_localctx, 14);
 				{
-				setState(148);
-				type_IDF();
-				setState(149);
-				match(T__18);
-				setState(150);
-				expr();
-				setState(151);
-				match(T__19);
-				setState(152);
-				expr();
-				}
-				break;
-			case 15:
-				enterOuterAlt(_localctx, 15);
-				{
 				setState(154);
 				let_in_end();
 				}
 				break;
-			case 16:
-				enterOuterAlt(_localctx, 16);
+			case 15:
+				enterOuterAlt(_localctx, 15);
 				{
 				setState(155);
 				stdlib();
@@ -706,6 +753,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_negation; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitNegation(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final NegationContext negation() throws RecognitionException {
@@ -742,6 +794,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expr_seq; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitExpr_seq(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Expr_seqContext expr_seq() throws RecognitionException {
@@ -766,7 +823,7 @@ public class tigerParser extends Parser {
 			_ctx.stop = _input.LT(-1);
 			setState(169);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -786,7 +843,7 @@ public class tigerParser extends Parser {
 				}
 				setState(171);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
 			}
 			}
 		}
@@ -812,6 +869,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expr_list; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitExpr_list(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Expr_listContext expr_list() throws RecognitionException {
@@ -836,7 +898,7 @@ public class tigerParser extends Parser {
 			_ctx.stop = _input.LT(-1);
 			setState(180);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -856,7 +918,7 @@ public class tigerParser extends Parser {
 				}
 				setState(182);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
 			}
 			}
 		}
@@ -883,6 +945,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_field_list; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitField_list(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Field_listContext field_list() throws RecognitionException {
@@ -911,7 +978,7 @@ public class tigerParser extends Parser {
 			_ctx.stop = _input.LT(-1);
 			setState(195);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -935,7 +1002,7 @@ public class tigerParser extends Parser {
 				}
 				setState(197);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
 			}
 			}
 		}
@@ -962,6 +1029,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_lvalue; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitLvalue(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LvalueContext lvalue() throws RecognitionException {
@@ -986,7 +1058,7 @@ public class tigerParser extends Parser {
 			_ctx.stop = _input.LT(-1);
 			setState(211);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -994,7 +1066,7 @@ public class tigerParser extends Parser {
 					{
 					setState(209);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
 					case 1:
 						{
 						_localctx = new LvalueContext(_parentctx, _parentState);
@@ -1026,7 +1098,7 @@ public class tigerParser extends Parser {
 				}
 				setState(213);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
 			}
 			}
 		}
@@ -1050,6 +1122,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_functionCall; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitFunctionCall(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final FunctionCallContext functionCall() throws RecognitionException {
@@ -1099,6 +1176,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignement; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitAssignement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AssignementContext assignement() throws RecognitionException {
@@ -1137,6 +1219,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ifthenelse; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitIfthenelse(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final IfthenelseContext ifthenelse() throws RecognitionException {
@@ -1155,7 +1242,7 @@ public class tigerParser extends Parser {
 			expr();
 			setState(231);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
 			case 1:
 				{
 				setState(229);
@@ -1189,6 +1276,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_whiledo; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitWhiledo(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final WhiledoContext whiledo() throws RecognitionException {
@@ -1230,6 +1322,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_for_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitFor_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final For_Context for_() throws RecognitionException {
@@ -1278,6 +1375,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_let_in_end; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitLet_in_end(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Let_in_endContext let_in_end() throws RecognitionException {
@@ -1329,6 +1431,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_declaration_list; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitDeclaration_list(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Declaration_listContext declaration_list() throws RecognitionException {
@@ -1353,7 +1460,7 @@ public class tigerParser extends Parser {
 			_ctx.stop = _input.LT(-1);
 			setState(262);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,16,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,17,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -1371,7 +1478,7 @@ public class tigerParser extends Parser {
 				}
 				setState(264);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,16,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,17,_ctx);
 			}
 			}
 		}
@@ -1400,6 +1507,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_declaration; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DeclarationContext declaration() throws RecognitionException {
@@ -1456,6 +1568,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type_declaration; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitType_declaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Type_declarationContext type_declaration() throws RecognitionException {
@@ -1499,6 +1616,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitType(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TypeContext type() throws RecognitionException {
@@ -1574,6 +1696,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type_fields; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitType_fields(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Type_fieldsContext type_fields() throws RecognitionException {
@@ -1598,7 +1725,7 @@ public class tigerParser extends Parser {
 			_ctx.stop = _input.LT(-1);
 			setState(296);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,20,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,21,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -1618,7 +1745,7 @@ public class tigerParser extends Parser {
 				}
 				setState(298);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,20,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,21,_ctx);
 			}
 			}
 		}
@@ -1642,6 +1769,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type_field; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitType_field(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Type_fieldContext type_field() throws RecognitionException {
@@ -1675,6 +1807,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type_IDF; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitType_IDF(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Type_IDFContext type_IDF() throws RecognitionException {
@@ -1710,6 +1847,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_variable_declaration; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitVariable_declaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Variable_declarationContext variable_declaration() throws RecognitionException {
@@ -1718,7 +1860,7 @@ public class tigerParser extends Parser {
 		try {
 			setState(316);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
@@ -1777,6 +1919,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_function_declaration; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitFunction_declaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Function_declarationContext function_declaration() throws RecognitionException {
@@ -1871,6 +2018,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_stdlib; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitStdlib(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final StdlibContext stdlib() throws RecognitionException {
@@ -1980,6 +2132,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_print_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitPrint_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Print_Context print_() throws RecognitionException {
@@ -2015,6 +2172,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_printi; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitPrinti(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PrintiContext printi() throws RecognitionException {
@@ -2047,6 +2209,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_flush_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitFlush_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Flush_Context flush_() throws RecognitionException {
@@ -2078,6 +2245,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_exit_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitExit_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Exit_Context exit_() throws RecognitionException {
@@ -2110,6 +2282,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_getchar_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitGetchar_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Getchar_Context getchar_() throws RecognitionException {
@@ -2141,6 +2318,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_chr_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitChr_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Chr_Context chr_() throws RecognitionException {
@@ -2176,6 +2358,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_substring_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitSubstring_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Substring_Context substring_() throws RecognitionException {
@@ -2211,6 +2398,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_concat_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitConcat_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Concat_Context concat_() throws RecognitionException {
@@ -2246,6 +2438,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ord_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitOrd_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Ord_Context ord_() throws RecognitionException {
@@ -2281,6 +2478,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_size_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitSize_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Size_Context size_() throws RecognitionException {
@@ -2316,6 +2518,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_not_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitNot_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Not_Context not_() throws RecognitionException {
@@ -2416,18 +2623,18 @@ public class tigerParser extends Parser {
 		"\5f\13\5\3\6\3\6\3\6\7\6k\n\6\f\6\16\6n\13\6\3\7\3\7\3\7\7\7s\n\7\f\7"+
 		"\16\7v\13\7\3\b\3\b\3\b\7\b{\n\b\f\b\16\b~\13\b\3\t\3\t\3\t\3\t\3\t\3"+
 		"\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t\u008d\n\t\3\t\3\t\3\t\3\t\5\t\u0093"+
-		"\n\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t\u009f\n\t\3\n\3\n\3\n"+
-		"\3\13\3\13\3\13\3\13\3\13\3\13\7\13\u00aa\n\13\f\13\16\13\u00ad\13\13"+
-		"\3\f\3\f\3\f\3\f\3\f\3\f\7\f\u00b5\n\f\f\f\16\f\u00b8\13\f\3\r\3\r\3\r"+
-		"\3\r\3\r\3\r\3\r\3\r\3\r\3\r\7\r\u00c4\n\r\f\r\16\r\u00c7\13\r\3\16\3"+
-		"\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\7\16\u00d4\n\16\f\16"+
-		"\16\16\u00d7\13\16\3\17\3\17\3\17\5\17\u00dc\n\17\3\17\3\17\3\20\3\20"+
-		"\3\20\3\20\3\21\3\21\3\21\3\21\3\21\3\21\5\21\u00ea\n\21\3\22\3\22\3\22"+
-		"\3\22\3\22\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\24\3\24\3\24"+
-		"\3\24\5\24\u00fe\n\24\3\24\3\24\3\25\3\25\3\25\3\25\3\25\7\25\u0107\n"+
-		"\25\f\25\16\25\u010a\13\25\3\26\3\26\3\26\5\26\u010f\n\26\3\27\3\27\3"+
-		"\27\3\27\3\27\3\30\3\30\3\30\7\30\u0119\n\30\f\30\16\30\u011c\13\30\3"+
-		"\30\3\30\3\30\5\30\u0121\n\30\3\31\3\31\3\31\3\31\3\31\3\31\7\31\u0129"+
+		"\n\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t\u009b\n\t\3\t\3\t\5\t\u009f\n\t\3\n\3"+
+		"\n\3\n\3\13\3\13\3\13\3\13\3\13\3\13\7\13\u00aa\n\13\f\13\16\13\u00ad"+
+		"\13\13\3\f\3\f\3\f\3\f\3\f\3\f\7\f\u00b5\n\f\f\f\16\f\u00b8\13\f\3\r\3"+
+		"\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\7\r\u00c4\n\r\f\r\16\r\u00c7\13\r\3"+
+		"\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\7\16\u00d4\n\16"+
+		"\f\16\16\16\u00d7\13\16\3\17\3\17\3\17\5\17\u00dc\n\17\3\17\3\17\3\20"+
+		"\3\20\3\20\3\20\3\21\3\21\3\21\3\21\3\21\3\21\5\21\u00ea\n\21\3\22\3\22"+
+		"\3\22\3\22\3\22\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\24\3\24"+
+		"\3\24\3\24\5\24\u00fe\n\24\3\24\3\24\3\25\3\25\3\25\3\25\3\25\7\25\u0107"+
+		"\n\25\f\25\16\25\u010a\13\25\3\26\3\26\3\26\5\26\u010f\n\26\3\27\3\27"+
+		"\3\27\3\27\3\27\3\30\3\30\3\30\7\30\u0119\n\30\f\30\16\30\u011c\13\30"+
+		"\3\30\3\30\3\30\5\30\u0121\n\30\3\31\3\31\3\31\3\31\3\31\3\31\7\31\u0129"+
 		"\n\31\f\31\16\31\u012c\13\31\3\32\3\32\3\32\3\32\3\33\3\33\3\34\3\34\3"+
 		"\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\3\34\5\34\u013f\n\34\3\35\3\35"+
 		"\3\35\3\35\5\35\u0145\n\35\3\35\3\35\3\35\5\35\u014a\n\35\3\35\3\35\3"+
@@ -2457,88 +2664,88 @@ public class tigerParser extends Parser {
 		"\u009f\5\"\22\2\u0087\u009f\5$\23\2\u0088\u009f\7\20\2\2\u0089\u009f\5"+
 		"\34\17\2\u008a\u008c\7\21\2\2\u008b\u008d\5\24\13\2\u008c\u008b\3\2\2"+
 		"\2\u008c\u008d\3\2\2\2\u008d\u008e\3\2\2\2\u008e\u009f\7\22\2\2\u008f"+
-		"\u0090\5\64\33\2\u0090\u0092\7\23\2\2\u0091\u0093\5\30\r\2\u0092\u0091"+
-		"\3\2\2\2\u0092\u0093\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u0095\7\24\2\2"+
-		"\u0095\u009f\3\2\2\2\u0096\u0097\5\64\33\2\u0097\u0098\7\25\2\2\u0098"+
-		"\u0099\5\4\3\2\u0099\u009a\7\26\2\2\u009a\u009b\5\4\3\2\u009b\u009f\3"+
-		"\2\2\2\u009c\u009f\5&\24\2\u009d\u009f\5:\36\2\u009e\177\3\2\2\2\u009e"+
-		"\u0080\3\2\2\2\u009e\u0081\3\2\2\2\u009e\u0082\3\2\2\2\u009e\u0083\3\2"+
-		"\2\2\u009e\u0084\3\2\2\2\u009e\u0085\3\2\2\2\u009e\u0086\3\2\2\2\u009e"+
+		"\u009a\5\64\33\2\u0090\u0092\7\23\2\2\u0091\u0093\5\30\r\2\u0092\u0091"+
+		"\3\2\2\2\u0092\u0093\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u009b\7\24\2\2"+
+		"\u0095\u0096\7\25\2\2\u0096\u0097\5\4\3\2\u0097\u0098\7\26\2\2\u0098\u0099"+
+		"\5\4\3\2\u0099\u009b\3\2\2\2\u009a\u0090\3\2\2\2\u009a\u0095\3\2\2\2\u009b"+
+		"\u009f\3\2\2\2\u009c\u009f\5&\24\2\u009d\u009f\5:\36\2\u009e\177\3\2\2"+
+		"\2\u009e\u0080\3\2\2\2\u009e\u0081\3\2\2\2\u009e\u0082\3\2\2\2\u009e\u0083"+
+		"\3\2\2\2\u009e\u0084\3\2\2\2\u009e\u0085\3\2\2\2\u009e\u0086\3\2\2\2\u009e"+
 		"\u0087\3\2\2\2\u009e\u0088\3\2\2\2\u009e\u0089\3\2\2\2\u009e\u008a\3\2"+
-		"\2\2\u009e\u008f\3\2\2\2\u009e\u0096\3\2\2\2\u009e\u009c\3\2\2\2\u009e"+
-		"\u009d\3\2\2\2\u009f\21\3\2\2\2\u00a0\u00a1\7\f\2\2\u00a1\u00a2\5\4\3"+
-		"\2\u00a2\23\3\2\2\2\u00a3\u00a4\b\13\1\2\u00a4\u00a5\5\4\3\2\u00a5\u00ab"+
-		"\3\2\2\2\u00a6\u00a7\f\3\2\2\u00a7\u00a8\7\27\2\2\u00a8\u00aa\5\4\3\2"+
-		"\u00a9\u00a6\3\2\2\2\u00aa\u00ad\3\2\2\2\u00ab\u00a9\3\2\2\2\u00ab\u00ac"+
-		"\3\2\2\2\u00ac\25\3\2\2\2\u00ad\u00ab\3\2\2\2\u00ae\u00af\b\f\1\2\u00af"+
-		"\u00b0\5\4\3\2\u00b0\u00b6\3\2\2\2\u00b1\u00b2\f\3\2\2\u00b2\u00b3\7\30"+
-		"\2\2\u00b3\u00b5\5\4\3\2\u00b4\u00b1\3\2\2\2\u00b5\u00b8\3\2\2\2\u00b6"+
-		"\u00b4\3\2\2\2\u00b6\u00b7\3\2\2\2\u00b7\27\3\2\2\2\u00b8\u00b6\3\2\2"+
-		"\2\u00b9\u00ba\b\r\1\2\u00ba\u00bb\7\66\2\2\u00bb\u00bc\7\6\2\2\u00bc"+
-		"\u00bd\5\4\3\2\u00bd\u00c5\3\2\2\2\u00be\u00bf\f\3\2\2\u00bf\u00c0\7\30"+
-		"\2\2\u00c0\u00c1\7\66\2\2\u00c1\u00c2\7\6\2\2\u00c2\u00c4\5\4\3\2\u00c3"+
-		"\u00be\3\2\2\2\u00c4\u00c7\3\2\2\2\u00c5\u00c3\3\2\2\2\u00c5\u00c6\3\2"+
-		"\2\2\u00c6\31\3\2\2\2\u00c7\u00c5\3\2\2\2\u00c8\u00c9\b\16\1\2\u00c9\u00ca"+
-		"\7\66\2\2\u00ca\u00d5\3\2\2\2\u00cb\u00cc\f\4\2\2\u00cc\u00cd\7\31\2\2"+
-		"\u00cd\u00d4\7\66\2\2\u00ce\u00cf\f\3\2\2\u00cf\u00d0\7\25\2\2\u00d0\u00d1"+
-		"\5\4\3\2\u00d1\u00d2\7\32\2\2\u00d2\u00d4\3\2\2\2\u00d3\u00cb\3\2\2\2"+
-		"\u00d3\u00ce\3\2\2\2\u00d4\u00d7\3\2\2\2\u00d5\u00d3\3\2\2\2\u00d5\u00d6"+
-		"\3\2\2\2\u00d6\33\3\2\2\2\u00d7\u00d5\3\2\2\2\u00d8\u00d9\7\66\2\2\u00d9"+
-		"\u00db\7\21\2\2\u00da\u00dc\5\26\f\2\u00db\u00da\3\2\2\2\u00db\u00dc\3"+
-		"\2\2\2\u00dc\u00dd\3\2\2\2\u00dd\u00de\7\22\2\2\u00de\35\3\2\2\2\u00df"+
-		"\u00e0\5\32\16\2\u00e0\u00e1\7\33\2\2\u00e1\u00e2\5\4\3\2\u00e2\37\3\2"+
-		"\2\2\u00e3\u00e4\7\34\2\2\u00e4\u00e5\5\4\3\2\u00e5\u00e6\7\35\2\2\u00e6"+
-		"\u00e9\5\4\3\2\u00e7\u00e8\7\36\2\2\u00e8\u00ea\5\4\3\2\u00e9\u00e7\3"+
-		"\2\2\2\u00e9\u00ea\3\2\2\2\u00ea!\3\2\2\2\u00eb\u00ec\7\37\2\2\u00ec\u00ed"+
-		"\5\4\3\2\u00ed\u00ee\7 \2\2\u00ee\u00ef\5\4\3\2\u00ef#\3\2\2\2\u00f0\u00f1"+
-		"\7!\2\2\u00f1\u00f2\7\66\2\2\u00f2\u00f3\7\33\2\2\u00f3\u00f4\5\4\3\2"+
-		"\u00f4\u00f5\7\"\2\2\u00f5\u00f6\5\4\3\2\u00f6\u00f7\7 \2\2\u00f7\u00f8"+
-		"\5\4\3\2\u00f8%\3\2\2\2\u00f9\u00fa\7#\2\2\u00fa\u00fb\5(\25\2\u00fb\u00fd"+
-		"\7$\2\2\u00fc\u00fe\5\24\13\2\u00fd\u00fc\3\2\2\2\u00fd\u00fe\3\2\2\2"+
-		"\u00fe\u00ff\3\2\2\2\u00ff\u0100\7%\2\2\u0100\'\3\2\2\2\u0101\u0102\b"+
-		"\25\1\2\u0102\u0103\5*\26\2\u0103\u0108\3\2\2\2\u0104\u0105\f\3\2\2\u0105"+
-		"\u0107\5*\26\2\u0106\u0104\3\2\2\2\u0107\u010a\3\2\2\2\u0108\u0106\3\2"+
-		"\2\2\u0108\u0109\3\2\2\2\u0109)\3\2\2\2\u010a\u0108\3\2\2\2\u010b\u010f"+
-		"\5,\27\2\u010c\u010f\5\66\34\2\u010d\u010f\58\35\2\u010e\u010b\3\2\2\2"+
-		"\u010e\u010c\3\2\2\2\u010e\u010d\3\2\2\2\u010f+\3\2\2\2\u0110\u0111\7"+
-		"&\2\2\u0111\u0112\5\64\33\2\u0112\u0113\7\6\2\2\u0113\u0114\5.\30\2\u0114"+
-		"-\3\2\2\2\u0115\u0121\5\64\33\2\u0116\u011a\7\23\2\2\u0117\u0119\5\60"+
-		"\31\2\u0118\u0117\3\2\2\2\u0119\u011c\3\2\2\2\u011a\u0118\3\2\2\2\u011a"+
-		"\u011b\3\2\2\2\u011b\u011d\3\2\2\2\u011c\u011a\3\2\2\2\u011d\u0121\7\24"+
-		"\2\2\u011e\u011f\7\'\2\2\u011f\u0121\5\64\33\2\u0120\u0115\3\2\2\2\u0120"+
-		"\u0116\3\2\2\2\u0120\u011e\3\2\2\2\u0121/\3\2\2\2\u0122\u0123\b\31\1\2"+
-		"\u0123\u0124\5\62\32\2\u0124\u012a\3\2\2\2\u0125\u0126\f\3\2\2\u0126\u0127"+
-		"\7\30\2\2\u0127\u0129\5\62\32\2\u0128\u0125\3\2\2\2\u0129\u012c\3\2\2"+
-		"\2\u012a\u0128\3\2\2\2\u012a\u012b\3\2\2\2\u012b\61\3\2\2\2\u012c\u012a"+
-		"\3\2\2\2\u012d\u012e\7\66\2\2\u012e\u012f\7(\2\2\u012f\u0130\5\64\33\2"+
-		"\u0130\63\3\2\2\2\u0131\u0132\7\66\2\2\u0132\65\3\2\2\2\u0133\u0134\7"+
-		")\2\2\u0134\u0135\7\66\2\2\u0135\u0136\7\33\2\2\u0136\u013f\5\4\3\2\u0137"+
-		"\u0138\7)\2\2\u0138\u0139\7\66\2\2\u0139\u013a\7(\2\2\u013a\u013b\5\64"+
-		"\33\2\u013b\u013c\7\33\2\2\u013c\u013d\5\4\3\2\u013d\u013f\3\2\2\2\u013e"+
-		"\u0133\3\2\2\2\u013e\u0137\3\2\2\2\u013f\67\3\2\2\2\u0140\u0141\7*\2\2"+
-		"\u0141\u0142\7\66\2\2\u0142\u0144\7\21\2\2\u0143\u0145\5\60\31\2\u0144"+
-		"\u0143\3\2\2\2\u0144\u0145\3\2\2\2\u0145\u0146\3\2\2\2\u0146\u0149\7\22"+
-		"\2\2\u0147\u0148\7(\2\2\u0148\u014a\5\64\33\2\u0149\u0147\3\2\2\2\u0149"+
-		"\u014a\3\2\2\2\u014a\u014b\3\2\2\2\u014b\u014c\7\6\2\2\u014c\u014d\5\4"+
-		"\3\2\u014d9\3\2\2\2\u014e\u015a\5<\37\2\u014f\u015a\5> \2\u0150\u015a"+
-		"\5@!\2\u0151\u015a\5B\"\2\u0152\u015a\5D#\2\u0153\u015a\5F$\2\u0154\u015a"+
-		"\5H%\2\u0155\u015a\5J&\2\u0156\u015a\5L\'\2\u0157\u015a\5N(\2\u0158\u015a"+
-		"\5P)\2\u0159\u014e\3\2\2\2\u0159\u014f\3\2\2\2\u0159\u0150\3\2\2\2\u0159"+
-		"\u0151\3\2\2\2\u0159\u0152\3\2\2\2\u0159\u0153\3\2\2\2\u0159\u0154\3\2"+
-		"\2\2\u0159\u0155\3\2\2\2\u0159\u0156\3\2\2\2\u0159\u0157\3\2\2\2\u0159"+
-		"\u0158\3\2\2\2\u015a;\3\2\2\2\u015b\u015c\7+\2\2\u015c\u015d\5\4\3\2\u015d"+
-		"\u015e\7\22\2\2\u015e=\3\2\2\2\u015f\u0160\7,\2\2\u0160\u0161\5\4\3\2"+
-		"\u0161\u0162\7\22\2\2\u0162?\3\2\2\2\u0163\u0164\7-\2\2\u0164A\3\2\2\2"+
-		"\u0165\u0166\7.\2\2\u0166\u0167\5\4\3\2\u0167\u0168\7\22\2\2\u0168C\3"+
-		"\2\2\2\u0169\u016a\7/\2\2\u016aE\3\2\2\2\u016b\u016c\7\60\2\2\u016c\u016d"+
-		"\5\4\3\2\u016d\u016e\7\22\2\2\u016eG\3\2\2\2\u016f\u0170\7\61\2\2\u0170"+
-		"\u0171\5\26\f\2\u0171\u0172\7\22\2\2\u0172I\3\2\2\2\u0173\u0174\7\62\2"+
-		"\2\u0174\u0175\5\26\f\2\u0175\u0176\7\22\2\2\u0176K\3\2\2\2\u0177\u0178"+
-		"\7\63\2\2\u0178\u0179\5\4\3\2\u0179\u017a\7\22\2\2\u017aM\3\2\2\2\u017b"+
-		"\u017c\7\64\2\2\u017c\u017d\5\4\3\2\u017d\u017e\7\22\2\2\u017eO\3\2\2"+
-		"\2\u017f\u0180\7\65\2\2\u0180\u0181\5\4\3\2\u0181\u0182\7\22\2\2\u0182"+
-		"Q\3\2\2\2\33\\dlt|\u008c\u0092\u009e\u00ab\u00b6\u00c5\u00d3\u00d5\u00db"+
-		"\u00e9\u00fd\u0108\u010e\u011a\u0120\u012a\u013e\u0144\u0149\u0159";
+		"\2\2\u009e\u008f\3\2\2\2\u009e\u009c\3\2\2\2\u009e\u009d\3\2\2\2\u009f"+
+		"\21\3\2\2\2\u00a0\u00a1\7\f\2\2\u00a1\u00a2\5\4\3\2\u00a2\23\3\2\2\2\u00a3"+
+		"\u00a4\b\13\1\2\u00a4\u00a5\5\4\3\2\u00a5\u00ab\3\2\2\2\u00a6\u00a7\f"+
+		"\3\2\2\u00a7\u00a8\7\27\2\2\u00a8\u00aa\5\4\3\2\u00a9\u00a6\3\2\2\2\u00aa"+
+		"\u00ad\3\2\2\2\u00ab\u00a9\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac\25\3\2\2"+
+		"\2\u00ad\u00ab\3\2\2\2\u00ae\u00af\b\f\1\2\u00af\u00b0\5\4\3\2\u00b0\u00b6"+
+		"\3\2\2\2\u00b1\u00b2\f\3\2\2\u00b2\u00b3\7\30\2\2\u00b3\u00b5\5\4\3\2"+
+		"\u00b4\u00b1\3\2\2\2\u00b5\u00b8\3\2\2\2\u00b6\u00b4\3\2\2\2\u00b6\u00b7"+
+		"\3\2\2\2\u00b7\27\3\2\2\2\u00b8\u00b6\3\2\2\2\u00b9\u00ba\b\r\1\2\u00ba"+
+		"\u00bb\7\66\2\2\u00bb\u00bc\7\6\2\2\u00bc\u00bd\5\4\3\2\u00bd\u00c5\3"+
+		"\2\2\2\u00be\u00bf\f\3\2\2\u00bf\u00c0\7\30\2\2\u00c0\u00c1\7\66\2\2\u00c1"+
+		"\u00c2\7\6\2\2\u00c2\u00c4\5\4\3\2\u00c3\u00be\3\2\2\2\u00c4\u00c7\3\2"+
+		"\2\2\u00c5\u00c3\3\2\2\2\u00c5\u00c6\3\2\2\2\u00c6\31\3\2\2\2\u00c7\u00c5"+
+		"\3\2\2\2\u00c8\u00c9\b\16\1\2\u00c9\u00ca\7\66\2\2\u00ca\u00d5\3\2\2\2"+
+		"\u00cb\u00cc\f\4\2\2\u00cc\u00cd\7\31\2\2\u00cd\u00d4\7\66\2\2\u00ce\u00cf"+
+		"\f\3\2\2\u00cf\u00d0\7\25\2\2\u00d0\u00d1\5\4\3\2\u00d1\u00d2\7\32\2\2"+
+		"\u00d2\u00d4\3\2\2\2\u00d3\u00cb\3\2\2\2\u00d3\u00ce\3\2\2\2\u00d4\u00d7"+
+		"\3\2\2\2\u00d5\u00d3\3\2\2\2\u00d5\u00d6\3\2\2\2\u00d6\33\3\2\2\2\u00d7"+
+		"\u00d5\3\2\2\2\u00d8\u00d9\7\66\2\2\u00d9\u00db\7\21\2\2\u00da\u00dc\5"+
+		"\26\f\2\u00db\u00da\3\2\2\2\u00db\u00dc\3\2\2\2\u00dc\u00dd\3\2\2\2\u00dd"+
+		"\u00de\7\22\2\2\u00de\35\3\2\2\2\u00df\u00e0\5\32\16\2\u00e0\u00e1\7\33"+
+		"\2\2\u00e1\u00e2\5\4\3\2\u00e2\37\3\2\2\2\u00e3\u00e4\7\34\2\2\u00e4\u00e5"+
+		"\5\4\3\2\u00e5\u00e6\7\35\2\2\u00e6\u00e9\5\4\3\2\u00e7\u00e8\7\36\2\2"+
+		"\u00e8\u00ea\5\4\3\2\u00e9\u00e7\3\2\2\2\u00e9\u00ea\3\2\2\2\u00ea!\3"+
+		"\2\2\2\u00eb\u00ec\7\37\2\2\u00ec\u00ed\5\4\3\2\u00ed\u00ee\7 \2\2\u00ee"+
+		"\u00ef\5\4\3\2\u00ef#\3\2\2\2\u00f0\u00f1\7!\2\2\u00f1\u00f2\7\66\2\2"+
+		"\u00f2\u00f3\7\33\2\2\u00f3\u00f4\5\4\3\2\u00f4\u00f5\7\"\2\2\u00f5\u00f6"+
+		"\5\4\3\2\u00f6\u00f7\7 \2\2\u00f7\u00f8\5\4\3\2\u00f8%\3\2\2\2\u00f9\u00fa"+
+		"\7#\2\2\u00fa\u00fb\5(\25\2\u00fb\u00fd\7$\2\2\u00fc\u00fe\5\24\13\2\u00fd"+
+		"\u00fc\3\2\2\2\u00fd\u00fe\3\2\2\2\u00fe\u00ff\3\2\2\2\u00ff\u0100\7%"+
+		"\2\2\u0100\'\3\2\2\2\u0101\u0102\b\25\1\2\u0102\u0103\5*\26\2\u0103\u0108"+
+		"\3\2\2\2\u0104\u0105\f\3\2\2\u0105\u0107\5*\26\2\u0106\u0104\3\2\2\2\u0107"+
+		"\u010a\3\2\2\2\u0108\u0106\3\2\2\2\u0108\u0109\3\2\2\2\u0109)\3\2\2\2"+
+		"\u010a\u0108\3\2\2\2\u010b\u010f\5,\27\2\u010c\u010f\5\66\34\2\u010d\u010f"+
+		"\58\35\2\u010e\u010b\3\2\2\2\u010e\u010c\3\2\2\2\u010e\u010d\3\2\2\2\u010f"+
+		"+\3\2\2\2\u0110\u0111\7&\2\2\u0111\u0112\5\64\33\2\u0112\u0113\7\6\2\2"+
+		"\u0113\u0114\5.\30\2\u0114-\3\2\2\2\u0115\u0121\5\64\33\2\u0116\u011a"+
+		"\7\23\2\2\u0117\u0119\5\60\31\2\u0118\u0117\3\2\2\2\u0119\u011c\3\2\2"+
+		"\2\u011a\u0118\3\2\2\2\u011a\u011b\3\2\2\2\u011b\u011d\3\2\2\2\u011c\u011a"+
+		"\3\2\2\2\u011d\u0121\7\24\2\2\u011e\u011f\7\'\2\2\u011f\u0121\5\64\33"+
+		"\2\u0120\u0115\3\2\2\2\u0120\u0116\3\2\2\2\u0120\u011e\3\2\2\2\u0121/"+
+		"\3\2\2\2\u0122\u0123\b\31\1\2\u0123\u0124\5\62\32\2\u0124\u012a\3\2\2"+
+		"\2\u0125\u0126\f\3\2\2\u0126\u0127\7\30\2\2\u0127\u0129\5\62\32\2\u0128"+
+		"\u0125\3\2\2\2\u0129\u012c\3\2\2\2\u012a\u0128\3\2\2\2\u012a\u012b\3\2"+
+		"\2\2\u012b\61\3\2\2\2\u012c\u012a\3\2\2\2\u012d\u012e\7\66\2\2\u012e\u012f"+
+		"\7(\2\2\u012f\u0130\5\64\33\2\u0130\63\3\2\2\2\u0131\u0132\7\66\2\2\u0132"+
+		"\65\3\2\2\2\u0133\u0134\7)\2\2\u0134\u0135\7\66\2\2\u0135\u0136\7\33\2"+
+		"\2\u0136\u013f\5\4\3\2\u0137\u0138\7)\2\2\u0138\u0139\7\66\2\2\u0139\u013a"+
+		"\7(\2\2\u013a\u013b\5\64\33\2\u013b\u013c\7\33\2\2\u013c\u013d\5\4\3\2"+
+		"\u013d\u013f\3\2\2\2\u013e\u0133\3\2\2\2\u013e\u0137\3\2\2\2\u013f\67"+
+		"\3\2\2\2\u0140\u0141\7*\2\2\u0141\u0142\7\66\2\2\u0142\u0144\7\21\2\2"+
+		"\u0143\u0145\5\60\31\2\u0144\u0143\3\2\2\2\u0144\u0145\3\2\2\2\u0145\u0146"+
+		"\3\2\2\2\u0146\u0149\7\22\2\2\u0147\u0148\7(\2\2\u0148\u014a\5\64\33\2"+
+		"\u0149\u0147\3\2\2\2\u0149\u014a\3\2\2\2\u014a\u014b\3\2\2\2\u014b\u014c"+
+		"\7\6\2\2\u014c\u014d\5\4\3\2\u014d9\3\2\2\2\u014e\u015a\5<\37\2\u014f"+
+		"\u015a\5> \2\u0150\u015a\5@!\2\u0151\u015a\5B\"\2\u0152\u015a\5D#\2\u0153"+
+		"\u015a\5F$\2\u0154\u015a\5H%\2\u0155\u015a\5J&\2\u0156\u015a\5L\'\2\u0157"+
+		"\u015a\5N(\2\u0158\u015a\5P)\2\u0159\u014e\3\2\2\2\u0159\u014f\3\2\2\2"+
+		"\u0159\u0150\3\2\2\2\u0159\u0151\3\2\2\2\u0159\u0152\3\2\2\2\u0159\u0153"+
+		"\3\2\2\2\u0159\u0154\3\2\2\2\u0159\u0155\3\2\2\2\u0159\u0156\3\2\2\2\u0159"+
+		"\u0157\3\2\2\2\u0159\u0158\3\2\2\2\u015a;\3\2\2\2\u015b\u015c\7+\2\2\u015c"+
+		"\u015d\5\4\3\2\u015d\u015e\7\22\2\2\u015e=\3\2\2\2\u015f\u0160\7,\2\2"+
+		"\u0160\u0161\5\4\3\2\u0161\u0162\7\22\2\2\u0162?\3\2\2\2\u0163\u0164\7"+
+		"-\2\2\u0164A\3\2\2\2\u0165\u0166\7.\2\2\u0166\u0167\5\4\3\2\u0167\u0168"+
+		"\7\22\2\2\u0168C\3\2\2\2\u0169\u016a\7/\2\2\u016aE\3\2\2\2\u016b\u016c"+
+		"\7\60\2\2\u016c\u016d\5\4\3\2\u016d\u016e\7\22\2\2\u016eG\3\2\2\2\u016f"+
+		"\u0170\7\61\2\2\u0170\u0171\5\26\f\2\u0171\u0172\7\22\2\2\u0172I\3\2\2"+
+		"\2\u0173\u0174\7\62\2\2\u0174\u0175\5\26\f\2\u0175\u0176\7\22\2\2\u0176"+
+		"K\3\2\2\2\u0177\u0178\7\63\2\2\u0178\u0179\5\4\3\2\u0179\u017a\7\22\2"+
+		"\2\u017aM\3\2\2\2\u017b\u017c\7\64\2\2\u017c\u017d\5\4\3\2\u017d\u017e"+
+		"\7\22\2\2\u017eO\3\2\2\2\u017f\u0180\7\65\2\2\u0180\u0181\5\4\3\2\u0181"+
+		"\u0182\7\22\2\2\u0182Q\3\2\2\2\34\\dlt|\u008c\u0092\u009a\u009e\u00ab"+
+		"\u00b6\u00c5\u00d3\u00d5\u00db\u00e9\u00fd\u0108\u010e\u011a\u0120\u012a"+
+		"\u013e\u0144\u0149\u0159";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

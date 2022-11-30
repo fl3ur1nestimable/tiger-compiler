@@ -26,8 +26,7 @@ value : STRING
         |'break'
         |functionCall
         |'('expr_seq?')'
-        |type_IDF'{'field_list?'}'
-        |type_IDF'['expr'] of 'expr
+        |type_IDF('{'field_list?'}'|'['expr'] of 'expr)
         |let_in_end
         |stdlib ;
 

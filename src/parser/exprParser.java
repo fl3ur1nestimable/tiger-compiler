@@ -1,4 +1,4 @@
-// Generated from expr.g4 by ANTLR 4.9.2
+// Generated from ./expr.g by ANTLR 4.9.2
 
     package parser;
 
@@ -79,7 +79,7 @@ public class exprParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "expr.g4"; }
+	public String getGrammarFileName() { return "expr.g"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -107,6 +107,11 @@ public class exprParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_program; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof exprVisitor ) return ((exprVisitor<? extends T>)visitor).visitProgram(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ProgramContext program() throws RecognitionException {
@@ -158,6 +163,11 @@ public class exprParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_exp; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof exprVisitor ) return ((exprVisitor<? extends T>)visitor).visitExp(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpContext exp() throws RecognitionException {
@@ -236,6 +246,11 @@ public class exprParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_if_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof exprVisitor ) return ((exprVisitor<? extends T>)visitor).visitIf_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final If_Context if_() throws RecognitionException {
@@ -315,6 +330,11 @@ public class exprParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_print_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof exprVisitor ) return ((exprVisitor<? extends T>)visitor).visitPrint_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Print_Context print_() throws RecognitionException {
@@ -368,6 +388,11 @@ public class exprParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_affectation; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof exprVisitor ) return ((exprVisitor<? extends T>)visitor).visitAffectation(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AffectationContext affectation() throws RecognitionException {
@@ -425,6 +450,11 @@ public class exprParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_instruction; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof exprVisitor ) return ((exprVisitor<? extends T>)visitor).visitInstruction(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final InstructionContext instruction() throws RecognitionException {
@@ -479,6 +509,11 @@ public class exprParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_condition; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof exprVisitor ) return ((exprVisitor<? extends T>)visitor).visitCondition(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ConditionContext condition() throws RecognitionException {

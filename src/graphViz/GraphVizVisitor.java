@@ -3,8 +3,7 @@ package graphViz;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import ast.Ast;
-import ast.AstVisitor;
+import ast.*;
 
 public class GraphVizVisitor implements AstVisitor<String> {
 
@@ -48,20 +47,27 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
     }
 
-    /*@Override
-    public String visit(Affect affect) {
+    @Override
+    public String visit(Program program){
+        String nodeIdentifier = this.nextState();//node de base
+        String exprIdentifier = program.expr.accept(this);//nodes fils
 
+        this.addNode(nodeIdentifier, "Program");//creer node principale
+        this.addTransition(nodeIdentifier, exprIdentifier);//transition entre pere et fils
+        return nodeIdentifier;
+    }
+
+    @Override
+    public String visit(Or or){
         String nodeIdentifier = this.nextState();
+        String leftIdentifier = or.left.accept(this);
+        String rightIdentifier = or.rigth.accept(this);
 
-        String idfState = affect.idf.accept(this);
-        String expressionState = affect.expression.accept(this);
-
-        this.addNode(nodeIdentifier, "Affect");
-        this.addTransition(nodeIdentifier, idfState);
-        this.addTransition(nodeIdentifier, expressionState);
+        this.addNode(nodeIdentifier, "Or");
+        this.addTransition(nodeIdentifier, rightIdentifier);
+        this.addTransition(nodeIdentifier, leftIdentifier);
 
         return nodeIdentifier;
-
-    }*/
+    }
     
 }

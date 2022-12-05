@@ -5,9 +5,21 @@ import parser.tigerParser;
 
 public class AstCreator extends tigerBaseVisitor<Ast>{
 
-	@Override public Ast visitProgram(tigerParser.ProgramContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitExpr(tigerParser.ExprContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitOr(tigerParser.OrContext ctx) { return visitChildren(ctx); }
+	@Override public Ast visitProgram(tigerParser.ProgramContext ctx) {
+		return ctx.getChild(0).accept(this);
+	}
+	@Override public Ast visitExpr(tigerParser.ExprContext ctx) {
+		return ctx.getChild(0).accept(this);
+	}
+	@Override public Ast visitOr(tigerParser.OrContext ctx) {
+		Ast temp = ctx.getChild(0).accept(this);
+		for (int i = 0; 2*i < ctx.getChildCount()-1; i++) {
+			Ast right = ctx.getChild(2*(i+1)).accept(this);
+			temp = new Or(temp, right);
+		}
+		return temp;
+
+	}
 	@Override public Ast visitAnd(tigerParser.AndContext ctx) { return visitChildren(ctx); }
 	@Override public Ast visitCompare(tigerParser.CompareContext ctx) { return visitChildren(ctx); }
 	@Override public Ast visitPlus(tigerParser.PlusContext ctx) { return visitChildren(ctx); }

@@ -130,7 +130,7 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 	@Override public Ast visitLet_in_end(tigerParser.Let_in_endContext ctx) {
 		Ast block1 = ctx.getChild(1).accept(this);
 		Ast block2;
-		if (ctx.getChildCount()==5) {
+		if (ctx.getChildCount()>=5) {
 			block2 = ctx.getChild(3).accept(this);
 			return new Let_in_end(block1,block2);
 		}
@@ -153,13 +153,43 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		Ast type = ctx.getChild(3).accept(this);
 		return new Type_declaration(idf,type);
 	}
-
-	@Override public Ast visitTypeDec1(tigerParser.TypeDec1Context ctx) { return visitChildren(ctx); }//antoine
-	@Override public Ast visitTypeDec2(tigerParser.TypeDec2Context ctx) { return visitChildren(ctx); }
-	@Override public Ast visitType_fields(tigerParser.Type_fieldsContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitType_field(tigerParser.Type_fieldContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitVariable_declaration(tigerParser.Variable_declarationContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitFunction_declaration(tigerParser.Function_declarationContext ctx) { return visitChildren(ctx); }
+	@Override public Ast visitTypeDec1(tigerParser.TypeDec1Context ctx) {
+		if (ctx.getChildCount()>=3) {
+			return new  TypeDec1(ctx.getChild(1).accept(this));
+		}
+		return visitChildren(ctx);
+	}
+	@Override public Ast visitTypeDec2(tigerParser.TypeDec2Context ctx) {
+		return new TypeDec2(ctx.getChild(1).accept(this));
+	}
+	@Override public Ast visitType_fields(tigerParser.Type_fieldsContext ctx) {
+		Type_fields list = new Type_fields();
+		for (int i = 0; 2*i < ctx.getChildCount()-1; i++) {
+			list.addType_field(ctx.getChild(2*i).accept(this));
+		}
+		return list;
+	}
+	@Override public Ast visitType_field(tigerParser.Type_fieldContext ctx) {
+		return new Type_field(ctx.getChild(0).accept(this),ctx.getChild(2).accept(this));
+	}
+	@Override public Ast visitVariable_declaration(tigerParser.Variable_declarationContext ctx) {
+		if (ctx.getChildCount()>=5) {
+			return new Variable_declaration(ctx.getChild(1).accept(this),ctx.getChild(3).accept(this),ctx.getChild(5).accept(this));
+		}
+		return new Variable_declaration(ctx.getChild(1).accept(this),ctx.getChild(3).accept(this));
+	}
+	@Override public Ast visitFunction_declaration(tigerParser.Function_declarationContext ctx) {
+		if (ctx.getChildCount()>=9) {
+			return new Function_declaration(ctx.getChild(1).accept(this),ctx.getChild(3).accept(this),ctx.getChild(6).accept(this),ctx.getChild(8).accept(this));
+		}
+		else if(ctx.getChildCount()>=8){
+			return new Function_declaration(ctx.getChild(1).accept(this),ctx.getChild(5).accept(this),ctx.getChild(7).accept(this));
+		}
+		else if (ctx.getChildCount()>=7) {
+			return new Function_declaration(ctx.getChild(1).accept(this),ctx.getChild(3).accept(this),ctx.getChild(6).accept(this));
+		}
+		return new Function_declaration(ctx.getChild(1).accept(this),ctx.getChild(5).accept(this));
+	}
 	
 	@Override public Ast visitStdlib(tigerParser.StdlibContext ctx) { return visitChildren(ctx); }//marine
 	@Override public Ast visitPrint_(tigerParser.Print_Context ctx) { return visitChildren(ctx); }
@@ -174,4 +204,24 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 	@Override public Ast visitOrd_(tigerParser.Ord_Context ctx) { return visitChildren(ctx); }
 	@Override public Ast visitSize_(tigerParser.Size_Context ctx) { return visitChildren(ctx); }
 	@Override public Ast visitNot_(tigerParser.Not_Context ctx) { return visitChildren(ctx); }
+
+	@Override public Ast visitField_list(tigerParser.Field_listContext ctx) {
+		Field_list list = new Field_list();
+		for (int i = 0; 2*i < ctx.getChildCount()-1; i++) {
+			list.add(ctx.getChild(2*i).accept(this));
+		}
+		return list;
+	}
+	@Override public Ast visitField(tigerParser.FieldContext ctx) {
+		return new Field(ctx.getChild(0).accept(this),ctx.getChild(2).accept(this));
+	}
+	@Override public Ast visitLvalue(tigerParser.LvalueContext ctx) {
+		Lvalue lvalue = new Lvalue();
+		for (int i = 0; 2*i < ctx.getChildCount()-1; i++) {
+			lvalue.add(ctx.getChild(2*i).accept(this));
+		}
+		return lvalue;
+	}
+	
+
 }

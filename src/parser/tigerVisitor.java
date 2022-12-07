@@ -121,40 +121,23 @@ public interface tigerVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpr_list(tigerParser.Expr_listContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code simpleField}
-	 * labeled alternative in {@link tigerParser#field_list}.
+	 * Visit a parse tree produced by {@link tigerParser#field_list}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSimpleField(tigerParser.SimpleFieldContext ctx);
+	T visitField_list(tigerParser.Field_listContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code manyFiedls}
-	 * labeled alternative in {@link tigerParser#field_list}.
+	 * Visit a parse tree produced by {@link tigerParser#field}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitManyFiedls(tigerParser.ManyFiedlsContext ctx);
+	T visitField(tigerParser.FieldContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code identifier}
-	 * labeled alternative in {@link tigerParser#lvalue}.
+	 * Visit a parse tree produced by {@link tigerParser#lvalue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIdentifier(tigerParser.IdentifierContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code lvalueIdf}
-	 * labeled alternative in {@link tigerParser#lvalue}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLvalueIdf(tigerParser.LvalueIdfContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code lvalueExpr}
-	 * labeled alternative in {@link tigerParser#lvalue}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLvalueExpr(tigerParser.LvalueExprContext ctx);
+	T visitLvalue(tigerParser.LvalueContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link tigerParser#functionCall}.
 	 * @param ctx the parse tree
@@ -210,21 +193,22 @@ public interface tigerVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitType_declaration(tigerParser.Type_declarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link tigerParser#type}.
+	 * Visit a parse tree produced by the {@code identifier}
+	 * labeled alternative in {@link tigerParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitType(tigerParser.TypeContext ctx);
+	T visitIdentifier(tigerParser.IdentifierContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code typeDec1}
-	 * labeled alternative in {@link tigerParser#type1}.
+	 * labeled alternative in {@link tigerParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitTypeDec1(tigerParser.TypeDec1Context ctx);
 	/**
 	 * Visit a parse tree produced by the {@code typeDec2}
-	 * labeled alternative in {@link tigerParser#type1}.
+	 * labeled alternative in {@link tigerParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */

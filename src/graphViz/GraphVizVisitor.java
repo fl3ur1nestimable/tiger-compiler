@@ -288,11 +288,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         return node;
     }
     
-    @Override
-    public String visit(Expr_seq expr_seq) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+
 
     @Override
     public String visit(Negation negation) {
@@ -303,4 +299,71 @@ public class GraphVizVisitor implements AstVisitor<String> {
         return node;
     }
     
+    @Override
+    public String visit(Expr_seq expr_seq) {
+        String node = this.nextState();
+        this.addNode(node, "Expr_seq");
+        for (int i = 0; i < expr_seq.array.size(); i++) {
+            String right= expr_seq.array.get(i).accept(this);
+            this.addTransition(node, right);;
+        }
+        return node;
+    }    
+
+    @Override
+    public String visit(Expr_list expr_list) {
+        String node = this.nextState();
+        this.addNode(node, "Expr_seq");
+        for (int i = 0; i < expr_list.array.size(); i++) {
+            String right= expr_list.array.get(i).accept(this);
+            this.addTransition(node, right);;
+        }
+        return node;
+    }    
+
+    @Override
+    public String visit(FunctionCall functionCall) {
+        String node = this.nextState();
+        this.addNode(node, "FunctionCall");
+
+        String left=functionCall.left.accept(this);
+        this.addTransition(node, left);
+
+        if (functionCall.right!=null) {
+            String right = functionCall.right.accept(this);
+            this.addTransition(node, right);
+        }
+        return node;
+    }  
+
+    @Override
+    public String visit(Assignement assignement) {
+        String node = this.nextState();
+        this.addNode(node, "Assignement");
+
+        String left=assignement.left.accept(this);
+        this.addTransition(node, left);
+        String right=assignement.right.accept(this);
+        this.addTransition(node, right);
+
+        return node;
+    } 
+
+    @Override
+    public String visit(IfThenElse ifThenElse) {
+        String node = this.nextState();
+        this.addNode(node, "IfThenElse");
+
+        String left=ifThenElse.left.accept(this);
+        this.addTransition(node, left);
+        String middle=ifThenElse.right.accept(this);
+        this.addTransition(node, middle);
+        
+        if (ifThenElse.right!=null) {
+            String right = ifThenElse.right.accept(this);
+            this.addTransition(node, right);
+        }
+        
+        return node;
+    } 
 }

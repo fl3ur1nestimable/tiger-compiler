@@ -108,12 +108,56 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 	
 	@Override public Ast visitNegation(tigerParser.NegationContext ctx) {  //Louis
 		return new Negation(ctx.getChild(1).accept(this)); }
-	@Override public Ast visitExpr_seq(tigerParser.Expr_seqContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitExpr_list(tigerParser.Expr_listContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitIdentifier(tigerParser.IdentifierContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitFunctionCall(tigerParser.FunctionCallContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitAssignement(tigerParser.AssignementContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitIfthenelse(tigerParser.IfthenelseContext ctx) { return visitChildren(ctx); }
+
+	@Override public Ast visitExpr_seq(tigerParser.Expr_seqContext ctx) { 	
+		
+		Expr_seq expr_seq = new Expr_seq();
+		for (int i = 0; 2*i < ctx.getChildCount()-1; i++) {
+			Ast right = ctx.getChild(2*i).accept(this);
+			expr_seq.addExpr(right);
+		}
+		return expr_seq;
+	} 
+
+	@Override public Ast visitExpr_list(tigerParser.Expr_listContext ctx) {
+
+		Expr_list expr_list = new Expr_list();
+		for (int i = 0; 2*i < ctx.getChildCount()-1; i++) {
+			Ast right = ctx.getChild(2*i).accept(this);
+			expr_list.addExpr(right);
+		}
+		return expr_list;
+	 }
+	@Override public Ast visitIdentifier(tigerParser.IdentifierContext ctx) { 
+		return new Identifier(ctx.getChild(0).toString());
+	 }
+	
+	@Override public Ast visitFunctionCall(tigerParser.FunctionCallContext ctx) { 
+		Ast left = ctx.getChild(0).accept(this);
+
+		if (ctx.getChildCount()==4){
+			Ast right = ctx.getChild(2).accept(this);
+			return new FunctionCall(left,right);
+		}
+		return new FunctionCall(left);
+	}
+
+	@Override public Ast visitAssignement(tigerParser.AssignementContext ctx) { 
+		Ast left = ctx.getChild(0).accept(this);
+		Ast right = ctx.getChild(2).accept(this);
+		return new Assignement(left,right);
+	 }
+	 
+	@Override public Ast visitIfthenelse(tigerParser.IfthenelseContext ctx) { 
+		Ast left = ctx.getChild(1).accept(this);
+		Ast middle = ctx.getChild(3).accept(this);
+
+		if (ctx.getChildCount()==6){
+			Ast right = ctx.getChild(5).accept(this);
+			return new IfThenElse(left,middle,right);
+		}
+		return new IfThenElse(left,middle);
+	 }
 	
 	@Override public Ast visitWhiledo(tigerParser.WhiledoContext ctx) {
 		Ast cond = ctx.getChild(1).accept(this);

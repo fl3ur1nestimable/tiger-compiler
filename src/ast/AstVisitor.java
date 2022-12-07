@@ -23,6 +23,9 @@ public interface AstVisitor<T> {
     public T visit(Let_in_end let_in_end);
     public T visit(Type_declaration type_declaration);
     public T visit(Negation negation); 
-
+    public T visit(Expr_list expr_list);
+    public T visit(FunctionCall functionCall);
+    public T visit(Assignement assignement);
+    public T visit(IfThenElse ifthenelse);
 
 }

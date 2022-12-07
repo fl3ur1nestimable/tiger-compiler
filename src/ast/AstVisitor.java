@@ -27,5 +27,11 @@ public interface AstVisitor<T> {
     public T visit(FunctionCall functionCall);
     public T visit(Assignement assignement);
     public T visit(IfThenElse ifthenelse);
+    public T visit(Substring_ substring);
+    public T visit(Concat_ concat_);
+    public T visit(Ord_ ord_);
+    public T visit(Size_ size_);
+    public T visit(Not_ not_);
+
 
 }

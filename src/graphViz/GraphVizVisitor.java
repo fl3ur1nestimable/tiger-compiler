@@ -358,7 +358,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addTransition(node, left);
         String middle=ifThenElse.right.accept(this);
         this.addTransition(node, middle);
-        
+
         if (ifThenElse.right!=null) {
             String right = ifThenElse.right.accept(this);
             this.addTransition(node, right);
@@ -366,4 +366,49 @@ public class GraphVizVisitor implements AstVisitor<String> {
         
         return node;
     } 
+
+    @Override
+    public String visit(Substring_ substring) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=substring.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+
+    @Override
+    public String visit(Concat_ concat_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=concat_.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+
+    @Override
+    public String visit(Ord_ ord_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=ord_.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+
+    @Override
+    public String visit(Size_ size_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=size_.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+
+    @Override
+    public String visit(Not_ not_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=not_.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
 }

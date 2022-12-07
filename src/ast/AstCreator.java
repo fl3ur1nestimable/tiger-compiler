@@ -214,9 +214,20 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 	@Override public Ast visitExit_(tigerParser.Exit_Context ctx) { return visitChildren(ctx); }
 	@Override public Ast visitGetchar_(tigerParser.Getchar_Context ctx) { return visitChildren(ctx); }
 	@Override public Ast visitChr_(tigerParser.Chr_Context ctx) { return visitChildren(ctx); }
-	@Override public Ast visitSubstring_(tigerParser.Substring_Context ctx) { return visitChildren(ctx); }
-	@Override public Ast visitConcat_(tigerParser.Concat_Context ctx) { return visitChildren(ctx); }
-	@Override public Ast visitOrd_(tigerParser.Ord_Context ctx) { return visitChildren(ctx); }
-	@Override public Ast visitSize_(tigerParser.Size_Context ctx) { return visitChildren(ctx); }
-	@Override public Ast visitNot_(tigerParser.Not_Context ctx) { return visitChildren(ctx); }
+	
+	@Override public Ast visitSubstring_(tigerParser.Substring_Context ctx) { 		
+		return new Substring_(ctx.getChild(1).accept(this)); }
+
+	@Override public Ast visitConcat_(tigerParser.Concat_Context ctx) { 
+		return new Concat_(ctx.getChild(1).accept(this)); }
+
+	@Override public Ast visitOrd_(tigerParser.Ord_Context ctx) { 
+		return new Ord_(ctx.getChild(1).accept(this)); }
+
+	@Override public Ast visitSize_(tigerParser.Size_Context ctx) { 
+		return new Size_(ctx.getChild(1).accept(this)); }
+
+	@Override public Ast visitNot_(tigerParser.Not_Context ctx) { 
+		return new Not_(ctx.getChild(1).accept(this)); }
+		
 }

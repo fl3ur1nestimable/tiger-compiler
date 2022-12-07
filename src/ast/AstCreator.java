@@ -98,11 +98,22 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		return temp;
 	}
 	
-	@Override public Ast visitStringNode(tigerParser.StringNodeContext ctx) { return visitChildren(ctx); }//marine
-	@Override public Ast visitIntNode(tigerParser.IntNodeContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitNil(tigerParser.NilContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitBreak_(tigerParser.Break_Context ctx) { return visitChildren(ctx); }
-	@Override public Ast visitParentheses(tigerParser.ParenthesesContext ctx) { return visitChildren(ctx); }
+	@Override public Ast visitStringNode(tigerParser.StringNodeContext ctx) { 
+		return new StringNode(ctx.getChild(0).toString());
+	 }//marine
+	@Override public Ast visitIntNode(tigerParser.IntNodeContext ctx) { 
+		return new IntNode(Integer.parseInt(ctx.getChild(0).toString()));
+	 }
+	@Override public Ast visitNil(tigerParser.NilContext ctx) { 
+		return new Nil();
+	 }
+	@Override public Ast visitBreak_(tigerParser.Break_Context ctx) { 
+		return new Break_();
+	 }
+	@Override public Ast visitParentheses(tigerParser.ParenthesesContext ctx) { 
+		if (ctx.getChildCount()==3){return ctx.getChild(1).accept(this); }
+		else return visitChildren(ctx);
+	}
 	@Override public Ast visitTypeInstance(tigerParser.TypeInstanceContext ctx) { return visitChildren(ctx); }
 	@Override public Ast visitInstruction(tigerParser.InstructionContext ctx) { return visitChildren(ctx); }
 	

@@ -293,7 +293,38 @@ public class GraphVizVisitor implements AstVisitor<String> {
         // TODO Auto-generated method stub
         return null;
     }
+    @Override
+    public String visit(StringNode string_node){
+        String nodeIdentifier = this.nextState();
 
+        this.addNode(nodeIdentifier,string_node.value);
+
+        return nodeIdentifier;
+    }
+    @Override
+    public String visit(IntNode int_node){
+        String nodeIdentifier = this.nextState();
+
+        this.addNode(nodeIdentifier,String.valueOf(int_node.value));
+
+        return nodeIdentifier;
+    }
+    @Override
+    public String visit(Nil nil){
+        String nodeIdentifier = this.nextState();
+
+        this.addNode(nodeIdentifier,"nil");
+
+        return nodeIdentifier;
+    }
+
+    public String visit(Break_ break_){
+        String nodeIdentifier = this.nextState();
+
+        this.addNode(nodeIdentifier,"break");
+
+        return nodeIdentifier;
+    }
     
     
 }

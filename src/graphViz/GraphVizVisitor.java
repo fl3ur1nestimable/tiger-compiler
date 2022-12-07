@@ -336,14 +336,28 @@ public class GraphVizVisitor implements AstVisitor<String> {
             this.addNode(nodeIdentifier, liste_field);
             return nodeIdentifier;
         }
-        else{
+        if (type_instance.expr1!=null){
             String expr1=type_instance.expr1.accept(this);
             String expr2=type_instance.expr2.accept(this);
             this.addNode(nodeIdentifier, expr1);
             this.addNode(nodeIdentifier, expr2);
             return nodeIdentifier ;
         }
+        else{return nodeIdentifier;}
 
+    }
+
+    public String visit(Print_ print_){
+        String nodeIdentifier = this.nextState();
+        this.addNode(nodeIdentifier,"print(");
+        this.addNode(nodeIdentifier, print_.expr.accept(this));
+        return nodeIdentifier;
+    }
+    public String visit(Printi printi){
+        String nodeIdentifier = this.nextState();
+        this.addNode(nodeIdentifier,"printi(");
+        this.addNode(nodeIdentifier, printi.expr.accept(this));
+        return nodeIdentifier;
     }
     
     

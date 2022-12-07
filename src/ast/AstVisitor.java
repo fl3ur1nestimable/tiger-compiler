@@ -27,6 +27,8 @@ public interface AstVisitor<T> {
     public T visit(Nil nil);
     public T visit(Break_ break_);
     public T visit(TypeInstance type_instance);
+    public T visit(Print_ print_);
+    public T visit(Printi printi);
     
 
 }

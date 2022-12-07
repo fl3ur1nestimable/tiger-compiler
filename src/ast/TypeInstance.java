@@ -5,9 +5,9 @@ public class TypeInstance implements Ast{
         return visitor.visit(this);
     }
     public String id;
-    Ast liste_field;
-    Ast expr1;
-    Ast expr2;
+    public Ast liste_field;
+    public Ast expr1;
+    public Ast expr2;
     public TypeInstance(String id){
         this.id=id;
     }

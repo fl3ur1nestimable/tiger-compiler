@@ -190,9 +190,15 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 	@Override public Ast visitVariable_declaration(tigerParser.Variable_declarationContext ctx) { return visitChildren(ctx); }
 	@Override public Ast visitFunction_declaration(tigerParser.Function_declarationContext ctx) { return visitChildren(ctx); }
 	
-	@Override public Ast visitStdlib(tigerParser.StdlibContext ctx) { return visitChildren(ctx); }//marine
-	@Override public Ast visitPrint_(tigerParser.Print_Context ctx) { return visitChildren(ctx); }
-	@Override public Ast visitPrinti(tigerParser.PrintiContext ctx) { return visitChildren(ctx); }
+	@Override public Ast visitStdlib(tigerParser.StdlibContext ctx) { 
+		return ctx.getChild(0).accept(this);
+	 }//marine
+	@Override public Ast visitPrint_(tigerParser.Print_Context ctx) { 
+		return new Print_(ctx.getChild(1).accept(this));
+	 }
+	@Override public Ast visitPrinti(tigerParser.PrintiContext ctx) { 
+		return new Print_(ctx.getChild(1).accept(this));
+	 }
 
 	@Override public Ast visitFlush_(tigerParser.Flush_Context ctx) { return visitChildren(ctx); }// Angelina
 	@Override public Ast visitExit_(tigerParser.Exit_Context ctx) { return visitChildren(ctx); }

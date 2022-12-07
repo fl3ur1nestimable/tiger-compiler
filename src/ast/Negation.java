@@ -1,5 +1,12 @@
 package ast;
 
-public class Negation {
+public class Negation implements Ast {
+    public <T> T accept(AstVisitor<T> visitor){
+        return visitor.visit(this);
+    }
+    public Ast right;
     
+    public Negation(Ast r){
+        this.right=r;
+    }
 }

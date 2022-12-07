@@ -294,6 +294,13 @@ public class GraphVizVisitor implements AstVisitor<String> {
         return null;
     }
 
-    
+    @Override
+    public String visit(Negation negation) {
+        String node = this.nextState();
+        this.addNode(node, "Negation");
+        String right=negation.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
     
 }

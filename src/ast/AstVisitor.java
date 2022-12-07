@@ -22,6 +22,7 @@ public interface AstVisitor<T> {
     public T visit(Declaration_list declaration_list);
     public T visit(Let_in_end let_in_end);
     public T visit(Type_declaration type_declaration);
-    
+    public T visit(Negation negation); 
+
 
 }

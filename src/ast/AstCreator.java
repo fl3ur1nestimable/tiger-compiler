@@ -106,7 +106,8 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 	@Override public Ast visitTypeInstance(tigerParser.TypeInstanceContext ctx) { return visitChildren(ctx); }
 	@Override public Ast visitInstruction(tigerParser.InstructionContext ctx) { return visitChildren(ctx); }
 	
-	@Override public Ast visitNegation(tigerParser.NegationContext ctx) { return visitChildren(ctx); }//Louis
+	@Override public Ast visitNegation(tigerParser.NegationContext ctx) {  //Louis
+		return new Negation(ctx.getChild(1).accept(this)); }
 	@Override public Ast visitExpr_seq(tigerParser.Expr_seqContext ctx) { return visitChildren(ctx); }
 	@Override public Ast visitExpr_list(tigerParser.Expr_listContext ctx) { return visitChildren(ctx); }
 	@Override public Ast visitIdentifier(tigerParser.IdentifierContext ctx) { return visitChildren(ctx); }

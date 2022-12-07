@@ -114,8 +114,26 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		if (ctx.getChildCount()==3){return ctx.getChild(1).accept(this); }
 		else return visitChildren(ctx);
 	}
-	@Override public Ast visitTypeInstance(tigerParser.TypeInstanceContext ctx) { return visitChildren(ctx); }
-	@Override public Ast visitInstruction(tigerParser.InstructionContext ctx) { return visitChildren(ctx); }
+	@Override public Ast visitTypeInstance(tigerParser.TypeInstanceContext ctx) {
+		String id=ctx.getChild(0).toString();
+		switch (ctx.getChildCount()) {
+			case 3:
+				return new TypeInstance(id);
+				
+			case 4 :
+				Ast liste_field=ctx.getChild(2).accept(this);
+				return new TypeInstance(id, liste_field);
+			case 5 :
+				Ast expr1=ctx.getChild(2).accept(this);
+				Ast expr2=ctx.getChild(4).accept(this);
+				return new TypeInstance(id, expr1, expr2);
+			default:
+				return visitChildren(ctx);
+		}
+	 }
+	@Override public Ast visitInstruction(tigerParser.InstructionContext ctx) { 
+		return ctx.getChild(0).accept(this);
+	 }
 	
 	@Override public Ast visitNegation(tigerParser.NegationContext ctx) { return visitChildren(ctx); }//Louis
 	@Override public Ast visitExpr_seq(tigerParser.Expr_seqContext ctx) { return visitChildren(ctx); }

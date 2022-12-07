@@ -26,6 +26,7 @@ public interface AstVisitor<T> {
     public T visit(IntNode int_node);
     public T visit(Nil nil);
     public T visit(Break_ break_);
+    public T visit(TypeInstance type_instance);
     
 
 }

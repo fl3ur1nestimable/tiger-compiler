@@ -48,5 +48,4 @@ public interface AstVisitor<T> {
     public T visit(Field field);
     public T visit(Field_list field_list);
     public T visit(Lvalue lvalue);
-
 }

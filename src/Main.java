@@ -1,3 +1,5 @@
+import ast.*;
+import graphViz.*;
 
 import java.util.Arrays;
 import javax.swing.JFrame;
@@ -33,7 +35,7 @@ public class Main {
             CommonTokenStream stream = new CommonTokenStream(lexer);
             tigerParser parser = new tigerParser(stream);
 
-            ProgramContext program = parser.program();
+            /*ProgramContext program = parser.program();
 
             // code d'affichage de l'arbre syntaxique
             JFrame frame = new JFrame("Antlr AST");
@@ -45,7 +47,20 @@ public class Main {
             frame.add(panel);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
-            frame.setVisible(true);
+            frame.setVisible(true);*/
+
+            // Récupération du noeud program (le noeud à la racine)
+            ProgramContext program = parser.program();
+
+            // Visiteur de création de l'AST + création de l'AST
+            AstCreator creator = new AstCreator();
+            Ast ast = program.accept(creator);
+
+            // Visiteur de représentation graphique + appel
+            GraphVizVisitor graphViz = new GraphVizVisitor();
+            ast.accept(graphViz);
+        
+            graphViz.dumpGraph("./out/tree.dot");
 
 
         } 

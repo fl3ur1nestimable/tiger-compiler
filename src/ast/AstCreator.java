@@ -250,7 +250,9 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		if (ctx.getChildCount()>=5) {
 			return new Variable_declaration(ctx.getChild(1).accept(this),ctx.getChild(3).accept(this),ctx.getChild(5).accept(this));
 		}
-		return new Variable_declaration(ctx.getChild(1).accept(this),ctx.getChild(3).accept(this));
+		else{
+			return new Variable_declaration(ctx.getChild(1).accept(this),ctx.getChild(3).accept(this));
+		}
 	}
 	@Override public Ast visitFunction_declaration(tigerParser.Function_declarationContext ctx) {
 		if (ctx.getChildCount()>=9) {

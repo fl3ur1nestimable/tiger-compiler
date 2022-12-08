@@ -261,7 +261,6 @@ public class GraphVizVisitor implements AstVisitor<String> {
         if (let_in_end.block2!=null) {
             String seq = let_in_end.block2.accept(this);
             this.addTransition(node, seq);
-            return node;
         }
         return node;
     }
@@ -288,10 +287,92 @@ public class GraphVizVisitor implements AstVisitor<String> {
         return node;
     }
     
+
+
+    @Override
+    public String visit(Negation negation) {
+        String node = this.nextState();
+        this.addNode(node, "Negation");
+        String right=negation.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+    
     @Override
     public String visit(Expr_seq expr_seq) {
-        // TODO Auto-generated method stub
-        return null;
+        String node = this.nextState();
+        this.addNode(node, "Expr_seq");
+        for (int i = 0; i < expr_seq.array.size(); i++) {
+            String right= expr_seq.array.get(i).accept(this);
+            this.addTransition(node, right);;
+        }
+        return node;
+    }    
+
+    @Override
+    public String visit(Expr_list expr_list) {
+        String node = this.nextState();
+        this.addNode(node, "Expr_seq");
+        for (int i = 0; i < expr_list.array.size(); i++) {
+            String right= expr_list.array.get(i).accept(this);
+            this.addTransition(node, right);;
+        }
+        return node;
+    }    
+
+    @Override
+    public String visit(FunctionCall functionCall) {
+        String node = this.nextState();
+        this.addNode(node, "FunctionCall");
+
+        String left=functionCall.left.accept(this);
+        this.addTransition(node, left);
+
+        if (functionCall.right!=null) {
+            String right = functionCall.right.accept(this);
+            this.addTransition(node, right);
+        }
+        return node;
+    }  
+
+    @Override
+    public String visit(Assignement assignement) {
+        String node = this.nextState();
+        this.addNode(node, "Assignement");
+
+        String left=assignement.left.accept(this);
+        this.addTransition(node, left);
+        String right=assignement.right.accept(this);
+        this.addTransition(node, right);
+
+        return node;
+    } 
+
+    @Override
+    public String visit(IfThenElse ifThenElse) {
+        String node = this.nextState();
+        this.addNode(node, "IfThenElse");
+
+        String left=ifThenElse.left.accept(this);
+        this.addTransition(node, left);
+        String middle=ifThenElse.right.accept(this);
+        this.addTransition(node, middle);
+
+        if (ifThenElse.right!=null) {
+            String right = ifThenElse.right.accept(this);
+            this.addTransition(node, right);
+        }
+        
+        return node;
+    } 
+
+    @Override
+    public String visit(Substring_ substring) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=substring.right.accept(this);
+        this.addTransition(node, right);
+        return node;
     }
     @Override
     public String visit(StringNode string_node){
@@ -318,6 +399,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         return nodeIdentifier;
     }
 
+    @Override
     public String visit(Break_ break_){
         String nodeIdentifier = this.nextState();
 
@@ -326,6 +408,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         return nodeIdentifier;
     }
 
+    @Override
     public String visit(TypeInstance type_instance){
         String nodeIdentifier = this.nextState();
 
@@ -347,12 +430,15 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
     }
 
+    @Override
     public String visit(Print_ print_){
         String nodeIdentifier = this.nextState();
         this.addNode(nodeIdentifier,"print(");
         this.addNode(nodeIdentifier, print_.expr.accept(this));
         return nodeIdentifier;
     }
+
+    @Override
     public String visit(Printi printi){
         String nodeIdentifier = this.nextState();
         this.addNode(nodeIdentifier,"printi(");
@@ -360,5 +446,148 @@ public class GraphVizVisitor implements AstVisitor<String> {
         return nodeIdentifier;
     }
     
+    @Override
+    public String visit(Concat_ concat_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=concat_.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+
+    @Override
+    public String visit(TypeDec1 typeDec1){
+        String node = this.nextState();
+        this.addNode(node, "typeDec1");
+        String typeFields=typeDec1.typefields.accept(this);
+        this.addTransition(node, typeFields);
+        return node;
+    }
+
+    @Override
+    public String visit(Ord_ ord_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=ord_.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+
+    @Override
+    public String visit(TypeDec2 typeDec2){
+        String node = this.nextState();
+        this.addNode(node, "typeDec2");
+        String typeFields=typeDec2.idf.accept(this);
+        this.addTransition(node, typeFields);
+        return node;
+    }
+
+    @Override
+    public String visit(Size_ size_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=size_.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+
+    @Override
+    public String visit(Type_fields type_fields) {
+        String node = this.nextState();
+        this.addNode(node, "typeFields");
+        for (int i = 0; i < type_fields.fields.size(); i++) {
+            String typeField = type_fields.fields.get(i).accept(this);
+            this.addTransition(node, typeField);
+        }
+        return node;
+    }
+
+    @Override
+    public String visit(Not_ not_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=not_.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+
+    @Override
+    public String visit(Type_field type_field) {
+        String node = this.nextState();
+        this.addNode(node, "typeField");
+        String idfNode=type_field.name.accept(this);
+        String typeNode=type_field.type.accept(this);
+        this.addTransition(node, idfNode);
+        this.addTransition(node, typeNode);
+        return node;
+    }
+
+    @Override
+    public String visit(Variable_declaration variable_declaration) {
+        String node = this.nextState();
+        this.addNode(node, "valDec");
+        String idfNode=variable_declaration.name.accept(this);
+        String exprNode=variable_declaration.expr.accept(this);
+        this.addTransition(node, idfNode);
+        this.addTransition(node, exprNode);
+        if (variable_declaration.type!=null) {
+            String typeNode=variable_declaration.type.accept(this);
+            this.addTransition(node, typeNode);
+        }
+        return node;
+    }
+
+    @Override
+    public String visit(Function_declaration function_declaration) {
+        String node = this.nextState();
+        this.addNode(node, "funcDec");
+        String idfNode=function_declaration.name.accept(this);
+        String bodyNOde = function_declaration.body.accept(this);
+        this.addTransition(node, idfNode);
+        this.addTransition(node, bodyNOde);
+        if (function_declaration.return_type!=null) {
+            String typeNode=function_declaration.return_type.accept(this);
+            this.addTransition(node, typeNode);
+        }
+        if (function_declaration.paramsOrReturnType!=null) {
+            String argsNode=function_declaration.paramsOrReturnType.accept(this);
+            this.addTransition(node, argsNode);
+        }
+        return node;
+        
+    }
+
+    @Override
+    public String visit(Lvalue lvalue) {
+        String node = this.nextState();
+        this.addNode(node, "lvalue");
+        for (int i = 0; i < lvalue.lvalues.size(); i++) {
+            String lvalueNode = lvalue.lvalues.get(i).accept(this);
+            this.addTransition(node, lvalueNode);
+        }
+        return node;
+    }
+
+    @Override
+    public String visit(Field field){
+        String node = this.nextState();
+        this.addNode(node, "field");
+        String nameNode  = field.name.accept(this);
+        String exprNode = field.expr.accept(this);
+        this.addTransition(node, nameNode);
+        this.addTransition(node, exprNode);
+        return node;
+    }
+
+    @Override
+    public String visit(Field_list field_list){
+        String node = this.nextState();
+        this.addNode(node, "fieldList");
+        for (int i = 0; i < field_list.fields.size(); i++) {
+            String fieldNode = field_list.fields.get(i).accept(this);
+            this.addTransition(node, fieldNode);
+        }
+        return node;
+    }
     
 }

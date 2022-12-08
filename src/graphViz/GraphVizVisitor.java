@@ -71,6 +71,12 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
     @Override
+    public String visit(Flush_ flush_) {
+        String node = this.nextState();
+        this.addNode(node, "flush()");
+        return node;
+    }
+
     public String visit(And and){
         String node = this.nextState();
         String leftIdentifier = and.left.accept(this);
@@ -216,6 +222,15 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
     @Override
+    public String visit(Exit_ exit_) {
+        String node = this.nextState();
+        this.addNode(node, "exit()");
+        String exp = exit_.exp.accept(this);
+        this.addTransition(node, exp);
+        return node;
+    }
+
+    @Override
     public String visit(Whiledo whiledo) {
         String node = this.nextState();
         String cond = whiledo.cond.accept(this);
@@ -225,6 +240,13 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addTransition(node, cond);
         this.addNode(node, block);
 
+        return node;
+    }
+
+    @Override
+    public String visit(Getchar getchar) {
+        String node = this.nextState();
+        this.addNode(node, "getchar()");
         return node;
     }
 
@@ -242,6 +264,15 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addTransition(node, e2);
         this.addTransition(node, e3);
 
+        return node;
+    }
+
+    @Override
+    public String visit(Chr_ chr_) {
+        String node = this.nextState();
+        this.addNode(node, "chr()");
+        String exp = chr_.exp.accept(this);
+        this.addTransition(node, exp);
         return node;
     }
 

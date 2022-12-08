@@ -275,10 +275,18 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		return new Print_(ctx.getChild(1).accept(this));
 	 }
 
-	@Override public Ast visitFlush_(tigerParser.Flush_Context ctx) { return visitChildren(ctx); }// Angelina
-	@Override public Ast visitExit_(tigerParser.Exit_Context ctx) { return visitChildren(ctx); }
-	@Override public Ast visitGetchar_(tigerParser.Getchar_Context ctx) { return visitChildren(ctx); }
-	@Override public Ast visitChr_(tigerParser.Chr_Context ctx) { return visitChildren(ctx); }
+	@Override public Ast visitFlush_(tigerParser.Flush_Context ctx) {
+		return new Flush_();
+	}
+	@Override public Ast visitExit_(tigerParser.Exit_Context ctx) {
+		return new Exit_(ctx.getChild(1).accept(this));
+	}
+	@Override public Ast visitGetchar_(tigerParser.Getchar_Context ctx) {
+		return new Getchar();
+	}
+	@Override public Ast visitChr_(tigerParser.Chr_Context ctx) { 
+		return new Chr_(ctx.getChild(1).accept(this));
+	}
 	
 	@Override public Ast visitSubstring_(tigerParser.Substring_Context ctx) { 		
 		return new Substring_(ctx.getChild(1).accept(this)); }
@@ -312,5 +320,4 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		}
 		return lvalue;
 	}
-	
 }

@@ -374,6 +374,78 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addTransition(node, right);
         return node;
     }
+    
+    @Override
+    public String visit(StringNode string_node){
+        String nodeIdentifier = this.nextState();
+
+        this.addNode(nodeIdentifier,string_node.value);
+
+        return nodeIdentifier;
+    }
+    @Override
+    public String visit(IntNode int_node){
+        String nodeIdentifier = this.nextState();
+
+        this.addNode(nodeIdentifier,String.valueOf(int_node.value));
+
+        return nodeIdentifier;
+    }
+    @Override
+    public String visit(Nil nil){
+        String nodeIdentifier = this.nextState();
+
+        this.addNode(nodeIdentifier,"nil");
+
+        return nodeIdentifier;
+    }
+
+    @Override
+    public String visit(Break_ break_){
+        String nodeIdentifier = this.nextState();
+
+        this.addNode(nodeIdentifier,"break");
+
+        return nodeIdentifier;
+    }
+
+    @Override
+    public String visit(TypeInstance type_instance){
+        String nodeIdentifier = this.nextState();
+
+        this.addNode(nodeIdentifier,type_instance.id);
+
+        if (type_instance.liste_field!=null){
+            String liste_field=type_instance.liste_field.accept(this);
+            this.addNode(nodeIdentifier, liste_field);
+            return nodeIdentifier;
+        }
+        if (type_instance.expr1!=null){
+            String expr1=type_instance.expr1.accept(this);
+            String expr2=type_instance.expr2.accept(this);
+            this.addNode(nodeIdentifier, expr1);
+            this.addNode(nodeIdentifier, expr2);
+            return nodeIdentifier ;
+        }
+        else{return nodeIdentifier;}
+
+    }
+
+    @Override
+    public String visit(Print_ print_){
+        String nodeIdentifier = this.nextState();
+        this.addNode(nodeIdentifier,"print(");
+        this.addNode(nodeIdentifier, print_.expr.accept(this));
+        return nodeIdentifier;
+    }
+
+    @Override
+    public String visit(Printi printi){
+        String nodeIdentifier = this.nextState();
+        this.addNode(nodeIdentifier,"printi(");
+        this.addNode(nodeIdentifier, printi.expr.accept(this));
+        return nodeIdentifier;
+    }
 
     @Override
     public String visit(Concat_ concat_) {

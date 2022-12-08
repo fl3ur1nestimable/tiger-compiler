@@ -22,6 +22,13 @@ public interface AstVisitor<T> {
     public T visit(Declaration_list declaration_list);
     public T visit(Let_in_end let_in_end);
     public T visit(Type_declaration type_declaration);
+    public T visit(StringNode string_node);
+    public T visit(IntNode int_node);
+    public T visit(Nil nil);
+    public T visit(Break_ break_);
+    public T visit(TypeInstance type_instance);
+    public T visit(Print_ print_);
+    public T visit(Printi printi);
     public T visit(Negation negation); 
     public T visit(Expr_list expr_list);
     public T visit(FunctionCall functionCall);
@@ -41,7 +48,4 @@ public interface AstVisitor<T> {
     public T visit(Field field);
     public T visit(Field_list field_list);
     public T visit(Lvalue lvalue);
-    
->>>>>>> src/ast/AstVisitor.java
-
 }

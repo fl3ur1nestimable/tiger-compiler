@@ -1,6 +1,6 @@
 package ast;
 
-public class Plus implements Ast{
+public class GreaterThan2  implements Ast{
     public <T> T accept(AstVisitor<T> visitor){
         return visitor.visit(this);
     }
@@ -8,7 +8,7 @@ public class Plus implements Ast{
     public Ast left;
     public Ast rigth;
 
-    public Plus(Ast l, Ast r){
+    public GreaterThan2(Ast l, Ast r){
         this.left=l;
         this.rigth=r;
     }

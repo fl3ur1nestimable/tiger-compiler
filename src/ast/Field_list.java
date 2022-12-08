@@ -2,18 +2,19 @@ package ast;
 
 import java.util.ArrayList;
 
-public class Type_fields implements Ast {
+public class Field_list implements Ast {
+
     public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 
     public ArrayList<Ast> fields;
 
-    public Type_fields() {
+    public Field_list() {
         this.fields = new ArrayList<Ast>();
     }
 
-    public void addType_field(Ast field) {
+    public void add(Ast field) {
         this.fields.add(field);
     }
     

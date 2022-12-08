@@ -32,13 +32,11 @@ instruction : lvalue
             |stdlib ; 
 
 negation :'-'expr ;
-expr_seq : expr |expr_seq';'expr  ; 
-expr_list : expr | expr_list','expr;
-field_list : IDF'='expr #simpleField
-            |field_list','IDF'='expr #manyFiedls ;
-lvalue : IDF #identifier
-        | lvalue'.'IDF #lvalueIdf
-        | lvalue'['expr']' #lvalueExpr ; 
+expr_seq : expr(';'expr)*; 
+expr_list : expr(','expr)*;
+field_list : field(','field)*;
+field : IDF'='expr;
+lvalue : IDF('.'IDF|'['expr']')*;
 functionCall : IDF'('expr_list?')';
 assignement : lvalue':='expr;
 ifthenelse : 'if 'expr'then'expr('else'expr)?;
@@ -46,19 +44,17 @@ whiledo : 'while'expr'do'expr;
 for_:'for'IDF':='expr'to'expr'do'expr;
 let_in_end : 'let'declaration_list'in'expr_seq?'end';
 
-declaration_list :  declaration 
-                    |declaration_list declaration;
+declaration_list :  declaration+;
 declaration : type_declaration | variable_declaration | function_declaration;
 
 type_declaration : 'type 'IDF'='type;
-type : IDF | type1 ;
-type1 :'{'type_fields?'}' #typeDec1
+type : IDF #identifier
+        |'{'type_fields?'}' #typeDec1
         |'array of 'IDF #typeDec2 ;
-type_fields : type_field | type_fields','type_field;
+type_fields : type_field(','type_field)*;
 type_field : IDF':'IDF;
 
-variable_declaration : 'var 'IDF':='expr 
-                      |'var 'IDF':'IDF':='expr;
+variable_declaration : 'var 'IDF(':'IDF)?':='expr;
 function_declaration : 'function' IDF '(' type_fields? ')' (':' IDF)? '=' expr; 
 
 stdlib :print_|printi|flush_|exit_|getchar_|chr_|substring_|concat_|ord_|size_|not_;

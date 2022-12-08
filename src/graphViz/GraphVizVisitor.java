@@ -374,6 +374,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addTransition(node, right);
         return node;
     }
+    
     @Override
     public String visit(StringNode string_node){
         String nodeIdentifier = this.nextState();
@@ -445,7 +446,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addNode(nodeIdentifier, printi.expr.accept(this));
         return nodeIdentifier;
     }
-    
+
     @Override
     public String visit(Concat_ concat_) {
         String node = this.nextState();

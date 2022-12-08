@@ -287,10 +287,101 @@ public class GraphVizVisitor implements AstVisitor<String> {
         return node;
     }
     
+
+
+    @Override
+    public String visit(Negation negation) {
+        String node = this.nextState();
+        this.addNode(node, "Negation");
+        String right=negation.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+    
     @Override
     public String visit(Expr_seq expr_seq) {
-        // TODO Auto-generated method stub
-        return null;
+        String node = this.nextState();
+        this.addNode(node, "Expr_seq");
+        for (int i = 0; i < expr_seq.array.size(); i++) {
+            String right= expr_seq.array.get(i).accept(this);
+            this.addTransition(node, right);;
+        }
+        return node;
+    }    
+
+    @Override
+    public String visit(Expr_list expr_list) {
+        String node = this.nextState();
+        this.addNode(node, "Expr_seq");
+        for (int i = 0; i < expr_list.array.size(); i++) {
+            String right= expr_list.array.get(i).accept(this);
+            this.addTransition(node, right);;
+        }
+        return node;
+    }    
+
+    @Override
+    public String visit(FunctionCall functionCall) {
+        String node = this.nextState();
+        this.addNode(node, "FunctionCall");
+
+        String left=functionCall.left.accept(this);
+        this.addTransition(node, left);
+
+        if (functionCall.right!=null) {
+            String right = functionCall.right.accept(this);
+            this.addTransition(node, right);
+        }
+        return node;
+    }  
+
+    @Override
+    public String visit(Assignement assignement) {
+        String node = this.nextState();
+        this.addNode(node, "Assignement");
+
+        String left=assignement.left.accept(this);
+        this.addTransition(node, left);
+        String right=assignement.right.accept(this);
+        this.addTransition(node, right);
+
+        return node;
+    } 
+
+    @Override
+    public String visit(IfThenElse ifThenElse) {
+        String node = this.nextState();
+        this.addNode(node, "IfThenElse");
+
+        String left=ifThenElse.left.accept(this);
+        this.addTransition(node, left);
+        String middle=ifThenElse.right.accept(this);
+        this.addTransition(node, middle);
+
+        if (ifThenElse.right!=null) {
+            String right = ifThenElse.right.accept(this);
+            this.addTransition(node, right);
+        }
+        
+        return node;
+    } 
+
+    @Override
+    public String visit(Substring_ substring) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=substring.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+
+    @Override
+    public String visit(Concat_ concat_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=concat_.right.accept(this);
+        this.addTransition(node, right);
+        return node;
     }
 
     @Override
@@ -299,6 +390,15 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addNode(node, "typeDec1");
         String typeFields=typeDec1.typefields.accept(this);
         this.addTransition(node, typeFields);
+        return node;
+    }
+
+    @Override
+    public String visit(Ord_ ord_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=ord_.right.accept(this);
+        this.addTransition(node, right);
         return node;
     }
 
@@ -312,6 +412,15 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
     @Override
+    public String visit(Size_ size_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=size_.right.accept(this);
+        this.addTransition(node, right);
+        return node;
+    }
+
+    @Override
     public String visit(Type_fields type_fields) {
         String node = this.nextState();
         this.addNode(node, "typeFields");
@@ -319,6 +428,15 @@ public class GraphVizVisitor implements AstVisitor<String> {
             String typeField = type_fields.fields.get(i).accept(this);
             this.addTransition(node, typeField);
         }
+        return node;
+    }
+
+    @Override
+    public String visit(Not_ not_) {
+        String node = this.nextState();
+        this.addNode(node, "Substring");
+        String right=not_.right.accept(this);
+        this.addTransition(node, right);
         return node;
     }
 
@@ -400,6 +518,5 @@ public class GraphVizVisitor implements AstVisitor<String> {
         }
         return node;
     }
-    
     
 }

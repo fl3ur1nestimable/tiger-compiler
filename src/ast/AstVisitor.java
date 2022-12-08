@@ -32,6 +32,16 @@ public interface AstVisitor<T> {
     public T visit(Ord_ ord_);
     public T visit(Size_ size_);
     public T visit(Not_ not_);
-
+    public T visit(TypeDec1 typeDec1);
+    public T visit(TypeDec2 typeDec2);
+    public T visit(Type_fields type_fields);
+    public T visit(Type_field type_field);
+    public T visit(Variable_declaration variable_declaration);
+    public T visit(Function_declaration function_declaration);
+    public T visit(Field field);
+    public T visit(Field_list field_list);
+    public T visit(Lvalue lvalue);
+    
+>>>>>>> src/ast/AstVisitor.java
 
 }

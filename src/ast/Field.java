@@ -1,16 +1,17 @@
 package ast;
 
-public class Type_field implements Ast{
+public class Field implements Ast {
+
     public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 
     public Ast name;
-    public Ast type;
+    public Ast expr;
 
-    public Type_field(Ast name, Ast type) {
+    public Field(Ast name, Ast expr) {
         this.name = name;
-        this.type = type;
+        this.expr = expr;
     }
     
 }

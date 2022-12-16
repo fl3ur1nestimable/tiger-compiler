@@ -115,21 +115,19 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		else return visitChildren(ctx);
 	}
 	@Override public Ast visitTypeInstance(tigerParser.TypeInstanceContext ctx) {
-		String id=ctx.getChild(0).toString();
-		switch (ctx.getChildCount()) {
-			case 3:
-				return new TypeInstance(id);
-				
-			case 4 :
-				Ast liste_field=ctx.getChild(2).accept(this);
-				return new TypeInstance(id, liste_field);
-			case 5 :
-				Ast expr1=ctx.getChild(2).accept(this);
-				Ast expr2=ctx.getChild(4).accept(this);
-				return new TypeInstance(id, expr1, expr2);
-			default:
-				return visitChildren(ctx);
+		Identifier id = new Identifier(ctx.getChild(0).toString());
+		if(ctx.getChildCount()>=5){
+			Ast expr1=ctx.getChild(2).accept(this);
+			Ast expr2=ctx.getChild(4).accept(this);
+			return new TypeInstance(id, expr1, expr2);
 		}
+		else if(ctx.getChildCount()>=4 && ctx.getChildCount()<5){
+			Ast liste_field=ctx.getChild(2).accept(this);
+			return new TypeInstance(id, liste_field);
+		}
+		else{
+				return new TypeInstance(id);
+			}
 	 }
 	@Override public Ast visitInstruction(tigerParser.InstructionContext ctx) { 
 		return ctx.getChild(0).accept(this);
@@ -141,7 +139,7 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 	@Override public Ast visitExpr_seq(tigerParser.Expr_seqContext ctx) { 	
 		
 		Expr_seq expr_seq = new Expr_seq();
-		for (int i = 0; 2*i < ctx.getChildCount()-1; i++) {
+		for (int i = 0; 2*i < ctx.getChildCount(); i++) {
 			Ast right = ctx.getChild(2*i).accept(this);
 			expr_seq.addExpr(right);
 		}
@@ -151,7 +149,7 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 	@Override public Ast visitExpr_list(tigerParser.Expr_listContext ctx) {
 
 		Expr_list expr_list = new Expr_list();
-		for (int i = 0; 2*i < ctx.getChildCount()-1; i++) {
+		for (int i = 0; 2*i < ctx.getChildCount(); i++) {
 			Ast right = ctx.getChild(2*i).accept(this);
 			expr_list.addExpr(right);
 		}
@@ -161,14 +159,16 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		return new Identifier(ctx.getChild(0).toString());
 	 }
 	
-	@Override public Ast visitFunctionCall(tigerParser.FunctionCallContext ctx) { 
-		Ast left = ctx.getChild(0).accept(this);
+	@Override public Ast visitFunctionCall(tigerParser.FunctionCallContext ctx) {
+
+		String left = ctx.getChild(0).toString();
+		Identifier id = new Identifier(left);
 
 		if (ctx.getChildCount()==4){
 			Ast right = ctx.getChild(2).accept(this);
-			return new FunctionCall(left,right);
+			return new FunctionCall(id,right);
 		}
-		return new FunctionCall(left);
+		return new FunctionCall(id);
 	}
 
 	@Override public Ast visitAssignement(tigerParser.AssignementContext ctx) { 
@@ -234,37 +234,37 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		return visitChildren(ctx);
 	}
 	@Override public Ast visitTypeDec2(tigerParser.TypeDec2Context ctx) {
-		return new TypeDec2(ctx.getChild(1).accept(this));
+		return new TypeDec2(new Identifier(ctx.getChild(1).toString()));
 	}
 	@Override public Ast visitType_fields(tigerParser.Type_fieldsContext ctx) {
 		Type_fields list = new Type_fields();
-		for (int i = 0; 2*i < ctx.getChildCount()-1; i++) {
+		for (int i = 0; 2*i < ctx.getChildCount(); i++) {
 			list.addType_field(ctx.getChild(2*i).accept(this));
 		}
 		return list;
 	}
 	@Override public Ast visitType_field(tigerParser.Type_fieldContext ctx) {
-		return new Type_field(ctx.getChild(0).accept(this),ctx.getChild(2).accept(this));
+		return new Type_field(new Identifier(ctx.getChild(0).toString()),new Identifier(ctx.getChild(2).toString()));
 	}
 	@Override public Ast visitVariable_declaration(tigerParser.Variable_declarationContext ctx) {
 		if (ctx.getChildCount()>=5) {
-			return new Variable_declaration(ctx.getChild(1).accept(this),ctx.getChild(3).accept(this),ctx.getChild(5).accept(this));
+			return new Variable_declaration(new Identifier(ctx.getChild(1).toString()),new Identifier(ctx.getChild(3).toString()),ctx.getChild(5).accept(this));
 		}
 		else{
-			return new Variable_declaration(ctx.getChild(1).accept(this),ctx.getChild(3).accept(this));
+			return new Variable_declaration(new Identifier(ctx.getChild(1).toString()),ctx.getChild(3).accept(this));
 		}
 	}
 	@Override public Ast visitFunction_declaration(tigerParser.Function_declarationContext ctx) {
 		if (ctx.getChildCount()>=9) {
-			return new Function_declaration(ctx.getChild(1).accept(this),ctx.getChild(3).accept(this),ctx.getChild(6).accept(this),ctx.getChild(8).accept(this));
+			return new Function_declaration(new Identifier(ctx.getChild(1).toString()),ctx.getChild(3).accept(this),new Identifier(ctx.getChild(6).toString()),ctx.getChild(8).accept(this));
 		}
 		else if(ctx.getChildCount()>=8){
-			return new Function_declaration(ctx.getChild(1).accept(this),ctx.getChild(5).accept(this),ctx.getChild(7).accept(this));
+			return new Function_declaration(new Identifier(ctx.getChild(1).toString()),new Identifier(ctx.getChild(5).toString()),ctx.getChild(7).accept(this));
 		}
 		else if (ctx.getChildCount()>=7) {
-			return new Function_declaration(ctx.getChild(1).accept(this),ctx.getChild(3).accept(this),ctx.getChild(6).accept(this));
+			return new Function_declaration(new Identifier(ctx.getChild(1).toString()),ctx.getChild(3).accept(this),ctx.getChild(6).accept(this));
 		}
-		return new Function_declaration(ctx.getChild(1).accept(this),ctx.getChild(5).accept(this));
+		return new Function_declaration(new Identifier(ctx.getChild(1).toString()),ctx.getChild(5).accept(this));
 	}
 	
 	@Override public Ast visitStdlib(tigerParser.StdlibContext ctx) { 
@@ -307,18 +307,26 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		
 	@Override public Ast visitField_list(tigerParser.Field_listContext ctx) {
 		Field_list list = new Field_list();
-		for (int i = 0; 2*i < ctx.getChildCount()-1; i++) {
+		for (int i = 0; 2*i < ctx.getChildCount(); i++) {
 			list.add(ctx.getChild(2*i).accept(this));
 		}
 		return list;
 	}
 	@Override public Ast visitField(tigerParser.FieldContext ctx) {
-		return new Field(ctx.getChild(0).accept(this),ctx.getChild(2).accept(this));
+		return new Field(new Identifier(ctx.getChild(0).toString()),ctx.getChild(2).accept(this));
 	}
 	@Override public Ast visitLvalue(tigerParser.LvalueContext ctx) {
 		Lvalue lvalue = new Lvalue();
-		for (int i = 0; 2*i < ctx.getChildCount()-1; i++) {
-			lvalue.add(ctx.getChild(2*i).accept(this));
+		lvalue.add(new Identifier(ctx.getChild(0).toString()));
+		for (int i = 1; i < ctx.getChildCount(); i++) {
+			if (ctx.getChild(i).toString().equals(".")) {
+				lvalue.add(new Identifier(ctx.getChild(i+1).toString()));
+				i++;
+			}
+			else if (ctx.getChild(i).toString().equals("[")) {
+				lvalue.add(ctx.getChild(i+1).accept(this));
+				i++;
+			}
 		}
 		return lvalue;
 	}

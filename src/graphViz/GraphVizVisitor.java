@@ -238,7 +238,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         this.addNode(node, "WhileDo");
         this.addTransition(node, cond);
-        this.addNode(node, block);
+        this.addTransition(node, block);
 
         return node;
     }
@@ -335,7 +335,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addNode(node, "Expr_seq");
         for (int i = 0; i < expr_seq.array.size(); i++) {
             String right= expr_seq.array.get(i).accept(this);
-            this.addTransition(node, right);;
+            this.addTransition(node, right);
         }
         return node;
     }    
@@ -343,7 +343,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
     @Override
     public String visit(Expr_list expr_list) {
         String node = this.nextState();
-        this.addNode(node, "Expr_seq");
+        this.addNode(node, "Expr_list");
         for (int i = 0; i < expr_list.array.size(); i++) {
             String right= expr_list.array.get(i).accept(this);
             this.addTransition(node, right);;
@@ -386,7 +386,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         String left=ifThenElse.left.accept(this);
         this.addTransition(node, left);
-        String middle=ifThenElse.right.accept(this);
+        String middle=ifThenElse.middle.accept(this);
         this.addTransition(node, middle);
 
         if (ifThenElse.right!=null) {
@@ -400,7 +400,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
     @Override
     public String visit(Substring_ substring) {
         String node = this.nextState();
-        this.addNode(node, "Substring");
+        this.addNode(node, "Substring()");
         String right=substring.right.accept(this);
         this.addTransition(node, right);
         return node;
@@ -409,8 +409,9 @@ public class GraphVizVisitor implements AstVisitor<String> {
     @Override
     public String visit(StringNode string_node){
         String nodeIdentifier = this.nextState();
-
-        this.addNode(nodeIdentifier,string_node.value);
+        String value = String.valueOf(string_node.value);
+        value = value.replace("\"", "");
+        this.addNode(nodeIdentifier,value);
 
         return nodeIdentifier;
     }
@@ -444,29 +445,31 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(TypeInstance type_instance){
         String nodeIdentifier = this.nextState();
 
-        this.addNode(nodeIdentifier,type_instance.id);
+        this.addNode(nodeIdentifier,"typeInstance");
+        String name=type_instance.id.accept(this);
+
+        this.addTransition(nodeIdentifier, name);
 
         if (type_instance.liste_field!=null){
             String liste_field=type_instance.liste_field.accept(this);
-            this.addNode(nodeIdentifier, liste_field);
-            return nodeIdentifier;
+            this.addTransition(nodeIdentifier, liste_field);
         }
         if (type_instance.expr1!=null){
             String expr1=type_instance.expr1.accept(this);
             String expr2=type_instance.expr2.accept(this);
-            this.addNode(nodeIdentifier, expr1);
-            this.addNode(nodeIdentifier, expr2);
-            return nodeIdentifier ;
+            this.addTransition(nodeIdentifier, expr1);
+            this.addTransition(nodeIdentifier, expr2);
         }
-        else{return nodeIdentifier;}
+        return nodeIdentifier;
 
     }
 
     @Override
     public String visit(Print_ print_){
         String nodeIdentifier = this.nextState();
-        this.addNode(nodeIdentifier,"print(");
-        this.addNode(nodeIdentifier, print_.expr.accept(this));
+        this.addNode(nodeIdentifier,"print()");
+        String expr=print_.expr.accept(this);
+        this.addTransition(nodeIdentifier, expr);
         return nodeIdentifier;
     }
 
@@ -474,14 +477,15 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(Printi printi){
         String nodeIdentifier = this.nextState();
         this.addNode(nodeIdentifier,"printi(");
-        this.addNode(nodeIdentifier, printi.expr.accept(this));
+        String expr=printi.expr.accept(this);
+        this.addTransition(nodeIdentifier, expr);
         return nodeIdentifier;
     }
 
     @Override
     public String visit(Concat_ concat_) {
         String node = this.nextState();
-        this.addNode(node, "Substring");
+        this.addNode(node, "Concat()");
         String right=concat_.right.accept(this);
         this.addTransition(node, right);
         return node;
@@ -499,7 +503,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
     @Override
     public String visit(Ord_ ord_) {
         String node = this.nextState();
-        this.addNode(node, "Substring");
+        this.addNode(node, "Ord()");
         String right=ord_.right.accept(this);
         this.addTransition(node, right);
         return node;
@@ -517,7 +521,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
     @Override
     public String visit(Size_ size_) {
         String node = this.nextState();
-        this.addNode(node, "Substring");
+        this.addNode(node, "Size()");
         String right=size_.right.accept(this);
         this.addTransition(node, right);
         return node;
@@ -576,15 +580,17 @@ public class GraphVizVisitor implements AstVisitor<String> {
         String idfNode=function_declaration.name.accept(this);
         String bodyNOde = function_declaration.body.accept(this);
         this.addTransition(node, idfNode);
-        this.addTransition(node, bodyNOde);
-        if (function_declaration.return_type!=null) {
-            String typeNode=function_declaration.return_type.accept(this);
-            this.addTransition(node, typeNode);
-        }
+        
         if (function_declaration.paramsOrReturnType!=null) {
             String argsNode=function_declaration.paramsOrReturnType.accept(this);
             this.addTransition(node, argsNode);
         }
+        if (function_declaration.return_type!=null) {
+            String typeNode=function_declaration.return_type.accept(this);
+            this.addTransition(node, typeNode);
+        }
+        
+        this.addTransition(node, bodyNOde);
         return node;
         
     }

@@ -2,11 +2,5 @@ let
     var x:=1
 in
     if 1 then 2 else 3;
-    if x=1 then 2 else "marine";
-    if break then 3 else 4;
-    if "yio" then 3 else louis;
-    if yio then 3 else if x=1 then ();
-    if x=1 then (y=3) else ();
-    if x=1 then () else x;
-    if x=1 then if x=1 then (y=3) else if 2 then 4 else 5
+    if x=1 then 2 else "marine"
 end

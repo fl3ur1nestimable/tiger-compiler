@@ -6,7 +6,6 @@ compile :
 
 run :
 	java -cp ./lib/antlr-4.9.2-complete.jar:./bin Main $(target)
-	echo "}" >> out/tree.dot
 
 tree :
 	dot -Tsvg ./out/tree.dot -o ./out/tree.svg

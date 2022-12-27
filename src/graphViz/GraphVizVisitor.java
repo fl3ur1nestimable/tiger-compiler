@@ -47,6 +47,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
     }
 
+
     @Override
     public String visit(Program program){
         String nodeIdentifier = this.nextState();//node de base
@@ -311,12 +312,18 @@ public class GraphVizVisitor implements AstVisitor<String> {
     @Override
     public String visit(Let_in_end let_in_end) {
         String node = this.nextState();
+        String node2 = this.nextState();
+        this.addNode(node2, "Let Block");
         String dec = let_in_end.block1.accept(this);
         this.addNode(node, "Let_in_End");
-        this.addTransition(node, dec);
+        this.addTransition(node, node2);
+        this.addTransition(node2, dec);
         if (let_in_end.block2!=null) {
+            String node3 = this.nextState();
+            this.addNode(node3, "In Block");
+            this.addTransition(node, node3);
             String seq = let_in_end.block2.accept(this);
-            this.addTransition(node, seq);
+            this.addTransition(node3, seq);
         }
         return node;
     }
@@ -654,9 +661,25 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(Lvalue lvalue) {
         String node = this.nextState();
         this.addNode(node, "lvalue");
-        for (int i = 0; i < lvalue.lvalues.size(); i++) {
-            String lvalueNode = lvalue.lvalues.get(i).accept(this);
-            this.addTransition(node, lvalueNode);
+        String temp = lvalue.lvalues.get(0).accept(this);
+        this.addTransition(node, temp);
+        for (int i = 1; i < lvalue.lvalues.size(); i++) {
+            String node2 = this.nextState();
+            if(lvalue.lvalues.get(i) instanceof Identifier){
+                this.addNode(node2, "Access Id");
+                this.addTransition(temp, node2);
+                String lvalueNode = ((Identifier)lvalue.lvalues.get(i)).accept(this);
+                this.addTransition(node2, lvalueNode);
+                temp = lvalueNode;
+            }
+            else{
+                this.addNode(node2, "Access Index");
+                this.addTransition(temp, node2);
+                String lvalueNode = lvalue.lvalues.get(i).accept(this);
+                this.addTransition(node2, lvalueNode);
+                temp = lvalueNode;
+            }
+
         }
         return node;
     }

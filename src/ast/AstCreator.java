@@ -119,15 +119,12 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		if(ctx.getChildCount()>=5){
 			Ast expr1=ctx.getChild(2).accept(this);
 			Ast expr2=ctx.getChild(4).accept(this);
-			return new TypeInstance(id, expr1, expr2);
+			return new ArrayDec(id, expr1, expr2);
 		}
-		else if(ctx.getChildCount()>=4 && ctx.getChildCount()<5){
+		else {
 			Ast liste_field=ctx.getChild(2).accept(this);
-			return new TypeInstance(id, liste_field);
+			return new RecordDec(id, liste_field);
 		}
-		else{
-				return new TypeInstance(id);
-			}
 	 }
 	@Override public Ast visitInstruction(tigerParser.InstructionContext ctx) { 
 		return ctx.getChild(0).accept(this);
@@ -320,11 +317,13 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		lvalue.add(new Identifier(ctx.getChild(0).toString()));
 		for (int i = 1; i < ctx.getChildCount(); i++) {
 			if (ctx.getChild(i).toString().equals(".")) {
-				lvalue.add(new Identifier(ctx.getChild(i+1).toString()));
+				lvalue.add(new AccessId(new Identifier(ctx.getChild(i+1).toString())));
+				//lvalue.add(new Identifier(ctx.getChild(i+1).toString()));
 				i++;
 			}
 			else if (ctx.getChild(i).toString().equals("[")) {
-				lvalue.add(ctx.getChild(i+1).accept(this));
+				lvalue.add(new AccessIndex(ctx.getChild(i+1).accept(this)));
+				//lvalue.add(ctx.getChild(i+1).accept(this));
 				i++;
 			}
 		}

@@ -12,6 +12,7 @@ public class IfThenElse implements Ast{
     public IfThenElse(Ast left, Ast middle){
         this.left=left;
         this.middle=middle;
+        this.right=null;
     }
 
     public IfThenElse(Ast left, Ast middle, Ast right){

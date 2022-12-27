@@ -487,38 +487,6 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
     @Override
-    public String visit(TypeInstance type_instance){
-        String nodeIdentifier = this.nextState();
-
-        this.addNode(nodeIdentifier,"definedTypeUsage");
-        String name=type_instance.id.accept(this);
-
-        this.addTransition(nodeIdentifier, name);
-
-        if (type_instance.liste_field!=null){
-            String node2 = this.nextState();
-            this.addNode(node2,"fields");
-            this.addTransition(nodeIdentifier, node2);
-            String liste_field=type_instance.liste_field.accept(this);
-            this.addTransition(node2, liste_field);
-        }
-        if (type_instance.expr1!=null){
-            String node3 = this.nextState();
-            String node4 = this.nextState();
-            this.addNode(node3,"size");
-            this.addNode(node4,"of");
-            this.addTransition(nodeIdentifier, node3);
-            this.addTransition(nodeIdentifier, node4);
-            String expr1=type_instance.expr1.accept(this);
-            String expr2=type_instance.expr2.accept(this);
-            this.addTransition(node3, expr1);
-            this.addTransition(node4, expr2);
-        }
-        return nodeIdentifier;
-
-    }
-
-    @Override
     public String visit(Print_ print_){
         String nodeIdentifier = this.nextState();
         this.addNode(nodeIdentifier,"print()");
@@ -548,7 +516,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
     @Override
     public String visit(TypeDec1 typeDec1){
         String node = this.nextState();
-        this.addNode(node, "Fields");
+        this.addNode(node, "Record");
         String typeFields=typeDec1.typefields.accept(this);
         this.addTransition(node, typeFields);
         return node;
@@ -664,22 +632,9 @@ public class GraphVizVisitor implements AstVisitor<String> {
         String temp = lvalue.lvalues.get(0).accept(this);
         this.addTransition(node, temp);
         for (int i = 1; i < lvalue.lvalues.size(); i++) {
-            String node2 = this.nextState();
-            if(lvalue.lvalues.get(i) instanceof Identifier){
-                this.addNode(node2, "Access Id");
-                this.addTransition(temp, node2);
-                String lvalueNode = ((Identifier)lvalue.lvalues.get(i)).accept(this);
-                this.addTransition(node2, lvalueNode);
-                temp = lvalueNode;
-            }
-            else{
-                this.addNode(node2, "Access Index");
-                this.addTransition(temp, node2);
-                String lvalueNode = lvalue.lvalues.get(i).accept(this);
-                this.addTransition(node2, lvalueNode);
-                temp = lvalueNode;
-            }
-
+            String node2 = lvalue.lvalues.get(i).accept(this);
+            this.addTransition(temp, node2);
+            temp = node2;
         }
         return node;
     }
@@ -703,6 +658,54 @@ public class GraphVizVisitor implements AstVisitor<String> {
             String fieldNode = field_list.fields.get(i).accept(this);
             this.addTransition(node, fieldNode);
         }
+        return node;
+    }
+
+    @Override
+    public String visit(AccessId accessId) {
+        String node = this.nextState();
+        this.addNode(node, "accessId");
+        String node2 = accessId.id.accept(this);
+        this.addTransition(node, node2);
+        return node;
+    }
+
+    @Override
+    public String visit(AccessIndex accessIndex) {
+        String node = this.nextState();
+        this.addNode(node, "accessIndex");
+        String node2 = accessIndex.index.accept(this);
+        this.addTransition(node, node2);
+        return node;
+    }
+
+    @Override
+    public String visit(RecordDec recordDec) {
+        String node = this.nextState();
+        this.addNode(node, "recordDec");
+        String node2 = recordDec.id.accept(this);
+        this.addTransition(node, node2);
+        String node3 = recordDec.list.accept(this);
+        this.addTransition(node, node3);
+        return node;
+    }
+
+    @Override
+    public String visit(ArrayDec arrayDec) {
+        String node = this.nextState();
+        this.addNode(node, "arrayDec");
+        String node2 = arrayDec.id.accept(this);
+        this.addTransition(node, node2);
+        String node3 = arrayDec.expr1.accept(this);
+        String node4 = this.nextState();
+        this.addNode(node4, "size");
+        this.addTransition(node, node4);
+        this.addTransition(node4, node3);
+        String node5 = arrayDec.expr2.accept(this);
+        String node6 = this.nextState();
+        this.addNode(node6, "type");
+        this.addTransition(node, node6);
+        this.addTransition(node6, node5);
         return node;
     }
     

@@ -1,5 +1,6 @@
 import ast.*;
 import graphViz.*;
+import tds.*;
 
 import java.util.Arrays;
 import javax.swing.JFrame;
@@ -61,6 +62,13 @@ public class Main {
             ast.accept(graphViz);
         
             graphViz.dumpGraph("./out/tree.dot");
+
+            // Visiteur de création de la TDS + création de la TDS
+            TdsCreator tdsCreator = new TdsCreator();
+            ast.accept(tdsCreator);
+
+            // Affichage de la TDS
+            tdsCreator.printAll();
 
 
         } 

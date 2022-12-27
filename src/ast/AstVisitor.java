@@ -30,7 +30,6 @@ public interface AstVisitor<T> {
     public T visit(IntNode int_node);
     public T visit(Nil nil);
     public T visit(Break_ break_);
-    public T visit(TypeInstance type_instance);
     public T visit(Print_ print_);
     public T visit(Printi printi);
     public T visit(Negation negation); 
@@ -52,4 +51,9 @@ public interface AstVisitor<T> {
     public T visit(Field field);
     public T visit(Field_list field_list);
     public T visit(Lvalue lvalue);
+    public T visit(AccessId accessId);
+    public T visit(AccessIndex accessIndex);
+    public T visit(RecordDec recordDec);
+    public T visit(ArrayDec arrayDec);
+    
 }

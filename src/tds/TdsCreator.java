@@ -14,6 +14,47 @@ public class TdsCreator implements AstVisitor<Void> {
         tdsList.add(currentTds);
     }
 
+    public void addTds(Tds tds) {
+        tdsList.add(tds);
+    }
+
+    public ArrayList<Tds> getTdsList() {
+        return tdsList;
+    }
+
+    public Tds getCurrentTds() {
+        return currentTds;
+    }
+
+    public void setCurrentTds(Tds currentTds) {
+        this.currentTds = currentTds;
+    }
+
+    public int getCurrentImbrication() {
+        return currentImbrication;
+    }
+
+    public void setCurrentImbrication(int currentImbrication) {
+        this.currentImbrication = currentImbrication;
+    }
+
+    public int getCurrentBlock() {
+        return currentBlock;
+    }
+
+    public void setCurrentBlock(int currentBlock) {
+        this.currentBlock = currentBlock;
+    }
+
+    public void printAll(){
+        for (Tds tds : tdsList) {
+            System.out.println(tds.getName());
+            for (TdsElement element : tds.getElements()) {
+                System.out.println(element.toString());
+            }
+        }
+    }
+
     @Override
     public Void visit(Program affect) {
         // TODO Auto-generated method stub
@@ -313,5 +354,6 @@ public class TdsCreator implements AstVisitor<Void> {
         // TODO Auto-generated method stub
         return null;
     }
+
     
 }

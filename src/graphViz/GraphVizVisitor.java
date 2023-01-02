@@ -605,7 +605,12 @@ public class GraphVizVisitor implements AstVisitor<String> {
         
         if (function_declaration.paramsOrReturnType!=null) {
             String node2 = this.nextState();
-            this.addNode(node2, "paramsOrReturnType");
+            if (function_declaration.paramsOrReturnType instanceof Field_list) {
+                this.addNode(node2, "Params");
+            }else{
+
+                this.addNode(node2, "returnType");
+            }
             this.addTransition(node, node2);
             String argsNode=function_declaration.paramsOrReturnType.accept(this);
             this.addTransition(node2, argsNode);

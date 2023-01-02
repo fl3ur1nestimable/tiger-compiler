@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 import ast.*;
 
-public class TdsCreator implements AstVisitor<Type> {
+public class TdsCreator implements AstVisitor<String> {
     private int currentImbrication = 0;
     private int currentBlock = 0;
     private ArrayList<Tds> tdsList = new ArrayList<Tds>();
@@ -57,137 +57,147 @@ public class TdsCreator implements AstVisitor<Type> {
     }
 
     @Override
-    public Type visit(Program affect) {
+    public String visit(Program affect) {
         affect.expr.accept(this);
         return null;
     }
 
     @Override
-    public Type visit(Or or) {
+    public String visit(Or or) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Flush_ flush_) {
+    public String visit(Flush_ flush_) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Exit_ exit_) {
+    public String visit(Exit_ exit_) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Getchar getchar) {
+    public String visit(Getchar getchar) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Chr_ chr_) {
+    public String visit(Chr_ chr_) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(And and) {
+    public String visit(And and) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Compare_equal_1 compare_equal_1) {
+    public String visit(Compare_equal_1 compare_equal_1) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Compare_equal_2 compare_equal_2) {
+    public String visit(Compare_equal_2 compare_equal_2) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(GreaterThan1 greaterThan1) {
+    public String visit(GreaterThan1 greaterThan1) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(GreaterThan2 greaterThan2) {
+    public String visit(GreaterThan2 greaterThan2) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(LessThan1 lessThan1) {
+    public String visit(LessThan1 lessThan1) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(LessThan2 lessThan2) {
+    public String visit(LessThan2 lessThan2) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Plus plus) {
+    public String visit(Plus plus) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Moins moins) {
+    public String visit(Moins moins) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Mult mult) {
+    public String visit(Mult mult) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Divide divide) {
+    public String visit(Divide divide) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Whiledo whiledo) {
+    public String visit(Whiledo whiledo) {
         whiledo.cond.accept(this);
         whiledo.doBlock.accept(this);
         return null;
     }
 
     @Override
-    public Type visit(For_ for_) {
-        for_.expr2.accept(this);
-        for_.expr3.accept(this);
+    public String visit(For_ for_) {
         currentBlock++;
         currentImbrication++;
         Tds tds = new Tds("for", currentBlock, currentImbrication, currentTds);
         tdsList.add(tds);
         currentTds = tds;
-        for_.expr1.accept(this);
+        String id = for_.idf.accept(this);
+        String type = for_.expr1.accept(this);
+        currentTds.addElement(new TdsVariable(id, type, 0, tds));
         currentTds = tds.getParent();
+        for_.expr2.accept(this);
+        for_.expr3.accept(this);
         currentImbrication--;
         return null;
     }
 
     @Override
-    public Type visit(Identifier identifier) {
-        // TODO Auto-generated method stub
-        return null;
+    public String visit(Identifier identifier) {
+       switch (identifier.value) {
+        case "int":
+            return Type.INT.toString();
+        case "string":
+            return Type.STRING.toString();
+        case "nil":
+            return Type.NIL.toString();
+        default:
+            return identifier.value;
+       }
     }
 
     @Override
-    public Type visit(Expr_seq expr_seq) {
+    public String visit(Expr_seq expr_seq) {
         for (Ast expr : expr_seq.array) {
             expr.accept(this);
         }
@@ -195,7 +205,7 @@ public class TdsCreator implements AstVisitor<Type> {
     }
 
     @Override
-    public Type visit(Declaration_list declaration_list) {
+    public String visit(Declaration_list declaration_list) {
         for (Ast declaration : declaration_list.decList) {
             declaration.accept(this);
         }
@@ -203,7 +213,7 @@ public class TdsCreator implements AstVisitor<Type> {
     }
 
     @Override
-    public Type visit(Let_in_end let_in_end) {
+    public String visit(Let_in_end let_in_end) {
         currentBlock++;
         currentImbrication++;
         Tds tds = new Tds("let", currentBlock, currentImbrication, currentTds);
@@ -217,73 +227,83 @@ public class TdsCreator implements AstVisitor<Type> {
     }
 
     @Override
-    public Type visit(Type_declaration type_declaration) {
-        
-        return null;
+    public String visit(Type_declaration type_declaration) {
+        Identifier id = (Identifier) type_declaration.idf;
+        Type type = type_declaration.type.accept(this) == Type.ARRAYTY.toString() ? Type.ARRAYTY : Type.RECORDTY;
+        String base = null;
+        String fields = null;
+        if(type_declaration.type instanceof TypeDec1){
+            fields = ((Type_fields)((TypeDec1) type_declaration.type).typefields).toString();
+        }
+        else
+        if(type_declaration.type instanceof TypeDec2){
+            base = ((TypeDec2) type_declaration.type).idf.accept(this);
+        }
+        TdsType tdsType = new TdsType(id.value, type, base, fields,currentTds);
+        currentTds.addElement(tdsType);
+        return Type.VOID.toString();
     }
 
     @Override
-    public Type visit(StringNode string_node) {
+    public String visit(StringNode string_node) {
+        return Type.STRING.toString();
+    }
+
+    @Override
+    public String visit(IntNode int_node) {
+        return Type.INT.toString();
+    }
+
+    @Override
+    public String visit(Nil nil) {
+        return Type.NIL.toString();
+    }
+
+    @Override
+    public String visit(Break_ break_) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(IntNode int_node) {
+    public String visit(Print_ print_) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Nil nil) {
+    public String visit(Printi printi) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Break_ break_) {
+    public String visit(Negation negation) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Print_ print_) {
+    public String visit(Expr_list expr_list) {
+        for (Ast expr : expr_list.array) {
+            expr.accept(this);
+        }
+        return null;
+    }
+
+    @Override
+    public String visit(FunctionCall functionCall) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Printi printi) {
-        // TODO Auto-generated method stub
-        return null;
+    public String visit(Assignement assignement) {
+        return Type.VOID.toString();
     }
 
     @Override
-    public Type visit(Negation negation) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Type visit(Expr_list expr_list) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Type visit(FunctionCall functionCall) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Type visit(Assignement assignement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Type visit(IfThenElse ifthenelse) {
+    public String visit(IfThenElse ifthenelse) {
         ifthenelse.left.accept(this);
         ifthenelse.middle.accept(this);
         if(ifthenelse.right!=null){
@@ -293,119 +313,142 @@ public class TdsCreator implements AstVisitor<Type> {
     }
 
     @Override
-    public Type visit(Substring_ substring) {
+    public String visit(Substring_ substring) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Concat_ concat_) {
+    public String visit(Concat_ concat_) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Ord_ ord_) {
+    public String visit(Ord_ ord_) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Size_ size_) {
+    public String visit(Size_ size_) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Not_ not_) {
+    public String visit(Not_ not_) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(TypeDec1 typeDec1) {
+    public String visit(TypeDec1 typeDec1) {
+        //a corriger
+        return Type.RECORDTY.toString();
+    }
+
+    @Override
+    public String visit(TypeDec2 typeDec2) {
+        // a corriger
+        return Type.ARRAYTY.toString();
+    }
+
+    @Override
+    public String visit(Type_fields type_fields) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(TypeDec2 typeDec2) {
+    public String visit(Type_field type_field) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Type_fields type_fields) {
-        // TODO Auto-generated method stub
-        return null;
+    public String visit(Variable_declaration variable_declaration) {
+        String name = variable_declaration.name.toString();
+        String type= null;
+        if(variable_declaration.type!=null){
+            type = variable_declaration.type.accept(this); 
+        }
+        else{
+
+            type = variable_declaration.expr.accept(this);
+        }
+        currentTds.addElement(new TdsVariable(name, type, 0, currentTds));
+        return Type.VOID.toString();
     }
 
     @Override
-    public Type visit(Type_field type_field) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Type visit(Variable_declaration variable_declaration) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Type visit(Function_declaration function_declaration) {
+    public String visit(Function_declaration function_declaration) {
         currentBlock++;
         currentImbrication++;
-        currentTds.addElement(new TdsFunction(((Identifier)function_declaration.name).value,null, null, currentTds));
-        Tds tds = new Tds("function_" + ((Identifier)function_declaration.name).value, currentBlock, currentImbrication, currentTds);
+        String params = null;
+        String returnType= null;
+        if(function_declaration.paramsOrReturnType!=null){
+            if(function_declaration.paramsOrReturnType instanceof Identifier){
+                returnType = function_declaration.paramsOrReturnType.accept(this);
+            }
+            else{
+                params=function_declaration.paramsOrReturnType.toString();
+            }
+        }
+        if(function_declaration.return_type!=null){
+            returnType = function_declaration.return_type.accept(this);
+        }
+        String name = ((Identifier)function_declaration.name).value;
+        currentTds.addElement(new TdsFunction(name,params,Type.VOID,returnType, currentTds));
+        Tds tds = new Tds("function_" + name, currentBlock, currentImbrication, currentTds);
         tdsList.add(tds);
         currentTds = tds;
         function_declaration.body.accept(this);
         currentTds = tds.getParent();
         currentImbrication--;
-        return null;
+        return Type.VOID.toString();
     }
 
     @Override
-    public Type visit(Field field) {
+    public String visit(Field field) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Field_list field_list) {
+    public String visit(Field_list field_list) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(Lvalue lvalue) {
+    public String visit(Lvalue lvalue) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(AccessId accessId) {
+    public String visit(AccessId accessId) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(AccessIndex accessIndex) {
+    public String visit(AccessIndex accessIndex) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Type visit(RecordDec recordDec) {
+    public String visit(RecordDec recordDec) {
         // TODO Auto-generated method stub
-        return null;
+        return Type.RECORD.toString();
     }
 
     @Override
-    public Type visit(ArrayDec arrayDec) {
+    public String visit(ArrayDec arrayDec) {
         // TODO Auto-generated method stub
-        return null;
+        return Type.ARRAY.toString();
     }
 
     

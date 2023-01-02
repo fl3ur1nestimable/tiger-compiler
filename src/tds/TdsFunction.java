@@ -1,28 +1,30 @@
 package tds;
 
-import java.util.List;
 
 public class TdsFunction extends TdsElement {
-    List<String> parameters;
-    TdsType returnType;
+    String parameters;
+    String otherType;
 
-    public TdsFunction(String name, List<String> parameters, TdsType returnType, Tds tds) {
-        super(name,tds);
+    public TdsFunction(String name, String parameters, Type returnType,String otherType, Tds tds) {
+        super(name,returnType,tds);
         this.parameters = parameters;
-        this.returnType = returnType;
+        this.otherType = otherType;
     }
 
-    public List<String> getParameters() {
+    public String getParameters() {
         return parameters;
     }
 
-    public TdsType getReturnType() {
-        return returnType;
+    public String getOtherTYpe(){
+        return otherType;
     }
 
     @Override
     public String toString() {
-        return "Function [name=" + getName() + ", parameters=" + parameters + ", returnType=" + getReturnType() + "]";
+        if (otherType != null) {
+            return "Function [name=" + getName() + ", parameters={" + parameters + "}, returnType=" + otherType + "]";
+        }
+        return "Function [name=" + getName() + ", parameters={" + parameters +"}]";
     }
 
 

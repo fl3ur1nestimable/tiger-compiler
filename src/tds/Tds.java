@@ -50,5 +50,16 @@ public class Tds {
         return null;
     }
 
+    public boolean contains(String name) {
+        for (TdsElement element : elements) {
+            if (element.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
     
 }

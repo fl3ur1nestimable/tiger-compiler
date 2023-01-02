@@ -236,7 +236,7 @@ digraph "ast"{
 	N117 [label=":=", shape="box"];
 	N118 [label="To", shape="box"];
 	N119 [label="Do", shape="box"];
-	N235 [label="paramsOrReturnType", shape="box"];
+	N235 [label="returnType", shape="box"];
 	N236 [label="typeFields", shape="box"];
 	N237 [label="typeField", shape="box"];
 	N238 [label="c", shape="box"];

@@ -13,5 +13,10 @@ public class Field implements Ast {
         this.name = name;
         this.expr = expr;
     }
+
+    @Override
+    public String toString() {
+        return name.toString()+ " : " + expr.toString() ;
+    }
     
 }

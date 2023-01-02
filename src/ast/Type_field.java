@@ -12,5 +12,10 @@ public class Type_field implements Ast{
         this.name = name;
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return name.toString() + " : " + type.toString();
+    }
     
 }

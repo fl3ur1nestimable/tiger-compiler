@@ -1,20 +1,35 @@
 package tds;
 
 public class TdsType extends TdsElement {
-    private int size;
-
-    public TdsType(String name, Type type, int size, Tds tds) {
-        super(name,type, tds);
-        this.size = size;
+    String baseType;
+    String fields;
+    public TdsType(String name, Type type, String base,String fiels, Tds tds) {
+        super(name,type,tds);
+        this.baseType = base;
+        this.fields = fiels;
     }
 
-    public int getSize() {
-        return size;
+    public String getBaseType() {
+        return baseType;
+    }
+
+    public void setBaseType(String baseType) {
+        this.baseType = baseType;
+    }
+
+    public String getFields() {
+        return fields;
     }
 
     @Override
     public String toString() {
-        return "Type [name=" + getName() + ", size=" + size + "of type" + getType() +"]";
+        if (type==Type.ARRAYTY) {
+            return "Type [name=" + getName() + ", type=" + getType() + ", baseType=" + baseType + "]";
+        }
+        else if (type==Type.RECORDTY){
+            return "Type [name=" + getName() + ", type=" + getType() + ", Fields={" + fields + "}]";
+        }
+        return "Type [name=" + getName() + ", type=" + getType() +"]";
     }
     
     

@@ -10,4 +10,9 @@ public class Identifier implements Ast {
     public Identifier(String v){
         this.value=v;
     }
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

@@ -16,5 +16,15 @@ public class Type_fields implements Ast {
     public void addType_field(Ast field) {
         this.fields.add(field);
     }
+
+    @Override
+    public String toString() {
+        String str = "";
+        str+=((Type_field)fields.get(0)).toString();
+        for(int i=1;i<fields.size();i++){
+            str+=", "+((Type_field)fields.get(i)).toString();
+        }
+        return str;
+    }
     
 }

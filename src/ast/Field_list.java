@@ -17,5 +17,15 @@ public class Field_list implements Ast {
     public void add(Ast field) {
         this.fields.add(field);
     }
+
+    @Override
+    public String toString() {
+        String str = "";
+        str+=((Field)fields.get(0)).toString();
+        for(int i=1;i<fields.size();i++){
+            str+=", "+((Field)fields.get(i)).toString();
+        }
+        return str;
+    }
     
 }

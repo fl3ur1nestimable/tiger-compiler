@@ -61,7 +61,7 @@ public class TdsCreator implements AstVisitor<String> {
         affect.expr.accept(this);
         return null;
     }
-
+    //------------------------------------Marine
     @Override
     public String visit(Or or) {
         // TODO Auto-generated method stub
@@ -157,7 +157,7 @@ public class TdsCreator implements AstVisitor<String> {
         // TODO Auto-generated method stub
         return null;
     }
-
+    //------------------------------------Vide
     @Override
     public String visit(Whiledo whiledo) {
         whiledo.cond.accept(this);
@@ -243,7 +243,7 @@ public class TdsCreator implements AstVisitor<String> {
         currentTds.addElement(tdsType);
         return Type.VOID.toString();
     }
-
+    //------------------------------------Louis
     @Override
     public String visit(StringNode string_node) {
         return Type.STRING.toString();
@@ -301,7 +301,7 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Assignement assignement) {
         return Type.VOID.toString();
     }
-
+    //------------------------------------Angelina
     @Override
     public String visit(IfThenElse ifthenelse) {
         ifthenelse.left.accept(this);
@@ -341,7 +341,7 @@ public class TdsCreator implements AstVisitor<String> {
         // TODO Auto-generated method stub
         return null;
     }
-
+    //------------------------------------Antoine
     @Override
     public String visit(TypeDec1 typeDec1) {
         //a corriger

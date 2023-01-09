@@ -314,32 +314,110 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Substring_ substring) {
-        // TODO Auto-generated method stub
-        return null;
+        Expr_list list = (Expr_list)substring.right;
+        ArrayList<Ast> param = list.array;
+        if(param.size() != 3){
+            System.out.println("erreur: substring requiert 3 parametres, mais seulement " + param.size() + " ont ete donnes");
+        }else{
+            int countint = 0;
+            int countstring = 0;
+            for(int i = 0; i < param.size(); i++){
+                Identifier id = (Identifier)param.get(i);
+                if( id.accept(this) == Type.INT.toString()){
+                    countint++;
+                }else if(id.accept(this) == Type.STRING.toString()){
+                    countstring++;
+                }
+            }
+            if(!(countint == 2 && countstring ==  1)){
+                System.out.println("erreur: substring requiert de 2 parametres de type int et 1 paramenre de type String ");
+            }
+        }
+        return Type.STRING.toString();
     }
 
     @Override
     public String visit(Concat_ concat_) {
-        // TODO Auto-generated method stub
-        return null;
+        Expr_list list = (Expr_list)concat_.right;
+        ArrayList<Ast> param = list.array;
+        if(param.size() != 2){
+            System.out.println("erreur: concat requiert 2 parametres, mais seulement " + param.size() + " ont ete donnes");
+        }else{
+            int countstring = 0;
+            for(int i = 0; i < param.size(); i++){
+                Identifier id = (Identifier)param.get(i);
+                if(id.accept(this) == Type.STRING.toString()){
+                    countstring++;
+                }
+            }
+            if(!(countstring ==  2)){
+                System.out.println("erreur: concat requiert de 2 parametres de type string ");
+            }
+        }
+        return Type.STRING.toString();
     }
 
     @Override
     public String visit(Ord_ ord_) {
-        // TODO Auto-generated method stub
-        return null;
+        Expr_list list = (Expr_list)ord_.right;
+        ArrayList<Ast> param = list.array;
+        if(param.size() != 1){
+            System.out.println("erreur: ord requiert 1 parametre, mais seulement " + param.size() + " ont ete donnes");
+        }else{
+            int countstring = 0;
+            for(int i = 0; i < param.size(); i++){
+                Identifier id = (Identifier)param.get(i);
+                if(id.accept(this) == Type.STRING.toString()){
+                    countstring++;
+                }
+            }
+            if(!(countstring ==  1)){
+                System.out.println("erreur: ord requiert de 1 parametres de type string ");
+            }
+        }
+        return Type.INT.toString();
     }
 
     @Override
     public String visit(Size_ size_) {
-        // TODO Auto-generated method stub
-        return null;
+        Expr_list list = (Expr_list)size_.right;
+        ArrayList<Ast> param = list.array;
+        if(param.size() != 1){
+            System.out.println("erreur: size requiert 1 parametre, mais seulement " + param.size() + " ont ete donnes");
+        }else{
+            int countstring = 0;
+            for(int i = 0; i < param.size(); i++){
+                Identifier id = (Identifier)param.get(i);
+                if(id.accept(this) == Type.STRING.toString()){
+                    countstring++;
+                }
+            }
+            if(!(countstring ==  1)){
+                System.out.println("erreur: size requiert de 1 parametres de type string ");
+            }
+        }
+        return Type.INT.toString();
     }
 
     @Override
     public String visit(Not_ not_) {
-        // TODO Auto-generated method stub
-        return null;
+        Expr_list list = (Expr_list)not_.right;
+        ArrayList<Ast> param = list.array;
+        if(param.size() != 1){
+            System.out.println("erreur: not requiert 1 parametre, mais seulement " + param.size() + " ont ete donnes");
+        }else{
+            int countint = 0;
+            for(int i = 0; i < param.size(); i++){
+                Identifier id = (Identifier)param.get(i);
+                if(id.accept(this) == Type.INT.toString()){
+                    countint++;
+                }
+            }
+            if(!(countint ==  1)){
+                System.out.println("erreur: not requiert de 1 parametres de type in t ");
+            }
+        }
+        return Type.INT.toString();
     }
     //------------------------------------Antoine
     @Override

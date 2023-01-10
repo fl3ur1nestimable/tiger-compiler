@@ -246,34 +246,70 @@ public class TdsCreator implements AstVisitor<String> {
     //------------------------------------Louis
     @Override
     public String visit(StringNode string_node) {
+        // on peut afficher directement string
         return Type.STRING.toString();
     }
 
     @Override
     public String visit(IntNode int_node) {
+        // on peut afficher directement int
         return Type.INT.toString();
     }
 
     @Override
     public String visit(Nil nil) {
+        // on peut afficher directement int
         return Type.NIL.toString();
     }
 
     @Override
     public String visit(Break_ break_) {
-        // TODO Auto-generated method stub
-        return null;
+        // verifier si bien dans for or while : break is illegal outside
+        currentBlock++;
+        currentImbrication++;
+
+        Tds tdsPere = new Tds(null, currentBlock, currentImbrication, currentTds);
+        Tds tdsFils = new Tds(null, currentBlock, currentImbrication, currentTds);
+        while ((tdsPere = tdsFils.getParent()) != null && !tdsPere.toString().equals("function")) {
+			if (tdsPere.toString().equals("while") || tdsPere.toString().equals("for")) {
+                tdsList.add(tdsFils);
+                currentImbrication--;
+				return null; }
+            else {
+                tdsFils=tdsPere;
+                System.out.println("Break n'est pas autorisé hors des for et while");
+            }
+		}
+
+		return null;
     }
 
     @Override
     public String visit(Print_ print_) {
-        // TODO Auto-generated method stub
-        return null;
+        // verifier qu'on a bien string
+
+        Expr_list list = (Expr_list)print_.expr;
+        ArrayList<Ast> param = list.array;
+        if(param.size() != 1){
+            System.out.println("erreur: print requiert 1 paramètre, mais " + param.size() + " paramètres ont ete donnes");
+        }else{
+
+                Identifier id = (Identifier)param.get(0);
+
+                if(id.accept(this) == Type.STRING.toString()){
+                    // oui.
+                }
+                else {System.out.println("erreur: print requiert 1 paramètre de type String");}
+        }
+
+        return Type.STRING.toString();
+    
     }
 
     @Override
     public String visit(Printi printi) {
-        // TODO Auto-generated method stub
+        // verifier qu'on a bien int
+
         return null;
     }
 

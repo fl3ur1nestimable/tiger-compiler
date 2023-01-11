@@ -265,20 +265,20 @@ public class TdsCreator implements AstVisitor<String> {
     @Override
     public String visit(Break_ break_) {
         // verifier si bien dans for or while : break is illegal outside
-        currentBlock++;
-        currentImbrication++;
 
         Tds tdsPere = new Tds(null, currentBlock, currentImbrication, currentTds);
         Tds tdsFils = new Tds(null, currentBlock, currentImbrication, currentTds);
         while ((tdsPere = tdsFils.getParent()) != null && !tdsPere.toString().equals("function")) {
 			if (tdsPere.toString().equals("while") || tdsPere.toString().equals("for")) {
                 tdsList.add(tdsFils);
-                currentImbrication--;
+
 				return null; }
             else {
                 tdsFils=tdsPere;
                 System.out.println("Break n'est pas autorisé hors des for et while");
             }
+          
+    
 		}
 
 		return null;
@@ -288,20 +288,10 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Print_ print_) {
         // verifier qu'on a bien string
 
-        Expr_list list = (Expr_list)print_.expr;
-        ArrayList<Ast> param = list.array;
-        if(param.size() != 1){
-            System.out.println("erreur: print requiert 1 paramètre, mais " + param.size() + " paramètres ont ete donnes");
-        }else{
-
-                Identifier id = (Identifier)param.get(0);
-
-                if(id.accept(this) == Type.STRING.toString()){
-                    // oui.
-                }
-                else {System.out.println("erreur: print requiert 1 paramètre de type String");}
+        String expre = print_.expr.accept(this);
+        if(!expre.equals(Type.STRING.toString())){
+            System.out.println("erreur: print requiert un paramètre dont le type de retour est STRING");
         }
-
         return Type.STRING.toString();
     
     }
@@ -309,13 +299,20 @@ public class TdsCreator implements AstVisitor<String> {
     @Override
     public String visit(Printi printi) {
         // verifier qu'on a bien int
+        String expre = printi.expr.accept(this);
+        if(!expre.equals(Type.INT.toString())){
+            System.out.println("erreur: printi requiert un paramètre dont le type de retour est INT");
+        }
 
-        return null;
+        return Type.STRING.toString();
     }
 
     @Override
     public String visit(Negation negation) {
-        // TODO Auto-generated method stub
+        String expre = negation.right.accept(this);
+        if(!expre.equals(Type.INT.toString())){
+            System.out.println("erreur: la  négation s'effectue exclusivement sur des paramètres de type INT");
+        }
         return null;
     }
 
@@ -324,12 +321,17 @@ public class TdsCreator implements AstVisitor<String> {
         for (Ast expr : expr_list.array) {
             expr.accept(this);
         }
-        return null;
+        return null;  /* sûrs qu'elle doit return null ? */
     }
 
     @Override
     public String visit(FunctionCall functionCall) {
-        // TODO Auto-generated method stub
+
+        //Vérification de l'existence de la fonction
+        //Vérification du nombre d'arguments
+        //Vérification des types d'arguments
+
+        /* pourtant pas de functioncall dans la TDS si ? */
         return null;
     }
 

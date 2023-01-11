@@ -412,8 +412,12 @@ public class TdsCreator implements AstVisitor<String> {
     @Override
     public String visit(Print_ print_) {
         // verifier qu'on a bien string
-
-        String expre = print_.expr.accept(this);
+        String expre = print_.expr.accept(this); 
+        Expr_list list = (Expr_list)print_.expr;   /* tour de magie ? incroyable mais en vrai c'est quoi le truc ? genre c'est fait exprès les ast de types modulables ? */
+        ArrayList<Ast> param = list.array;
+        if(param.size() != 1){
+            System.out.println("erreur: print requiert 1 parametre, mais " + param.size() + "paramètres ont ete donnes");
+        }
         if(!expre.equals(Type.STRING.toString())){
             System.out.println("erreur: print requiert un paramètre dont le type de retour est STRING");
         }
@@ -425,8 +429,10 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Printi printi) {
         // verifier qu'on a bien int
         String expre = printi.expr.accept(this);
-        if(.size() != 1){
-            System.out.println("erreur: not requiert 1 parametre, mais seulement " + param.size() + " ont ete donnes");
+        Expr_list list = (Expr_list)printi.expr;
+        ArrayList<Ast> param = list.array;
+        if(param.size() != 1){
+            System.out.println("erreur: printi requiert 1 paramètre, mais " + param.size() + "paramètres ont ete donnes");
         }
         if(!expre.equals(Type.INT.toString())){
             System.out.println("erreur: printi requiert un paramètre dont le type de retour est INT");
@@ -438,6 +444,11 @@ public class TdsCreator implements AstVisitor<String> {
     @Override
     public String visit(Negation negation) {
         String expre = negation.right.accept(this);
+        Expr_list list = (Expr_list)negation.right;  /* pas sûr qu'il faille vérifier le nombre de paramètres, dans le doute... */
+        ArrayList<Ast> param = list.array;
+        if(param.size() != 1){
+            System.out.println("erreur: la négation requiert 1 paramètre, mais " + param.size() + "paramètres ont ete donnes");
+        }
         if(!expre.equals(Type.INT.toString())){
             System.out.println("erreur: la  négation s'effectue exclusivement sur des paramètres de type INT");
         }

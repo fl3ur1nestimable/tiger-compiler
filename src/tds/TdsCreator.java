@@ -65,97 +65,208 @@ public class TdsCreator implements AstVisitor<String> {
     @Override
     public String visit(Or or) {
         // TODO Auto-generated method stub
-        return null;
+
+        String gauche =or.left.accept(this);
+        String droit =or.rigth.accept(this);
+
+        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+            System.out.println("Le or compare deux int");
+        }
+        
+
+        return Type.INT.toString();
     }
 
     @Override
     public String visit(Flush_ flush_) {
         // TODO Auto-generated method stub
-        return null;
+
+        
+        return Type.VOID.toString();
     }
 
     @Override
     public String visit(Exit_ exit_) {
         // TODO Auto-generated method stub
-        return null;
+
+        String exp =exit_.exp.accept(this);
+
+        if(!exp.equals(Type.INT.toString())){
+            System.out.println("exit attend un int comme paramètre");
+        }
+        return Type.VOID.toString();
     }
 
     @Override
     public String visit(Getchar getchar) {
         // TODO Auto-generated method stub
-        return null;
+
+        
+        return Type.STRING.toString();
     }
 
     @Override
     public String visit(Chr_ chr_) {
         // TODO Auto-generated method stub
+
+        String index = chr_.exp.accept(this);
+
+        if(!index.equals(Type.INT.toString())){
+            System.out.println("chr attend un int comme paramètre");
+        }
         return null;
     }
 
     @Override
     public String visit(And and) {
         // TODO Auto-generated method stub
-        return null;
+
+        String gauche =and.left.accept(this);
+        String droit =and.rigth.accept(this);
+
+        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+            System.out.println("Le and compare deux int");
+        }
+        return Type.INT.toString();
+        
     }
 
     @Override
     public String visit(Compare_equal_1 compare_equal_1) {
         // TODO Auto-generated method stub
-        return null;
+
+        String leftIdentifier = compare_equal_1.left.accept(this);
+        String rightIdentifier = compare_equal_1.rigth.accept(this);
+
+        if(!leftIdentifier.equals(rightIdentifier)){
+            System.out.println("<> compare que les objets de même type");
+        }
+        return Type.INT.toString();
     }
 
     @Override
     public String visit(Compare_equal_2 compare_equal_2) {
         // TODO Auto-generated method stub
-        return null;
+        String leftIdentifier = compare_equal_2.left.accept(this);
+        String rightIdentifier = compare_equal_2.rigth.accept(this);
+
+
+        if(!leftIdentifier.equals(rightIdentifier)){
+            System.out.println("== compare que les objets de même type");
+        }
+        return Type.INT.toString();
     }
 
     @Override
     public String visit(GreaterThan1 greaterThan1) {
         // TODO Auto-generated method stub
-        return null;
+
+        String leftIdentifier = greaterThan1.left.accept(this);
+        String rightIdentifier = greaterThan1.rigth.accept(this);
+        if(!leftIdentifier.equals(rightIdentifier)||leftIdentifier.equals(Type.INT.toString())||leftIdentifier.equals(Type.STRING.toString())||rightIdentifier.equals(Type.INT.toString())||rightIdentifier.equals(Type.STRING.toString())){
+            System.out.println(">= compare deux int ou deux String");
+        }
+        
+
+
+        return Type.INT.toString();
     }
 
     @Override
     public String visit(GreaterThan2 greaterThan2) {
         // TODO Auto-generated method stub
-        return null;
+        String leftIdentifier = greaterThan2.left.accept(this);
+        String rightIdentifier = greaterThan2.rigth.accept(this);
+        if(!leftIdentifier.equals(rightIdentifier)||leftIdentifier.equals(Type.INT.toString())||leftIdentifier.equals(Type.STRING.toString())||rightIdentifier.equals(Type.INT.toString())||rightIdentifier.equals(Type.STRING.toString())){
+            System.out.println("> compare deux int ou deux String");
+        }
+        
+
+
+        return Type.INT.toString();
     }
 
     @Override
     public String visit(LessThan1 lessThan1) {
         // TODO Auto-generated method stub
-        return null;
+        String leftIdentifier = lessThan1.left.accept(this);
+        String rightIdentifier = lessThan1.rigth.accept(this);
+        if(!leftIdentifier.equals(rightIdentifier)||leftIdentifier.equals(Type.INT.toString())||leftIdentifier.equals(Type.STRING.toString())||rightIdentifier.equals(Type.INT.toString())||rightIdentifier.equals(Type.STRING.toString())){
+            System.out.println("<= compare deux int ou deux String");
+        }
+        
+
+        return Type.INT.toString();
     }
 
     @Override
     public String visit(LessThan2 lessThan2) {
         // TODO Auto-generated method stub
-        return null;
+        String leftIdentifier = lessThan2.left.accept(this);
+        String rightIdentifier = lessThan2.rigth.accept(this);
+        if(!leftIdentifier.equals(rightIdentifier)||leftIdentifier.equals(Type.INT.toString())||leftIdentifier.equals(Type.STRING.toString())||rightIdentifier.equals(Type.INT.toString())||rightIdentifier.equals(Type.STRING.toString())){
+            System.out.println("< compare deux int ou deux String");
+        }
+        
+
+
+        return Type.INT.toString();
     }
 
     @Override
     public String visit(Plus plus) {
         // TODO Auto-generated method stub
-        return null;
+        String gauche =plus.left.accept(this);
+        String droit =plus.rigth.accept(this);
+
+        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+            System.out.println("+ ne fait des opérations que sur des int");
+        }
+
+        return Type.INT.toString();
+        
     }
 
     @Override
     public String visit(Moins moins) {
         // TODO Auto-generated method stub
-        return null;
+        String gauche =moins.left.accept(this);
+        String droit =moins.rigth.accept(this);
+
+        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+            System.out.println("- ne fait des opérations que sur des int");
+        }
+
+        return Type.INT.toString();
+        
     }
 
     @Override
     public String visit(Mult mult) {
         // TODO Auto-generated method stub
-        return null;
+        String gauche =mult.left.accept(this);
+        String droit =mult.rigth.accept(this);
+
+        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+            System.out.println("* ne fait des opérations que sur des int");
+        }
+
+        return Type.INT.toString();
+        
     }
 
     @Override
     public String visit(Divide divide) {
         // TODO Auto-generated method stub
-        return null;
+        String gauche =divide.left.accept(this);
+        String droit =divide.rigth.accept(this);
+
+        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+            System.out.println("/ ne fait des opérations que sur des int");
+        }
+
+        return Type.INT.toString();
+        
     }
     //------------------------------------Vide
     @Override

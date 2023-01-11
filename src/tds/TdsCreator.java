@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import ast.*;
 
+
 public class TdsCreator implements AstVisitor<String> {
     private int currentImbrication = 0;
     private int currentBlock = 0;
@@ -69,7 +70,7 @@ public class TdsCreator implements AstVisitor<String> {
         String gauche =or.left.accept(this);
         String droit =or.rigth.accept(this);
 
-        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("Le or compare deux int");
         }
         
@@ -90,8 +91,13 @@ public class TdsCreator implements AstVisitor<String> {
         // TODO Auto-generated method stub
 
         String exp =exit_.exp.accept(this);
+        Expr_list list = (Expr_list)exit_.exp;
+        ArrayList<Ast> param = list.array;
+        if (param.size()!=1){
+            System.out.println("exit attend qu'un seul paramètre");
+        }
 
-        if(!exp.equals(Type.INT.toString())){
+        else if(!exp.equals(Type.INT.toString())){
             System.out.println("exit attend un int comme paramètre");
         }
         return Type.VOID.toString();
@@ -111,6 +117,13 @@ public class TdsCreator implements AstVisitor<String> {
 
         String index = chr_.exp.accept(this);
 
+        
+        Expr_list list = (Expr_list)chr_.exp;
+        ArrayList<Ast> param = list.array;
+        if (param.size()!=1){
+            System.out.println("chr attend qu'un seul paramètre");
+        }
+
         if(!index.equals(Type.INT.toString())){
             System.out.println("chr attend un int comme paramètre");
         }
@@ -124,7 +137,7 @@ public class TdsCreator implements AstVisitor<String> {
         String gauche =and.left.accept(this);
         String droit =and.rigth.accept(this);
 
-        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("Le and compare deux int");
         }
         return Type.INT.toString();
@@ -163,7 +176,7 @@ public class TdsCreator implements AstVisitor<String> {
 
         String leftIdentifier = greaterThan1.left.accept(this);
         String rightIdentifier = greaterThan1.rigth.accept(this);
-        if(!leftIdentifier.equals(rightIdentifier)||leftIdentifier.equals(Type.INT.toString())||leftIdentifier.equals(Type.STRING.toString())||rightIdentifier.equals(Type.INT.toString())||rightIdentifier.equals(Type.STRING.toString())){
+        if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
             System.out.println(">= compare deux int ou deux String");
         }
         
@@ -177,7 +190,7 @@ public class TdsCreator implements AstVisitor<String> {
         // TODO Auto-generated method stub
         String leftIdentifier = greaterThan2.left.accept(this);
         String rightIdentifier = greaterThan2.rigth.accept(this);
-        if(!leftIdentifier.equals(rightIdentifier)||leftIdentifier.equals(Type.INT.toString())||leftIdentifier.equals(Type.STRING.toString())||rightIdentifier.equals(Type.INT.toString())||rightIdentifier.equals(Type.STRING.toString())){
+        if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
             System.out.println("> compare deux int ou deux String");
         }
         
@@ -191,7 +204,7 @@ public class TdsCreator implements AstVisitor<String> {
         // TODO Auto-generated method stub
         String leftIdentifier = lessThan1.left.accept(this);
         String rightIdentifier = lessThan1.rigth.accept(this);
-        if(!leftIdentifier.equals(rightIdentifier)||leftIdentifier.equals(Type.INT.toString())||leftIdentifier.equals(Type.STRING.toString())||rightIdentifier.equals(Type.INT.toString())||rightIdentifier.equals(Type.STRING.toString())){
+        if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
             System.out.println("<= compare deux int ou deux String");
         }
         
@@ -204,7 +217,7 @@ public class TdsCreator implements AstVisitor<String> {
         // TODO Auto-generated method stub
         String leftIdentifier = lessThan2.left.accept(this);
         String rightIdentifier = lessThan2.rigth.accept(this);
-        if(!leftIdentifier.equals(rightIdentifier)||leftIdentifier.equals(Type.INT.toString())||leftIdentifier.equals(Type.STRING.toString())||rightIdentifier.equals(Type.INT.toString())||rightIdentifier.equals(Type.STRING.toString())){
+        if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
             System.out.println("< compare deux int ou deux String");
         }
         
@@ -219,7 +232,7 @@ public class TdsCreator implements AstVisitor<String> {
         String gauche =plus.left.accept(this);
         String droit =plus.rigth.accept(this);
 
-        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("+ ne fait des opérations que sur des int");
         }
 
@@ -233,7 +246,7 @@ public class TdsCreator implements AstVisitor<String> {
         String gauche =moins.left.accept(this);
         String droit =moins.rigth.accept(this);
 
-        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("- ne fait des opérations que sur des int");
         }
 
@@ -247,7 +260,7 @@ public class TdsCreator implements AstVisitor<String> {
         String gauche =mult.left.accept(this);
         String droit =mult.rigth.accept(this);
 
-        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("* ne fait des opérations que sur des int");
         }
 
@@ -261,7 +274,7 @@ public class TdsCreator implements AstVisitor<String> {
         String gauche =divide.left.accept(this);
         String droit =divide.rigth.accept(this);
 
-        if(!gauche.equals(Type.INT.toString())||droit.equals(Type.INT.toString())){
+        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("/ ne fait des opérations que sur des int");
         }
 
@@ -271,9 +284,16 @@ public class TdsCreator implements AstVisitor<String> {
     //------------------------------------Vide
     @Override
     public String visit(Whiledo whiledo) {
+        currentBlock++;
+        currentImbrication++;
+        Tds tds = new Tds("while", currentBlock, currentImbrication, currentTds);
+        tdsList.add(tds);
+        currentTds = tds;
         whiledo.cond.accept(this);
         whiledo.doBlock.accept(this);
-        return null;
+        currentTds = tds.getParent();
+        currentImbrication--;
+        return Type.VOID.toString();
     }
 
     @Override
@@ -283,16 +303,14 @@ public class TdsCreator implements AstVisitor<String> {
         Tds tds = new Tds("for", currentBlock, currentImbrication, currentTds);
         tdsList.add(tds);
         currentTds = tds;
-        String id = for_.idf.accept(this);
-        String type = for_.expr1.accept(this);
-        currentTds.addElement(new TdsVariable(id, type, 0, tds));
-        currentTds = tds.getParent();
+        for_.expr1.accept(this);
         for_.expr2.accept(this);
         for_.expr3.accept(this);
+        currentTds = tds.getParent();
         currentImbrication--;
-        return null;
+        return Type.VOID.toString();
     }
-
+    //long et compliqué
     @Override
     public String visit(Identifier identifier) {
        switch (identifier.value) {
@@ -309,10 +327,11 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Expr_seq expr_seq) {
+        String returnType = Type.VOID.toString();
         for (Ast expr : expr_seq.array) {
-            expr.accept(this);
+            returnType = expr.accept(this);
         }
-        return null;
+        return returnType;
     }
 
     @Override
@@ -336,7 +355,7 @@ public class TdsCreator implements AstVisitor<String> {
         currentImbrication--;
         return null;
     }
-
+    //long et compliqué
     @Override
     public String visit(Type_declaration type_declaration) {
         Identifier id = (Identifier) type_declaration.idf;
@@ -377,21 +396,16 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Break_ break_) {
         // verifier si bien dans for or while : break is illegal outside
 
-        Tds tdsPere = new Tds(null, currentBlock, currentImbrication, currentTds);
-        Tds tdsFils = new Tds(null, currentBlock, currentImbrication, currentTds);
-        while ((tdsPere = tdsFils.getParent()) != null && !tdsPere.toString().equals("function")) {
+        Tds tdsPere = currentTds;
+        Tds tdsFils = currentTds;
+        while ((tdsPere = tdsFils.getParent()) != null) {
 			if (tdsPere.toString().equals("while") || tdsPere.toString().equals("for")) {
-                tdsList.add(tdsFils);
-
-				return null; }
+				return Type.VOID.toString(); }
             else {
                 tdsFils=tdsPere;
-                System.out.println("Break n'est pas autorisé hors des for et while");
             }
-          
-    
 		}
-
+        System.out.println("Break n'est pas autorisé hors des for et while");
 		return null;
     }
 
@@ -411,6 +425,9 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Printi printi) {
         // verifier qu'on a bien int
         String expre = printi.expr.accept(this);
+        if(.size() != 1){
+            System.out.println("erreur: not requiert 1 parametre, mais seulement " + param.size() + " ont ete donnes");
+        }
         if(!expre.equals(Type.INT.toString())){
             System.out.println("erreur: printi requiert un paramètre dont le type de retour est INT");
         }
@@ -424,7 +441,7 @@ public class TdsCreator implements AstVisitor<String> {
         if(!expre.equals(Type.INT.toString())){
             System.out.println("erreur: la  négation s'effectue exclusivement sur des paramètres de type INT");
         }
-        return null;
+        return Type.INT.toString();
     }
 
     @Override
@@ -435,6 +452,7 @@ public class TdsCreator implements AstVisitor<String> {
         return null;  /* sûrs qu'elle doit return null ? */
     }
 
+    //long et chiant
     @Override
     public String visit(FunctionCall functionCall) {
 
@@ -446,6 +464,7 @@ public class TdsCreator implements AstVisitor<String> {
         return null;
     }
 
+    //plus soft
     @Override
     public String visit(Assignement assignement) {
         return Type.VOID.toString();

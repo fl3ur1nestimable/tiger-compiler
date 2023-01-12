@@ -23,6 +23,7 @@ public class TdsCreator implements AstVisitor<String> {
         return tdsList;
     }
 
+    
     public Tds getCurrentTds() {
         return currentTds;
     }
@@ -62,10 +63,9 @@ public class TdsCreator implements AstVisitor<String> {
         affect.expr.accept(this);
         return null;
     }
-    //------------------------------------Marine
     @Override
     public String visit(Or or) {
-        // TODO Auto-generated method stub
+        
 
         String gauche =or.left.accept(this);
         String droit =or.rigth.accept(this);
@@ -80,7 +80,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Flush_ flush_) {
-        // TODO Auto-generated method stub
+        
 
         
         return Type.VOID.toString();
@@ -88,7 +88,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Exit_ exit_) {
-        // TODO Auto-generated method stub
+        
 
         String exp =exit_.exp.accept(this);
         Expr_list list = (Expr_list)exit_.exp;
@@ -105,7 +105,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Getchar getchar) {
-        // TODO Auto-generated method stub
+        
 
         
         return Type.STRING.toString();
@@ -113,7 +113,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Chr_ chr_) {
-        // TODO Auto-generated method stub
+        
 
         String index = chr_.exp.accept(this);
 
@@ -132,7 +132,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(And and) {
-        // TODO Auto-generated method stub
+        
 
         String gauche =and.left.accept(this);
         String droit =and.rigth.accept(this);
@@ -146,7 +146,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Compare_equal_1 compare_equal_1) {
-        // TODO Auto-generated method stub
+        
 
         String leftIdentifier = compare_equal_1.left.accept(this);
         String rightIdentifier = compare_equal_1.rigth.accept(this);
@@ -159,7 +159,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Compare_equal_2 compare_equal_2) {
-        // TODO Auto-generated method stub
+        
         String leftIdentifier = compare_equal_2.left.accept(this);
         String rightIdentifier = compare_equal_2.rigth.accept(this);
 
@@ -172,7 +172,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(GreaterThan1 greaterThan1) {
-        // TODO Auto-generated method stub
+        
 
         String leftIdentifier = greaterThan1.left.accept(this);
         String rightIdentifier = greaterThan1.rigth.accept(this);
@@ -187,7 +187,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(GreaterThan2 greaterThan2) {
-        // TODO Auto-generated method stub
+        
         String leftIdentifier = greaterThan2.left.accept(this);
         String rightIdentifier = greaterThan2.rigth.accept(this);
         if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
@@ -201,7 +201,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(LessThan1 lessThan1) {
-        // TODO Auto-generated method stub
+        
         String leftIdentifier = lessThan1.left.accept(this);
         String rightIdentifier = lessThan1.rigth.accept(this);
         if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
@@ -214,7 +214,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(LessThan2 lessThan2) {
-        // TODO Auto-generated method stub
+        
         String leftIdentifier = lessThan2.left.accept(this);
         String rightIdentifier = lessThan2.rigth.accept(this);
         if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
@@ -228,7 +228,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Plus plus) {
-        // TODO Auto-generated method stub
+        
         String gauche =plus.left.accept(this);
         String droit =plus.rigth.accept(this);
 
@@ -242,7 +242,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Moins moins) {
-        // TODO Auto-generated method stub
+        
         String gauche =moins.left.accept(this);
         String droit =moins.rigth.accept(this);
 
@@ -256,7 +256,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Mult mult) {
-        // TODO Auto-generated method stub
+        
         String gauche =mult.left.accept(this);
         String droit =mult.rigth.accept(this);
 
@@ -270,7 +270,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Divide divide) {
-        // TODO Auto-generated method stub
+        
         String gauche =divide.left.accept(this);
         String droit =divide.rigth.accept(this);
 
@@ -281,7 +281,6 @@ public class TdsCreator implements AstVisitor<String> {
         return Type.INT.toString();
         
     }
-    //------------------------------------Vide
     @Override
     public String visit(Whiledo whiledo) {
         currentBlock++;
@@ -310,9 +309,12 @@ public class TdsCreator implements AstVisitor<String> {
         currentImbrication--;
         return Type.VOID.toString();
     }
-    //long et compliqué
+   
     @Override
     public String visit(Identifier identifier) {
+        
+        
+        
        switch (identifier.value) {
         case "int":
             return Type.INT.toString();
@@ -321,7 +323,20 @@ public class TdsCreator implements AstVisitor<String> {
         case "nil":
             return Type.NIL.toString();
         default:
-            return identifier.value;
+            Tds tdsPere = currentTds;
+        Tds tdsFils = currentTds;
+        while ((tdsPere = tdsFils.getParent()) != null) {
+            if(tdsPere.contains(identifier.value)){
+                return identifier.accept(this);
+            }
+			
+            else {
+                tdsFils=tdsPere;
+            }
+		}
+        System.out.println("l'identificateur : "+identifier.value+" n'existe pas ");
+        return null;
+
        }
     }
 
@@ -355,10 +370,29 @@ public class TdsCreator implements AstVisitor<String> {
         currentImbrication--;
         return null;
     }
-    //long et compliqué
+    
     @Override
     public String visit(Type_declaration type_declaration) {
         Identifier id = (Identifier) type_declaration.idf;
+        for(Tds t : tdsList){
+            if (t.getName().contains(id.value)) {
+                if (currentTds.equals(t.getParent())) {
+                    System.out.println("Erreur : double déclaration du type :" + id.value);
+                    return Type.VOID.toString();
+                } else {
+                    Tds parent = currentTds.getParent();
+                    while (parent!=null) {
+                        if(parent.getNumImbrication()==t.getParent().getNumImbrication()){
+                            System.out.println("Erreur : double déclaration du type :" + id.value);
+                        return Type.VOID.toString();
+                        }
+                        else{
+                            parent=parent.getParent();
+                        }
+                    }
+                }
+            }
+        }
         Type type = type_declaration.type.accept(this) == Type.ARRAYTY.toString() ? Type.ARRAYTY : Type.RECORDTY;
         String base = null;
         String fields = null;
@@ -369,11 +403,17 @@ public class TdsCreator implements AstVisitor<String> {
         if(type_declaration.type instanceof TypeDec2){
             base = ((TypeDec2) type_declaration.type).idf.accept(this);
         }
-        TdsType tdsType = new TdsType(id.value, type, base, fields,currentTds);
+        currentBlock++;
+        currentImbrication++;
+        Tds typeTds = new Tds(id.value, currentBlock, currentImbrication, currentTds);
+        currentTds = typeTds;
+        TdsType tdsType = new TdsType(type, base, fields,currentTds);
         currentTds.addElement(tdsType);
+        currentTds = typeTds.getParent();
+        currentImbrication--;
         return Type.VOID.toString();
     }
-    //------------------------------------Louis
+    
     @Override
     public String visit(StringNode string_node) {
         // on peut afficher directement string
@@ -411,7 +451,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Print_ print_) {
-        // verifier qu'on a bien string
+        // verifier qu'on a bien string et 1 seul paramètre
         String expre = print_.expr.accept(this); 
         Expr_list list = (Expr_list)print_.expr;   /* tour de magie ? incroyable mais en vrai c'est quoi le truc ? genre c'est fait exprès les ast de types modulables ? */
         ArrayList<Ast> param = list.array;
@@ -427,7 +467,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Printi printi) {
-        // verifier qu'on a bien int
+        // verifier qu'on a bien int et 1 seul paramètre
         String expre = printi.expr.accept(this);
         Expr_list list = (Expr_list)printi.expr;
         ArrayList<Ast> param = list.array;
@@ -460,27 +500,64 @@ public class TdsCreator implements AstVisitor<String> {
         for (Ast expr : expr_list.array) {
             expr.accept(this);
         }
-        return null;  /* sûrs qu'elle doit return null ? */
+        return Type.VOID.toString();  
     }
 
-    //long et chiant
+     //-------------------------------------------
     @Override
     public String visit(FunctionCall functionCall) {
 
-        //Vérification de l'existence de la fonction
-        //Vérification du nombre d'arguments
-        //Vérification des types d'arguments
+        String id = functionCall.left.accept(this);
+        String droite = functionCall.right.accept(this);
 
-        /* pourtant pas de functioncall dans la TDS si ? */
-        return null;
+        Expr_list list = (Expr_list)functionCall.right; 
+        ArrayList<Ast> param = list.array;
+        
+        Tds tdsPere = currentTds;
+        
+        while (tdsPere != null) {         // Vérification de l'existence de la fonction
+
+			if (tdsPere.toString().equals(id) ) {
+                ArrayList<String[]> listParametresAttendus = ((TdsFunction)tdsPere.getElement(id)).getParameters();
+                if(param.size() != listParametresAttendus.size()){          // Vérification du nombre d'arguments
+
+                    System.out.println("erreur: l'appel de cette fonction requiert "+ ((TdsFunction)tdsPere.getElement(id)).getParameters().size +" paramètre(s), mais " + param.size() + "paramètre(s) ont été donné(s)");
+                    return Type.VOID.toString();
+                }
+                
+                for (int i=0;i< param.size(); i++) {           // Vérification des types d'arguments
+                    if( param.get(i)[1] != listParametresAttendus.get(i)[1]) {         
+
+                            System.out.println("erreur: l'appel de cette fonction requiert un argument de type"+ listParametresAttendus.size() +" mais un argument de type" + param.size() + "a été donné(s)");
+                            return Type.VOID.toString();
+                        }
+                }    
+				return Type.VOID.toString(); }
+                
+            else {
+                tdsPere=tdsPere.getParent();
+            }
+		}
+        System.out.println("La fonction appelée n'a jamais été déclarée");
+		return Type.VOID.toString();
+
+
     }
 
-    //plus soft
+  
     @Override
     public String visit(Assignement assignement) {
+
+        String leftIdentifier = assignement.left.accept(this);
+        String rightIdentifier = assignement.right.accept(this);
+
+
+        if(!leftIdentifier.equals(rightIdentifier)){
+            System.out.println("on ne peut pas assigner : "+leftIdentifier+" à un type : "+rightIdentifier);
+        }
         return Type.VOID.toString();
     }
-    //------------------------------------Angelina
+
     @Override
     public String visit(IfThenElse ifthenelse) {
         ifthenelse.left.accept(this);
@@ -551,7 +628,7 @@ public class TdsCreator implements AstVisitor<String> {
                 }
             }
             if(!(countstring ==  1)){
-                System.out.println("erreur: ord requiert de 1 parametres de type string ");
+                System.out.println("erreur: ord requiert de 1 paramètres de type string ");
             }
         }
         return Type.INT.toString();
@@ -562,7 +639,7 @@ public class TdsCreator implements AstVisitor<String> {
         Expr_list list = (Expr_list)size_.right;
         ArrayList<Ast> param = list.array;
         if(param.size() != 1){
-            System.out.println("erreur: size requiert 1 parametre, mais seulement " + param.size() + " ont ete donnes");
+            System.out.println("erreur: size requiert 1 paraèetre, mais seulement " + param.size() + " ont été donnes");
         }else{
             int countstring = 0;
             for(int i = 0; i < param.size(); i++){
@@ -572,7 +649,7 @@ public class TdsCreator implements AstVisitor<String> {
                 }
             }
             if(!(countstring ==  1)){
-                System.out.println("erreur: size requiert de 1 parametres de type string ");
+                System.out.println("erreur: size requiert de 1 paramètres de type string ");
             }
         }
         return Type.INT.toString();
@@ -593,42 +670,58 @@ public class TdsCreator implements AstVisitor<String> {
                 }
             }
             if(!(countint ==  1)){
-                System.out.println("erreur: not requiert de 1 parametres de type in t ");
+                System.out.println("erreur: not requiert de 1 parametres de type int ");
             }
         }
         return Type.INT.toString();
     }
-    //------------------------------------Antoine
+     
     @Override
     public String visit(TypeDec1 typeDec1) {
-        //a corriger
+        
         return Type.RECORDTY.toString();
     }
-
+     
     @Override
     public String visit(TypeDec2 typeDec2) {
-        // a corriger
+        
         return Type.ARRAYTY.toString();
     }
-
+     
     @Override
     public String visit(Type_fields type_fields) {
-        // TODO Auto-generated method stub
-        return null;
+        if (type_fields.fields.size()==0){
+            System.out.println("il faut au moins déclarer un type");
+        }
+        
+        return Type.VOID.toString();
     }
-
+     
     @Override
     public String visit(Type_field type_field) {
-        // TODO Auto-generated method stub
-        return null;
+        
+        return Type.VOID.toString();
     }
-
+     //------------------------------------------
     @Override
     public String visit(Variable_declaration variable_declaration) {
         String name = variable_declaration.name.toString();
+        Tds tdsPere = currentTds;
+        Tds tdsFils = currentTds;
+        while ((tdsPere = tdsFils.getParent()) != null) {
+            if(tdsPere.contains(name)){
+                System.out.println("Erreur : duplication de l'identificateur " + name);
+                return Type.VOID.toString();
+            }
+			
+            else {
+                tdsFils=tdsPere;
+            }
+		}
         String type= null;
         if(variable_declaration.type!=null){
             type = variable_declaration.type.accept(this); 
+            
         }
         else{
 
@@ -637,9 +730,22 @@ public class TdsCreator implements AstVisitor<String> {
         currentTds.addElement(new TdsVariable(name, type, 0, currentTds));
         return Type.VOID.toString();
     }
-
+     //-------------------------------------------
     @Override
     public String visit(Function_declaration function_declaration) {
+        String name = ((Identifier)function_declaration.name).value;
+        Tds tdsPere = currentTds;
+        Tds tdsFils = currentTds;
+        while ((tdsPere = tdsFils.getParent()) != null) {
+            if(tdsPere.contains(name)){
+                System.out.println("Erreur : duplication de l'identificateur " + name);
+                return Type.VOID.toString();
+            }
+			
+            else {
+                tdsFils=tdsPere;
+            }
+		}
         currentBlock++;
         currentImbrication++;
         String params = null;
@@ -655,9 +761,8 @@ public class TdsCreator implements AstVisitor<String> {
         if(function_declaration.return_type!=null){
             returnType = function_declaration.return_type.accept(this);
         }
-        String name = ((Identifier)function_declaration.name).value;
         currentTds.addElement(new TdsFunction(name,params,Type.VOID,returnType, currentTds));
-        Tds tds = new Tds("function_" + name, currentBlock, currentImbrication, currentTds);
+        Tds tds = new Tds(name, currentBlock, currentImbrication, currentTds);
         tdsList.add(tds);
         currentTds = tds;
         function_declaration.body.accept(this);
@@ -665,46 +770,51 @@ public class TdsCreator implements AstVisitor<String> {
         currentImbrication--;
         return Type.VOID.toString();
     }
-
+     //-------------------------------------------
     @Override
     public String visit(Field field) {
-        // TODO Auto-generated method stub
-        return null;
+        
+        return Type.VOID.toString();
     }
-
+     //-----------------------------------------
     @Override
     public String visit(Field_list field_list) {
-        // TODO Auto-generated method stub
-        return null;
+        
+        return Type.VOID.toString();
     }
-
+     //-----------------------------------------
     @Override
     public String visit(Lvalue lvalue) {
-        // TODO Auto-generated method stub
+        // verifier que l'on a : variables, parameters, fields of records, and elements of arrays
+        String leftIdentifier = lvalue.accept(this);
+        
+
         return null;
     }
-
+     //-----------------------------------------
     @Override
     public String visit(AccessId accessId) {
-        // TODO Auto-generated method stub
+        
         return null;
     }
-
+     //-----------------------------------------
     @Override
     public String visit(AccessIndex accessIndex) {
-        // TODO Auto-generated method stub
+        
         return null;
     }
-
+     //-----------------------------------------
     @Override
     public String visit(RecordDec recordDec) {
-        // TODO Auto-generated method stub
+        
         return Type.RECORD.toString();
     }
-
+     //-----------------------------------------
     @Override
     public String visit(ArrayDec arrayDec) {
-        // TODO Auto-generated method stub
+        
+
+        
         return Type.ARRAY.toString();
     }
 

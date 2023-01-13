@@ -1,0 +1,7 @@
+function try() (
+    var N:int
+    
+)
+function try() (
+    var N:int:=0
+)

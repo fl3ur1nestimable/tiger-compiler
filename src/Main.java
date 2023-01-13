@@ -64,11 +64,11 @@ public class Main {
             graphViz.dumpGraph("./out/tree.dot");
 
             // Visiteur de création de la TDS + création de la TDS
-            //TdsCreator tdsCreator = new TdsCreator();
-            //ast.accept(tdsCreator);
+            TdsCreator tdsCreator = new TdsCreator();
+            ast.accept(tdsCreator);
 
             // Affichage de la TDS
-            //tdsCreator.printAll();
+            tdsCreator.printAll();
 
 
         } 

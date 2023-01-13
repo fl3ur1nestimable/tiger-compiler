@@ -1,7 +1,7 @@
 /*test*/
 let 
     var N:=8
-    var row:=intArray[N] of 0
+    var row:=intArray[5] of 0
     var x:=n
 
 in

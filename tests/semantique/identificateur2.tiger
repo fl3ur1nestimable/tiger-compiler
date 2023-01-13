@@ -1,0 +1,11 @@
+var N:int := 5
+
+while N < 10 do (
+    for index := 5 to 10 do (
+        N:=N+1;
+        var temp:= "init";
+        
+    )
+    print(temp);
+    
+)

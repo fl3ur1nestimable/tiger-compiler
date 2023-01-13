@@ -313,20 +313,18 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		return new Field(new Identifier(ctx.getChild(0).toString()),ctx.getChild(2).accept(this));
 	}
 	@Override public Ast visitLvalue(tigerParser.LvalueContext ctx) {
-		Lvalue lvalue = new Lvalue();
-		lvalue.add(new Identifier(ctx.getChild(0).toString()));
+		Ast temp = new Identifier(ctx.getChild(0).toString());
 		for (int i = 1; i < ctx.getChildCount(); i++) {
-			if (ctx.getChild(i).toString().equals(".")) {
-				lvalue.add(new AccessId(new Identifier(ctx.getChild(i+1).toString())));
-				//lvalue.add(new Identifier(ctx.getChild(i+1).toString()));
-				i++;
-			}
-			else if (ctx.getChild(i).toString().equals("[")) {
-				lvalue.add(new AccessIndex(ctx.getChild(i+1).accept(this)));
-				//lvalue.add(ctx.getChild(i+1).accept(this));
-				i++;
+			switch (ctx.getChild(i).toString()) {
+				case ".":
+					temp = new AccessId(temp,new Identifier(ctx.getChild(i+1).toString()));
+					break;
+				case "[":
+					temp = new AccessIndex(temp ,ctx.getChild(i+1).accept(this));
+				default:
+					break;
 			}
 		}
-		return lvalue;
+		return temp;
 	}
 }

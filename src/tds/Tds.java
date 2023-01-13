@@ -10,7 +10,7 @@ public class Tds {
     private ArrayList<TdsElement> elements;
 
     public Tds(String name,int numBloc, int numImbrication, Tds parent) {
-        this.name = "TDS_"+name+"_"+numBloc+"_"+numImbrication;
+        this.name = name;
         this.numBloc = numBloc;
         this.numImbrication = numImbrication;
         this.parent = parent;
@@ -19,6 +19,11 @@ public class Tds {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString(){
+        return "TDS_"+name+"_"+numBloc+"_"+numImbrication;
     }
 
     public int getNumBloc() {

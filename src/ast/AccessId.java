@@ -5,9 +5,16 @@ public class AccessId implements Ast {
         return visitor.visit(this);
     }
 
-    public Ast id;
+    public Ast rigth;
+    public Ast left;
 
-    public AccessId(Ast id) {
-        this.id = id;
+    public AccessId(Ast l, Ast r) {
+        this.rigth=r;
+        this.left=l;
+    }
+
+    @Override
+    public String toString(){
+        return left.toString()+rigth.toString();
     }
 }

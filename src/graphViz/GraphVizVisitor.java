@@ -631,20 +631,6 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
     @Override
-    public String visit(Lvalue lvalue) {
-        String node = this.nextState();
-        this.addNode(node, "lvalue");
-        String temp = lvalue.lvalues.get(0).accept(this);
-        this.addTransition(node, temp);
-        for (int i = 1; i < lvalue.lvalues.size(); i++) {
-            String node2 = lvalue.lvalues.get(i).accept(this);
-            this.addTransition(temp, node2);
-            temp = node2;
-        }
-        return node;
-    }
-
-    @Override
     public String visit(Field field){
         String node = this.nextState();
         this.addNode(node, "field");
@@ -669,20 +655,27 @@ public class GraphVizVisitor implements AstVisitor<String> {
     @Override
     public String visit(AccessId accessId) {
         String node = this.nextState();
+        String node2 = accessId.left.accept(this);
+        String node3 = accessId.rigth.accept(this);
         this.addNode(node, "accessId");
-        String node2 = accessId.id.accept(this);
+
         this.addTransition(node, node2);
+        this.addTransition(node, node3);
         return node;
     }
 
     @Override
     public String visit(AccessIndex accessIndex) {
         String node = this.nextState();
+        String node2 = accessIndex.left.accept(this);
+        String node3 = accessIndex.rigth.accept(this);
         this.addNode(node, "accessIndex");
-        String node2 = accessIndex.index.accept(this);
+
         this.addTransition(node, node2);
+        this.addTransition(node, node3);
         return node;
     }
+
 
     @Override
     public String visit(RecordDec recordDec) {

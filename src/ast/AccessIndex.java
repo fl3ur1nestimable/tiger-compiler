@@ -5,9 +5,16 @@ public class AccessIndex implements Ast {
         return visitor.visit(this);
     }
 
-    public Ast index;
+    public Ast rigth;
+    public Ast left;
 
-    public AccessIndex(Ast index) {
-        this.index = index;
+    public AccessIndex(Ast l, Ast r) {
+        this.rigth=r;
+        this.left=l;
+    }
+
+    @Override
+    public String toString(){
+        return left.toString()+rigth.toString();
     }
 }

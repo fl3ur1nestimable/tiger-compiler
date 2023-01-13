@@ -1,17 +1,18 @@
 package tds;
+import java.util.*;
 
 
 public class TdsFunction extends TdsElement {
-    String parameters;
+    ArrayList<String> parameters;
     String otherType;
 
-    public TdsFunction(String name, String parameters, Type returnType,String otherType, Tds tds) {
-        super(name,returnType,tds);
+    public TdsFunction(String name, ArrayList<String> parameters, Type returnType,String otherType, Tds tds) {
+        super(name+"_f",returnType,tds);
         this.parameters = parameters;
         this.otherType = otherType;
     }
 
-    public String getParameters() {
+    public ArrayList<String> getParameters() {
         return parameters;
     }
 

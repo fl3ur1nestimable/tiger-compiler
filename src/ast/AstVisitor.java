@@ -50,7 +50,6 @@ public interface AstVisitor<T> {
     public T visit(Function_declaration function_declaration);
     public T visit(Field field);
     public T visit(Field_list field_list);
-    public T visit(Lvalue lvalue);
     public T visit(AccessId accessId);
     public T visit(AccessIndex accessIndex);
     public T visit(RecordDec recordDec);

@@ -1,8 +1,6 @@
 package tds;
 
 public class TdsTypeField extends TdsElement{
-    private String name;
-    private String type;
 
     public TdsTypeField(String name, String type,Tds tds){
         super(name, type, tds);
@@ -10,6 +8,6 @@ public class TdsTypeField extends TdsElement{
 
     @Override
     public String toString(){
-        return name + " : " + type;
+        return getName() + " : " + getType();
     }
 }

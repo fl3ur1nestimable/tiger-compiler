@@ -26,46 +26,55 @@ public class TdsCreator implements AstVisitor<String> {
 
     public Tds getTds(String Name){
         for (Tds t : tdsList) {
-            if (t.getName().contains(Name)) {
+            if (t.getName().equals(Name)) {
                 return t;
             }
         }
         return null;
     }
 
-    
-    public Tds getCurrentTds() {
-        return currentTds;
-    }
-
-    public void setCurrentTds(Tds currentTds) {
-        this.currentTds = currentTds;
-    }
-
-    public int getCurrentImbrication() {
-        return currentImbrication;
-    }
-
-    public void setCurrentImbrication(int currentImbrication) {
-        this.currentImbrication = currentImbrication;
-    }
-
-    public int getCurrentBlock() {
-        return currentBlock;
-    }
-
-    public void setCurrentBlock(int currentBlock) {
-        this.currentBlock = currentBlock;
-    }
-
     public void printAll(){
         for (Tds tds : tdsList) {
-            System.out.println(tds.getName());
+            System.out.println(tds.toString());
             for (TdsElement element : tds.getElements()) {
                 System.out.println("\t"+element.toString());
             }
             System.out.println("------------------------");
         }
+    }
+
+    public TdsVariable findVar(String name){
+        TdsVariable var = currentTds.findVar(name);
+        if (var != null) {
+            return var;
+        }
+        return null;
+    }
+
+    public TdsFunction findFunc(String name){
+        TdsFunction func = currentTds.findFunc(name);
+        if (func != null) {
+            return func;
+        }
+        return null;
+    }
+
+    public TdsType findType(String name){
+        switch (name) {
+            case "int":
+                return new TdsType("INT", "INT", currentTds);
+            case "string":
+                return new TdsType("STRING", "STRING", currentTds);
+            case "nil" :
+                return new TdsType("STRING", "STRING", currentTds);
+            default:
+                break;
+        }
+        TdsType type = currentTds.findType(name);
+        if (type != null) {
+            return type;
+        }
+        return null;
     }
 
     @Override
@@ -75,80 +84,81 @@ public class TdsCreator implements AstVisitor<String> {
     }
     @Override
     public String visit(Or or) {
-        
-
         String gauche =or.left.accept(this);
         String droit =or.rigth.accept(this);
+        if(gauche == null || droit == null){
+            return null;
+        }
 
         if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("Le or compare deux int");
+            return null;
         }
         
-
         return Type.INT.toString();
     }
 
     @Override
     public String visit(Flush_ flush_) {
-        
-
-        
         return Type.VOID.toString();
     }
 
     @Override
     public String visit(Exit_ exit_) {
-        
-
         String exp =exit_.exp.accept(this);
+        if(exp == null){
+            return null;
+        }
         Expr_list list = (Expr_list)exit_.exp;
         ArrayList<Ast> param = list.array;
         if (param.size()!=1){
             System.out.println("exit attend qu'un seul paramètre");
+            return null;
         }
 
         else if(!exp.equals(Type.INT.toString())){
             System.out.println("exit attend un int comme paramètre");
+            return null;
         }
         return Type.VOID.toString();
     }
 
     @Override
     public String visit(Getchar getchar) {
-        
-
-        
         return Type.STRING.toString();
     }
 
     @Override
     public String visit(Chr_ chr_) {
-        
-
         String index = chr_.exp.accept(this);
-
-        
+        if(index == null){
+            return null;
+        }
         Expr_list list = (Expr_list)chr_.exp;
         ArrayList<Ast> param = list.array;
         if (param.size()!=1){
             System.out.println("chr attend qu'un seul paramètre");
+            return null;
         }
 
         if(!index.equals(Type.INT.toString())){
             System.out.println("chr attend un int comme paramètre");
+            return null;
         }
         return null;
     }
 
     @Override
     public String visit(And and) {
-        
-
         String gauche =and.left.accept(this);
         String droit =and.rigth.accept(this);
+        if(gauche == null || droit == null){
+            return null;
+        }
 
         if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("Le and compare deux int");
+            return null;
         }
         return Type.INT.toString();
         
@@ -156,108 +166,118 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Compare_equal_1 compare_equal_1) {
-        
-
         String leftIdentifier = compare_equal_1.left.accept(this);
         String rightIdentifier = compare_equal_1.rigth.accept(this);
-
+        if (leftIdentifier == null || rightIdentifier == null) {
+            return null;
+        }
+        
         if(!leftIdentifier.equals(rightIdentifier)){
             System.out.println("<> compare que les objets de même type");
+            return null;
         }
         return Type.INT.toString();
     }
 
     @Override
     public String visit(Compare_equal_2 compare_equal_2) {
-        
         String leftIdentifier = compare_equal_2.left.accept(this);
         String rightIdentifier = compare_equal_2.rigth.accept(this);
-
+        if (leftIdentifier == null || rightIdentifier == null) {
+            return null;
+        }
 
         if(!leftIdentifier.equals(rightIdentifier)){
             System.out.println("== compare que les objets de même type");
+            return null;
         }
         return Type.INT.toString();
     }
 
     @Override
     public String visit(GreaterThan1 greaterThan1) {
-        
-
         String leftIdentifier = greaterThan1.left.accept(this);
         String rightIdentifier = greaterThan1.rigth.accept(this);
+        if (leftIdentifier == null || rightIdentifier == null) {
+            return null;
+        }
+
         if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
             System.out.println(">= compare deux int ou deux String");
+            return null;
         }
-        
-
-
         return Type.INT.toString();
     }
 
     @Override
     public String visit(GreaterThan2 greaterThan2) {
-        
         String leftIdentifier = greaterThan2.left.accept(this);
         String rightIdentifier = greaterThan2.rigth.accept(this);
+        if (leftIdentifier == null || rightIdentifier == null) {
+            return null;
+        }
+
         if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
             System.out.println("> compare deux int ou deux String");
+            return null;
         }
-        
-
-
         return Type.INT.toString();
     }
 
     @Override
     public String visit(LessThan1 lessThan1) {
-        
         String leftIdentifier = lessThan1.left.accept(this);
         String rightIdentifier = lessThan1.rigth.accept(this);
+        if (leftIdentifier == null || rightIdentifier == null) {
+            return null;
+        }
         if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
             System.out.println("<= compare deux int ou deux String");
+            return null;
         }
-        
-
         return Type.INT.toString();
     }
 
     @Override
     public String visit(LessThan2 lessThan2) {
-        
         String leftIdentifier = lessThan2.left.accept(this);
         String rightIdentifier = lessThan2.rigth.accept(this);
+        if (leftIdentifier == null || rightIdentifier == null) {
+            return null;
+        }
         if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
             System.out.println("< compare deux int ou deux String");
+            return null;
         }
-        
-
-
         return Type.INT.toString();
     }
 
     @Override
     public String visit(Plus plus) {
-        
         String gauche =plus.left.accept(this);
         String droit =plus.rigth.accept(this);
+        if(gauche == null || droit == null){
+            return null;
+        }
 
         if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("+ ne fait des opérations que sur des int");
+            return null;
         }
-
         return Type.INT.toString();
         
     }
 
     @Override
     public String visit(Moins moins) {
-        
         String gauche =moins.left.accept(this);
         String droit =moins.rigth.accept(this);
-
+        if (gauche == null || droit == null) {
+            return null;
+        }
         if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("- ne fait des opérations que sur des int");
+            return null;
         }
 
         return Type.INT.toString();
@@ -266,12 +286,14 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Mult mult) {
-        
         String gauche =mult.left.accept(this);
         String droit =mult.rigth.accept(this);
-
+        if (gauche == null || droit == null) {
+            return null;
+        }
         if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("* ne fait des opérations que sur des int");
+            return null;
         }
 
         return Type.INT.toString();
@@ -280,12 +302,14 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Divide divide) {
-        
         String gauche =divide.left.accept(this);
         String droit =divide.rigth.accept(this);
-
+        if (gauche == null || droit == null) {
+            return null;
+        }
         if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
             System.out.println("/ ne fait des opérations que sur des int");
+            return null;
         }
 
         return Type.INT.toString();
@@ -330,20 +354,18 @@ public class TdsCreator implements AstVisitor<String> {
         case "nil":
             return Type.NIL.toString();
         default:
-            Tds tdsPere = currentTds;
-        Tds tdsFils = currentTds;
-        while ((tdsPere = tdsFils.getParent()) != null) {
-            if(tdsPere.contains(identifier.value)){
-                return identifier.accept(this);
+            TdsVariable var = findVar(identifier.value);
+            String returnType = null;
+            if (var==null) {
+                System.out.println("Erreur : la variable "+identifier.value+" n'est pas définie");
             }
-			
-            else {
-                tdsFils=tdsPere;
+            else{
+                returnType = var.getType();
             }
-		}
-        System.out.println("l'identificateur : "+identifier.value+" n'existe pas ");
-        return null;
-
+            if (returnType==null) {
+                return null;
+            }
+            return returnType.toString();
        }
     }
 
@@ -352,6 +374,9 @@ public class TdsCreator implements AstVisitor<String> {
         String returnType = Type.VOID.toString();
         for (Ast expr : expr_seq.array) {
             returnType = expr.accept(this);
+        }
+        if (returnType==null) {
+            return null;
         }
         return returnType;
     }
@@ -381,35 +406,45 @@ public class TdsCreator implements AstVisitor<String> {
     @Override
     public String visit(Type_declaration type_declaration) {
         Identifier id = (Identifier) type_declaration.idf;
-        for(Tds t : tdsList){
-            if (t.getName().contains(id.value)) {
-                if (currentTds.equals(t.getParent())) {
-                    System.out.println("Erreur : double déclaration du type :" + id.value);
-                    return Type.VOID.toString();
-                } else {
-                    Tds parent = currentTds.getParent();
-                    while (parent!=null) {
-                        if(parent.getNumImbrication()==t.getParent().getNumImbrication()){
-                            System.out.println("Erreur : double déclaration du type :" + id.value);
-                        return Type.VOID.toString();
-                        }
-                        else{
-                            parent=parent.getParent();
-                        }
-                    }
-                }
-            }
+        String name = id.value;
+        TdsType t = findType(name);
+        if (t!=null) {
+            System.out.println("Erreur : double déclaration du type :" + t.getName());
+            return null;
         }
-        currentBlock++;
-        currentImbrication++;
-        Tds typeTds = new Tds(id.value, currentBlock, currentImbrication, currentTds);
-        currentTds = typeTds;
-        Type type = type_declaration.type.accept(this) == Type.ARRAY.toString() ? Type.ARRAY : Type.RECORD;
-        type_declaration.type.accept(this);
-        currentTds = typeTds.getParent();
-        TdsType tdsType = new TdsType(id.value,type,currentTds);
-        currentTds.addElement(tdsType);
-        currentImbrication--;
+        else{
+            currentBlock++;
+            currentImbrication++;
+            Tds typeTds = new Tds(id.value+"_t", currentBlock, currentImbrication, currentTds);
+            currentTds = typeTds;
+            String type = type_declaration.type.accept(this);
+            Tds save = currentTds.getParent();
+            if(type!=null){
+                if (type==Type.ARRAY.toString()) {
+                    TypeDec2 typeDec2 = (TypeDec2) type_declaration.type;
+                    Identifier id2 = (Identifier)typeDec2.idf;
+                    String type2 = id2.value;
+                    TdsType t1 = findType(type2);
+                    if(t1 == null){
+                        System.out.println("Erreur : type "+ type2 + " non declare");
+                        return null;
+                    }else{
+                        TdsArrayType tdsArrayType = new TdsArrayType(id.value,Type.ARRAY.toString(),type2.toUpperCase(),currentTds);
+                        currentTds.addElement(tdsArrayType);
+                        save.addElement(tdsArrayType);
+                        tdsList.add(typeTds);
+                    }
+                }else{
+                    TdsType tdsType = new TdsType(id.value,type,currentTds);
+                    currentTds.addElement(tdsType);
+                    save.addElement(tdsType);
+                    tdsList.add(typeTds);
+                }
+            currentTds = typeTds.getParent();
+            currentImbrication--;
+            }
+            currentTds = save;
+        }
         return Type.VOID.toString();
     }
     
@@ -433,7 +468,6 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Break_ break_) {
-        // verifier si bien dans for or while : break is illegal outside
         Tds tdsPere = currentTds;
         Tds tdsFils = currentTds;
         while ((tdsPere = tdsFils.getParent()) != null) {
@@ -488,7 +522,7 @@ public class TdsCreator implements AstVisitor<String> {
             System.out.println("erreur: la négation requiert 1 paramètre, mais " + param.size() + "paramètres ont ete donnes");
         }
         if(!expre.equals(Type.INT.toString())){
-            System.out.println("erreur: la  négation s'effectue exclusivement sur des paramètres de type INT");
+            System.out.println("erreur: la  négation s'effectue exclusivement sur des expressions de type INT");
         }
         return Type.INT.toString();
     }
@@ -504,45 +538,29 @@ public class TdsCreator implements AstVisitor<String> {
      //-------------------------------------------
     @Override
     public String visit(FunctionCall functionCall) {
-        String left = functionCall.left.accept(this);
-        Expr_list list = (Expr_list)functionCall.right; 
-        ArrayList<Ast> paramFournis = list.array;
-        // ArrayList<String[]> paramFournis = new ArrayList<String[]>();
-        // for (Ast ast : param){
-        //     paramFournis.add([ast.left;ast.right]);
-        // }
-
-        if (left != null) {  //   Vérification de l'existence de la fonction
-
-            for (Tds tds : tdsList){   
-                String id = ((Identifier)functionCall.left).value;
-                if (tds.getName().equals(id+"_f")) {
-                    ArrayList<String> listParametresAttendus = ((TdsFunction)tds.getElement(id)).getParameters();
-
-                    if(paramFournis.size() != listParametresAttendus.size()){          // Vérification du nombre d'arguments
-                        System.out.println("erreur: l'appel de cette fonction requiert "+ listParametresAttendus.size() +" paramètre(s), mais " + paramFournis.size() + "paramètre(s) ont été donné(s)");
-                        return Type.VOID.toString();
-                    }
-                    for (int i=0;i< paramFournis.size(); i++) {           // Vérification des types d'arguments
-                        String param = paramFournis.get(i).accept(this);
-                        if( param != listParametresAttendus.get(i)) {         
-
-                                System.out.println("erreur: l'appel de cette fonction requiert un argument de type"+ listParametresAttendus.get(i) +" mais un argument de type" + param + "a été donné(s)");
-                                return Type.VOID.toString();
-                            }
-                    }    
-				return tds.toString();
-                }
-                
-      
+        Identifier id = (Identifier)functionCall.left;
+        String name = id.value;
+        TdsFunction func = findFunc(name);
+        if (func==null) {//Vérification de l'existence de la fonction
+            System.out.println("Erreur : la fonction " + name + " n'est pas définie");
+            return null;
+        }else{
+            Expr_list list = (Expr_list)functionCall.right; 
+            ArrayList<Ast> paramFournis = list.array;
+            ArrayList<String> listParametresAttendus = func.getParameters();
+            if(paramFournis.size() != listParametresAttendus.size()){// Vérification du nombre d'arguments
+                System.out.println("Erreur: l'appel de cette fonction requiert "+ listParametresAttendus.size() +" paramètre(s), mais " + paramFournis.size() + "paramètre(s) ont été donné(s)");
             }
+            else{
+                for (int i=0;i< paramFournis.size(); i++) {           // Vérification des types d'arguments
+                    String param = paramFournis.get(i).accept(this);
+                    if( param != listParametresAttendus.get(i)) {         
+                        System.out.println("erreur: l'appel de cette fonction requiert un argument de type"+ listParametresAttendus.get(i) +" mais un argument de type" + param + "a été donné(s)");
+                    }
+                } 
+            }
+            return func.getType().toString();
         }
-        
-        // cas où la variable n'est pas défnie
-
-        System.out.println("Erreur : " + left + "est une fonction qui n'a jamais été déclarée");
-        return Type.VOID.toString();
-
     }
 
   
@@ -551,10 +569,11 @@ public class TdsCreator implements AstVisitor<String> {
 
         String leftIdentifier = assignement.left.accept(this);
         String rightIdentifier = assignement.right.accept(this);
-
-
+        if(leftIdentifier == null || rightIdentifier == null){
+            return null;
+        }
         if(!leftIdentifier.equals(rightIdentifier)){
-            System.out.println("on ne peut pas assigner : "+leftIdentifier+" à un type : "+rightIdentifier);
+            System.out.println("Erreur : on ne peut pas assigner un type "+rightIdentifier+" à une variable de type "+leftIdentifier);
         }
         return Type.VOID.toString();
     }
@@ -679,20 +698,23 @@ public class TdsCreator implements AstVisitor<String> {
      
     @Override
     public String visit(TypeDec1 typeDec1) {
-        typeDec1.typefields.accept(this);
+        if(typeDec1.typefields.accept(this) == null){
+            return null;
+        }
         return Type.RECORD.toString();
     }
      
     @Override
     public String visit(TypeDec2 typeDec2) {
-        typeDec2.idf.accept(this);
         return Type.ARRAY.toString();
     }
      
     @Override
     public String visit(Type_fields type_fields) {
         for (Ast t : type_fields.fields) {
-                t.accept(this);
+                if(t.accept(this) == null){
+                    return null;
+                }
         }
         return Type.VOID.toString();
     }
@@ -702,8 +724,27 @@ public class TdsCreator implements AstVisitor<String> {
         String id = ((Identifier)type_field.name).value;
         if (currentTds.contains(id)) {
             System.out.println("Erreur : duplication du champ "+ id);
+            return null;
         }else{
-            TdsTypeField f = new TdsTypeField(id,type_field.type.accept(this), currentTds);
+            Identifier id2 = (Identifier)type_field.type;
+            String type = id2.value;
+            TdsType t = findType(type);
+            if(t == null){
+                System.out.println("Erreur : le type "+ type + " n'existe pas");
+                return null;
+            }
+            switch(type){
+                case "int":
+                    type = Type.INT.toString();
+                    break;
+                case "string":
+                    type = Type.STRING.toString();
+                    break;
+                case "nil": 
+                    type = Type.NIL.toString();
+                    break;
+            }
+            TdsTypeField f = new TdsTypeField(id,type, currentTds);
             currentTds.addElement(f);
         }
         return Type.VOID.toString();
@@ -711,18 +752,13 @@ public class TdsCreator implements AstVisitor<String> {
      //------------------------------------------
     @Override
     public String visit(Variable_declaration variable_declaration) {
-        String name = variable_declaration.name.toString();
-        Tds tdsPere = currentTds;
-        Tds tdsFils = currentTds;
-        while ((tdsPere = tdsFils.getParent()) != null) {
-            if(tdsPere.contains(name)){
-                System.out.println("Erreur : duplication de l'identificateur " + name);
-                return Type.VOID.toString();
-            }
-            else {
-                tdsFils=tdsPere;
-            }
-		}
+        Identifier id = (Identifier)variable_declaration.name;
+        String name = id.value;
+        TdsVariable var = findVar(name);
+        if (var != null) {
+            System.out.println("Erreur : double déclaration de la variable " + var.getName());
+            return null;
+        }
         String type= null;
         Tds save = currentTds;
         if(variable_declaration.type!=null){
@@ -732,25 +768,20 @@ public class TdsCreator implements AstVisitor<String> {
             type = variable_declaration.expr.accept(this);
         }
         currentTds=save;
-        currentTds.addElement(new TdsVariable(name, type, 0, currentTds));
+        if(type!=null){
+            currentTds.addElement(new TdsVariable(name, type, 0, currentTds));
+        }
         return Type.VOID.toString();
     }
      //-------------------------------------------
     @Override
     public String visit(Function_declaration function_declaration) {
         String name = ((Identifier)function_declaration.name).value;
-        Tds tdsPere = currentTds;
-        Tds tdsFils = currentTds;
-        while ((tdsPere = tdsFils.getParent()) != null) {
-            if(tdsPere.contains(name)){
-                System.out.println("Erreur : duplication de l'identificateur " + name);
-                return Type.VOID.toString();
-            }
-			
-            else {
-                tdsFils=tdsPere;
-            }
-		}
+        TdsFunction func = findFunc(name);
+        if (func != null) {
+            System.out.println("Erreur : double déclaration de la fonction " + func.getName());
+            return null;
+        }
         currentBlock++;
         currentImbrication++;
         ArrayList<String> params = new ArrayList<String>();
@@ -758,23 +789,36 @@ public class TdsCreator implements AstVisitor<String> {
         if(function_declaration.paramsOrReturnType!=null){
             if(function_declaration.paramsOrReturnType instanceof Identifier){
                 returnType = function_declaration.paramsOrReturnType.accept(this);
+                if(returnType==null){
+                    return null;
+                }
             }
             else{
-                function_declaration.paramsOrReturnType.accept(this);
-                Type_fields e = (Type_fields)function_declaration.paramsOrReturnType;
-                for (Ast f : e.fields) {
-                    params.add(((Identifier)((Field)f).expr).value);
+                if(function_declaration.paramsOrReturnType.accept(this)!=null){
+                    Type_fields e = (Type_fields)function_declaration.paramsOrReturnType;
+                    for (Ast f : e.fields) {
+                        params.add(((Identifier)((Field)f).expr).value);
+                    }
+                }
+                else{
+                    return null;
                 }
             }
         }
         if(function_declaration.return_type!=null){
             returnType = function_declaration.return_type.accept(this);
+            if(returnType==null){
+                return null;
+            }
         }
-        currentTds.addElement(new TdsFunction(name,params,Type.VOID,returnType, currentTds));
         Tds tds = new Tds(name, currentBlock, currentImbrication, currentTds);
-        tdsList.add(tds);
         currentTds = tds;
-        function_declaration.body.accept(this);
+        String r = function_declaration.body.accept(this);
+        if (!r.equals(returnType)) {
+            System.out.println("Erreur : la fonction doit retourner un type "+returnType);
+        }
+        currentTds.addElement(new TdsFunction(name,params,returnType, currentTds));
+        tdsList.add(tds);
         currentTds = tds.getParent();
         currentImbrication--;
         return Type.VOID.toString();
@@ -785,7 +829,18 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Field field) {
         String name = ((Identifier)field.name).value;
         if (!currentTds.contains(name)) {
-            System.out.println("Erreur : le champ :" + name + " n'existe pas");
+            System.out.println("Erreur : le champ " + name + " n'existe pas pour la structure "+currentTds.getElements().get(0).getName() );
+            return null;
+        }else{
+            String type = field.expr.accept(this);
+            if (type == null) {
+                return null;
+            }else{
+                if (!currentTds.getElement(name).getType().equals(type)) {
+                    System.out.println("Erreur : le champ "+name+" doit être de type "+ currentTds.getElement(name).getType());
+                    return null;
+                }
+            }
         }
         return Type.VOID.toString();
     }
@@ -793,10 +848,13 @@ public class TdsCreator implements AstVisitor<String> {
     @Override
     public String visit(Field_list field_list) {
         if(currentTds.getElements().size()-1!=field_list.fields.size()){
-            System.out.println("Erreur : le record " + currentTds.getElements().get(0).getName() +" possède " + currentTds.getElements().size() +" champs");
+            System.out.println("Erreur : la structure " + currentTds.getElements().get(currentTds.getElements().size()-1).getName() +" possède " + Integer.toString(currentTds.getElements().size()-1) +" champs");
+            return null;
         }
         for (Ast f : field_list.fields) {
-            f.accept(this);
+            if(f.accept(this)==null){
+                return null;
+            }
         }
         return Type.VOID.toString();
     }
@@ -804,34 +862,33 @@ public class TdsCreator implements AstVisitor<String> {
      //-----------------------------------------
     @Override
     public String visit(AccessId accessId) {
-        
-
         String left = accessId.left.accept(this);
-        String right = accessId.rigth.accept(this);
-
+        if (left == null) {
+            return null;
+        }
+        Identifier idr = (Identifier)accessId.rigth;
+        String right = idr.value;
         String id = ((Identifier)(accessId.left)).value;
-        if (left.equals(Type.RECORD.toString())) {  //  verifier que c'est une variable qui existe
-            Tds tds = getTds(id+"_t");
+        TdsType tdsType = findType(findVar(id).getType());
+        if (left.equals(Type.RECORD.toString()) ||(tdsType!=null && tdsType.getType().equals(Type.RECORD.toString()))) {  //  verifier que c'est une variable qui existe
+            Tds tds = getTds(findType(findVar(id).getType()).getName()+"_t");
             if(tds==null){
-                System.out.println("Erreur : le record "+id+" n'existe pas");
-                return Type.VOID.toString();
+                System.out.println("Erreur : la structure "+id+" n'existe pas");
+                return null;
 
             }else{
-                if (tds.contains(((Identifier)(accessId.left)).value)){
+                if (tds.contains(right)){
                         return tds.getElement(right).getType().toString();
                     }               
                 
-                System.out.println("Erreur : le champ" + right + " n'existe pas pour " + left);
-                return Type.VOID.toString();
-            }
-                
+                System.out.println("Erreur : le champ " + right + " n'existe pas pour " + left);
+                return null;
+            } 
         }
-        
-        else { // cas où la variable n'est pas défnie
-
-            System.out.println("Erreur : le record "+id+" n'existe pas");
-            return Type.VOID.toString();
-        }             
+        else{
+            System.out.println("Erreur : la variable " + id + " n'est pas une structure");
+        }
+        return null;         
     }
 
      //-----------------------------------------
@@ -839,81 +896,93 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(AccessIndex accessIndex) {
         String left = accessIndex.left.accept(this);
         String right = accessIndex.rigth.accept(this);
-
+        if (left == null || right == null) {
+            return null;
+        }
         String id = ((Identifier)(accessIndex.left)).value;
-        if (left.equals(Type.ARRAY.toString())) {  //  verifier que c'est un tableau qui existe
-            Tds tds = getTds(id+"_t");
+        TdsType tdsType = findType(findVar(id).getType());
+        if (left.equals(Type.ARRAY.toString()) || (tdsType!=null && tdsType.getType().equals(Type.ARRAY.toString()))) {  //  verifier que c'est un tableau qui existe
+            String type = findType(findVar(id).getType()).getName();
+            Tds tds = getTds(type +"_t");
             if(tds==null){
                 System.out.println("Erreur : le tableau "+id+" n'existe pas");
-                return Type.VOID.toString();
-
+                return null;
             }else {
                                             //  verifier que right est bien de type int     
                 if (right.equals(Type.INT.toString())){
-                    return ((TdsArrayType)tds.getElement(id)).getBaseType();
+                    return ((TdsArrayType)tds.getElement(type)).getBaseType();
                 }
-
-                System.out.println("Erreur : " + right + "n'est pas de type int");
-                return Type.VOID.toString();    
-
+                System.out.println("Erreur : l'indice doit être de type int");
+                return null;    
             }               
-        }       
-
-        // cas où la variable n'est pas défnie
-
-        System.out.println("Erreur : le tableau "+id+" n'existe pas");
-        return Type.VOID.toString();
-           
+        }
+        else{
+            System.out.println("Erreur : la variable " + id + " n'est pas un tableau");
+        }      
+        return null;
     }
     
      //-----------------------------------------
     @Override
     public String visit(RecordDec recordDec) {
-        String id =  recordDec.id.accept(this);
-        if (id!=null) {
-            Tds tds = getTds(id);
-            if (tds==null) {
-                System.out.println("Erreur :" + id + " n'est pas un type de record");
-            }
-            else{
-                TdsType e = (TdsType)tds.getElement(id);
+        Identifier id = (Identifier)recordDec.id;
+        String name = id.value;
+        TdsType type = findType(name);
+        if (type==null) {
+            System.out.println("Erreur : le type "+name+" n'est pas défini" );
+            return null;
+        }
+        else{
+            Tds tds = getTds(name+"_t");
+            TdsType e = (TdsType)tds.getElement(name);
                 if (!e.getType().equals(Type.RECORD.toString())) {
-                    System.out.println("Erreur :" + id + " n'est pas un type de record");
+                    System.out.println("Erreur : " + id + " n'est pas un type de structure");
+                    return null;
                 }
                 else{
                     currentTds = tds;
                 }
-            }
         }
-        recordDec.list.accept(this);
-        return id;
+        if(recordDec.list.accept(this)==null){
+            return null;
+        }
+
+        return name;
     }
      //-----------------------------------------
     @Override
     public String visit(ArrayDec arrayDec) {
-        String id = arrayDec.id.accept(this);
+        Identifier id = (Identifier)arrayDec.id;
+        String name = id.value;
+        TdsType type = findType(name);
+        if (type==null) {
+            System.out.println("Erreur : le type "+name+" n'est pas défini" );
+            return null;
+        }
+        else{
+            Tds tds = getTds(name+"_t");
+            if (tds==null) {
+                System.out.println("tds null");
+            }
+            TdsType e = (TdsType)tds.getElement(name);
+                if (!e.getType().equals(Type.ARRAY.toString())) {
+                    System.out.println("Erreur : " + id + " n'est pas un type de tableau");
+                    return null;
+                }
+        }
         String size = arrayDec.expr1.accept(this);
         if (!size.equals(Type.INT.toString())) {
             System.out.println("Erreur : la taille d'un array doit être de type int");
+            return null;
         }
         String base = arrayDec.expr2.accept(this);
-        if (id!=null) {
-            Tds tds = getTds(id);
-            if (tds==null) {
-                System.out.println("Erreur :" + id + " n'est pas un type d'array");
-            }else{
-                TdsArrayType e = (TdsArrayType)tds.getElement(id);
-                if (!e.getType().equals(Type.ARRAY.toString())) {
-                    System.out.println("Erreur :" + id + " n'est pas un type d'array");
-                }
-                else{
-                    if(!e.getBaseType().equals(base)){
-                        System.out.println("Erreur : le type " + base + " ne correspond pas au type " + e.getBaseType() + " de  " +id);
-                    }
-                }
-            }
+        Tds tds = getTds(name+"_t");
+        TdsArrayType e = (TdsArrayType)tds.getElement(name);
+        if(!e.getBaseType().equals(base)){
+            System.out.println("Erreur : le type " + base + " ne correspond pas au type " + e.getBaseType() + " de " +name);
+            return null;
         }
-        return id;
+        return name;
     }
 
     

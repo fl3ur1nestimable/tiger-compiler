@@ -1,0 +1,2 @@
+type mot = String 
+type mot = String

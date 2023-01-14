@@ -1,0 +1,7 @@
+function apres() (
+    avant()
+    
+)
+function avant()(
+    print("hello")
+)

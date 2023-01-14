@@ -1,0 +1,4 @@
+function try(c: int):void (
+    N:=c
+)
+try("a")

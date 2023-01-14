@@ -1,0 +1,3 @@
+for := 0 to  existe_pas do (
+    print("   ");
+)

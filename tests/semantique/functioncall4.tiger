@@ -1,0 +1,4 @@
+function try(c: int) (
+    N:=c
+)
+try()

@@ -1,0 +1,6 @@
+type chiffre = int
+
+for index := 0 to 5 do (
+    type chiffre = int;
+    
+)

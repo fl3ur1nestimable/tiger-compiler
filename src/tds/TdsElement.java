@@ -2,8 +2,7 @@ package tds;
 
 public abstract class TdsElement {
     protected String name;
-    protected Type type;
-    protected String nameType;
+    protected String type;
     protected Tds tds;
 
     public TdsElement(String name, Tds tds){
@@ -11,15 +10,9 @@ public abstract class TdsElement {
         this.tds = tds;
     }
 
-    public TdsElement(String name, Type type, Tds tds){
+    public TdsElement(String name, String type, Tds tds){
         this.name = name;
         this.type = type;
-        this.tds = tds;
-    }
-
-    public TdsElement(String name, String nameType, Tds tds){
-        this.name = name;
-        this.nameType = nameType;
         this.tds = tds;
     }
 
@@ -27,17 +20,13 @@ public abstract class TdsElement {
         return name;
     }
 
-    public Type getType(){
+    public String getType(){
         return type;
-    }
-
-    public String getNameType(){
-        return nameType;
     }
 
     public abstract String toString();
 
-    public void setType(Type type){
+    public void setType(String type){
         this.type = type;
     }
 

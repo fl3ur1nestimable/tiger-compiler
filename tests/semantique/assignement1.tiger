@@ -1,2 +1,5 @@
-var N := 8
-N:="n"
+let
+    var N := 8
+in
+    N:="n"
+end

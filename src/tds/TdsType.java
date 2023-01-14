@@ -1,8 +1,8 @@
 package tds;
 
 public class TdsType extends TdsElement {
-    public TdsType(String name, Type type,Tds tds) {
-        super(name+"_t",type,tds);
+    public TdsType(String name, String type,Tds tds) {
+        super(name,type,tds);
     }
 
     @Override

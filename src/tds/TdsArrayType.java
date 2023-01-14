@@ -1,12 +1,10 @@
 package tds;
 
-public class TdsArrayType extends TdsElement{
-    private String name;
-    private String type;
+public class TdsArrayType extends TdsType{
     private String baseType;
 
     public TdsArrayType(String name, String type, String baseType, Tds tds){
-        super(name,type, tds);
+        super(name,type,tds);
         this.baseType=baseType;
     }
 
@@ -15,6 +13,6 @@ public class TdsArrayType extends TdsElement{
     }
 
     public String toString(){
-        return "Name : " + name + ", Type : " + type + ", baseType : " + baseType;
+        return "Type [name=" + getName() + ", type=" + getType() + ", baseType=" + baseType+"]";
     }
 }

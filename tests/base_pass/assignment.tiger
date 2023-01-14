@@ -1,15 +1,20 @@
 /*test*/
 let 
+    type intArray = array of int
+    type POINT = {x:int,y:int,z:intArray}
+    type pointA = array of POINT
     var N:=8
     var row:=intArray[5] of 0
-    var x:=n
+    var test := POINT{x=0,y=3,z=row}
+    var test2 := pointA[5] of test
+    var x:=0
 
 in
     if x:=8 then 1 else 0;
-    N:=nil;
-    x:=louis;
-    N:="louis";
-    N.at:= (2);
-    N[1]:= if 1 then 4 else 7
+    x:=6;
+    N:=7;
+    test.x:= if 1 then 4 else 7;
+    test.y:=test.x;
+    row[2]:=8
 
 end

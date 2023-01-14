@@ -1,0 +1,10 @@
+let
+    var N := 8
+    var O := "oui"
+
+in
+    while N != 0 do
+        ( N:=N-1 )
+
+
+end

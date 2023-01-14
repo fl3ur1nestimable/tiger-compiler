@@ -1,0 +1,9 @@
+let
+    var N := 8
+
+in
+    for k := 0 to 1 do 
+        N = N + 1
+
+
+end

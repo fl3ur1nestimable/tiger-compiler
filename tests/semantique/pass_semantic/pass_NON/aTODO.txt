@@ -1,2 +1,4 @@
 ce qui ne marche pas: 
 - print
+- negation
+- array of int

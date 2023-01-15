@@ -3,28 +3,8 @@ digraph "ast"{
 	nodesep=1;
 	ranksep=1;
 
-	N2 [label="Let Block", shape="box"];
-	N3 [label="decList", shape="box"];
-	N4 [label="valDec", shape="box"];
-	N5 [label="N", shape="box"];
-	N6 [label="8", shape="box"];
-	N1 [label="Let_in_End", shape="box"];
-	N7 [label="In Block", shape="box"];
-	N8 [label="Expr_seq", shape="box"];
-	N9 [label="Assignement", shape="box"];
-	N10 [label="N", shape="box"];
-	N11 [label="0", shape="box"];
+	N1 [label="nil", shape="box"];
 	N0 [label="Program", shape="box"];
 
-	N4 -> N5; 
-	N4 -> N6; 
-	N3 -> N4; 
-	N1 -> N2; 
-	N2 -> N3; 
-	N1 -> N7; 
-	N9 -> N10; 
-	N9 -> N11; 
-	N8 -> N9; 
-	N7 -> N8; 
 	N0 -> N1; 
 }

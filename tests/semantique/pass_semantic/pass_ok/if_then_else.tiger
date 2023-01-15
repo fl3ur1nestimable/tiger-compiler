@@ -1,6 +1,6 @@
 let 
     var x:=1
 in
-    if 1 then 2 else 3;
+    if 1 then 2 else 3
     
 end

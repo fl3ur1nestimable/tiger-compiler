@@ -1,0 +1,4 @@
+let
+	type intArray = array of int
+in
+end

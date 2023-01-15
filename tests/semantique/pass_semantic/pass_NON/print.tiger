@@ -1,5 +1,9 @@
 
-print("Hello, World!\n")
 
 
+let 
+    var x:=1
+in
+    print("Hello, World!\n")    
+end
 

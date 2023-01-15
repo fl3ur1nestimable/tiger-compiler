@@ -2135,8 +2135,8 @@ public class tigerParser extends Parser {
 	}
 
 	public static class Print_Context extends ParserRuleContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
+		public Expr_listContext expr_list() {
+			return getRuleContext(Expr_listContext.class,0);
 		}
 		public Print_Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2158,7 +2158,7 @@ public class tigerParser extends Parser {
 			setState(325);
 			match(T__40);
 			setState(326);
-			expr();
+			expr_list();
 			setState(327);
 			match(T__15);
 			}
@@ -2175,8 +2175,8 @@ public class tigerParser extends Parser {
 	}
 
 	public static class PrintiContext extends ParserRuleContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
+		public Expr_listContext expr_list() {
+			return getRuleContext(Expr_listContext.class,0);
 		}
 		public PrintiContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2198,7 +2198,7 @@ public class tigerParser extends Parser {
 			setState(329);
 			match(T__41);
 			setState(330);
-			expr();
+			expr_list();
 			setState(331);
 			match(T__15);
 			}
@@ -2248,8 +2248,8 @@ public class tigerParser extends Parser {
 	}
 
 	public static class Exit_Context extends ParserRuleContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
+		public Expr_listContext expr_list() {
+			return getRuleContext(Expr_listContext.class,0);
 		}
 		public Exit_Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2271,7 +2271,7 @@ public class tigerParser extends Parser {
 			setState(335);
 			match(T__43);
 			setState(336);
-			expr();
+			expr_list();
 			setState(337);
 			match(T__15);
 			}
@@ -2321,8 +2321,8 @@ public class tigerParser extends Parser {
 	}
 
 	public static class Chr_Context extends ParserRuleContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
+		public Expr_listContext expr_list() {
+			return getRuleContext(Expr_listContext.class,0);
 		}
 		public Chr_Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2344,7 +2344,7 @@ public class tigerParser extends Parser {
 			setState(341);
 			match(T__45);
 			setState(342);
-			expr();
+			expr_list();
 			setState(343);
 			match(T__15);
 			}
@@ -2441,8 +2441,8 @@ public class tigerParser extends Parser {
 	}
 
 	public static class Ord_Context extends ParserRuleContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
+		public Expr_listContext expr_list() {
+			return getRuleContext(Expr_listContext.class,0);
 		}
 		public Ord_Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2464,7 +2464,7 @@ public class tigerParser extends Parser {
 			setState(353);
 			match(T__48);
 			setState(354);
-			expr();
+			expr_list();
 			setState(355);
 			match(T__15);
 			}
@@ -2481,8 +2481,8 @@ public class tigerParser extends Parser {
 	}
 
 	public static class Size_Context extends ParserRuleContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
+		public Expr_listContext expr_list() {
+			return getRuleContext(Expr_listContext.class,0);
 		}
 		public Size_Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2504,7 +2504,7 @@ public class tigerParser extends Parser {
 			setState(357);
 			match(T__49);
 			setState(358);
-			expr();
+			expr_list();
 			setState(359);
 			match(T__15);
 			}
@@ -2521,8 +2521,8 @@ public class tigerParser extends Parser {
 	}
 
 	public static class Not_Context extends ParserRuleContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
+		public Expr_listContext expr_list() {
+			return getRuleContext(Expr_listContext.class,0);
 		}
 		public Not_Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2544,7 +2544,7 @@ public class tigerParser extends Parser {
 			setState(361);
 			match(T__50);
 			setState(362);
-			expr();
+			expr_list();
 			setState(363);
 			match(T__15);
 			}
@@ -2674,17 +2674,17 @@ public class tigerParser extends Parser {
 		"\u013a\3\2\2\2\u0145\u013b\3\2\2\2\u0145\u013c\3\2\2\2\u0145\u013d\3\2"+
 		"\2\2\u0145\u013e\3\2\2\2\u0145\u013f\3\2\2\2\u0145\u0140\3\2\2\2\u0145"+
 		"\u0141\3\2\2\2\u0145\u0142\3\2\2\2\u0145\u0143\3\2\2\2\u0145\u0144\3\2"+
-		"\2\2\u0146=\3\2\2\2\u0147\u0148\7+\2\2\u0148\u0149\5\4\3\2\u0149\u014a"+
-		"\7\22\2\2\u014a?\3\2\2\2\u014b\u014c\7,\2\2\u014c\u014d\5\4\3\2\u014d"+
+		"\2\2\u0146=\3\2\2\2\u0147\u0148\7+\2\2\u0148\u0149\5\30\r\2\u0149\u014a"+
+		"\7\22\2\2\u014a?\3\2\2\2\u014b\u014c\7,\2\2\u014c\u014d\5\30\r\2\u014d"+
 		"\u014e\7\22\2\2\u014eA\3\2\2\2\u014f\u0150\7-\2\2\u0150C\3\2\2\2\u0151"+
-		"\u0152\7.\2\2\u0152\u0153\5\4\3\2\u0153\u0154\7\22\2\2\u0154E\3\2\2\2"+
+		"\u0152\7.\2\2\u0152\u0153\5\30\r\2\u0153\u0154\7\22\2\2\u0154E\3\2\2\2"+
 		"\u0155\u0156\7/\2\2\u0156G\3\2\2\2\u0157\u0158\7\60\2\2\u0158\u0159\5"+
-		"\4\3\2\u0159\u015a\7\22\2\2\u015aI\3\2\2\2\u015b\u015c\7\61\2\2\u015c"+
+		"\30\r\2\u0159\u015a\7\22\2\2\u015aI\3\2\2\2\u015b\u015c\7\61\2\2\u015c"+
 		"\u015d\5\30\r\2\u015d\u015e\7\22\2\2\u015eK\3\2\2\2\u015f\u0160\7\62\2"+
 		"\2\u0160\u0161\5\30\r\2\u0161\u0162\7\22\2\2\u0162M\3\2\2\2\u0163\u0164"+
-		"\7\63\2\2\u0164\u0165\5\4\3\2\u0165\u0166\7\22\2\2\u0166O\3\2\2\2\u0167"+
-		"\u0168\7\64\2\2\u0168\u0169\5\4\3\2\u0169\u016a\7\22\2\2\u016aQ\3\2\2"+
-		"\2\u016b\u016c\7\65\2\2\u016c\u016d\5\4\3\2\u016d\u016e\7\22\2\2\u016e"+
+		"\7\63\2\2\u0164\u0165\5\30\r\2\u0165\u0166\7\22\2\2\u0166O\3\2\2\2\u0167"+
+		"\u0168\7\64\2\2\u0168\u0169\5\30\r\2\u0169\u016a\7\22\2\2\u016aQ\3\2\2"+
+		"\2\u016b\u016c\7\65\2\2\u016c\u016d\5\30\r\2\u016d\u016e\7\22\2\2\u016e"+
 		"S\3\2\2\2\37^fnv{\u0080\u0084\u008d\u0093\u009b\u009d\u00a8\u00b2\u00ba"+
 		"\u00c2\u00d0\u00d2\u00d8\u00e6\u00fa\u0101\u0106\u0110\u0115\u011c\u0127"+
 		"\u0130\u0135\u0145";

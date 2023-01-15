@@ -1,9 +1,9 @@
 package tds;
 import java.util.ArrayList;
 
+
 import ast.*;
 
-//todo : substring 2 int et 1 string ?????
 
 public class TdsCreator implements AstVisitor<String> {
     private int currentImbrication = 0;
@@ -319,14 +319,24 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Whiledo whiledo) {
         currentBlock++;
         currentImbrication++;
+        String c = whiledo.cond.accept(this);
+        if (c == null){
+            return null;
+        }
+        if (!c.equals(Type.INT.toString())){
+            System.out.println("La condition du while doit être un int");
+            return null;
+        }
         Tds tds = new Tds("while", currentBlock, currentImbrication, currentTds);
         tdsList.add(tds);
         currentTds = tds;
-        whiledo.cond.accept(this);
-        whiledo.doBlock.accept(this);
+        String r = whiledo.doBlock.accept(this);
+        if (r == null){
+            return null;
+        }
         currentTds = tds.getParent();
         currentImbrication--;
-        return Type.VOID.toString();
+        return r;
     }
 
     @Override
@@ -336,7 +346,13 @@ public class TdsCreator implements AstVisitor<String> {
         Tds tds = new Tds("for", currentBlock, currentImbrication, currentTds);
         tdsList.add(tds);
         currentTds = tds;
-        for_.expr1.accept(this);
+        Identifier id = (Identifier)for_.idf;
+        String type = for_.expr1.accept(this);
+        if (type == null) {
+            return null;
+        }
+        TdsVariable var = new TdsVariable(id.value, type, 0, currentTds);
+        tds.addElement(var);
         for_.expr2.accept(this);
         for_.expr3.accept(this);
         currentTds = tds.getParent();
@@ -397,7 +413,9 @@ public class TdsCreator implements AstVisitor<String> {
         tdsList.add(tds);
         currentTds = tds;
         let_in_end.block1.accept(this);
-        let_in_end.block2.accept(this);
+        if (let_in_end.block2!=null) {
+            let_in_end.block2.accept(this);
+        }
         currentTds = tds.getParent();
         currentImbrication--;
         return null;
@@ -427,6 +445,9 @@ public class TdsCreator implements AstVisitor<String> {
                     TdsType t1 = findType(type2);
                     if(t1 == null){
                         System.out.println("Erreur : type "+ type2 + " non declare");
+                        currentTds = save;
+                        currentImbrication--;
+                        currentBlock--;
                         return null;
                     }else{
                         TdsArrayType tdsArrayType = new TdsArrayType(id.value,Type.ARRAY.toString(),type2.toUpperCase(),currentTds);
@@ -468,15 +489,14 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Break_ break_) {
-        Tds tdsPere = currentTds;
-        Tds tdsFils = currentTds;
-        while ((tdsPere = tdsFils.getParent()) != null) {
-			if (tdsPere.toString().equals("while") || tdsPere.toString().equals("for")) {
-				return Type.VOID.toString(); }
-            else {
-                tdsFils=tdsPere;
+        // verifier qu'on est dans un for ou un while
+        Tds tds = currentTds;
+        while(tds != null){
+            if(tds.getName().equals("for") || tds.getName().equals("while")){
+                return Type.VOID.toString();
             }
-		}
+            tds = tds.getParent();
+        }
         System.out.println("Break n'est pas autorisé hors des for et while");
 		return null;
     }
@@ -487,39 +507,50 @@ public class TdsCreator implements AstVisitor<String> {
         String expre = print_.expr.accept(this); 
         Expr_list list = (Expr_list)print_.expr;
         ArrayList<Ast> param = list.array;
+        if(expre == null){
+            return null;
+        }
         if(param.size() != 1){
             System.out.println("erreur: print requiert 1 parametre, mais " + param.size() + "paramètres ont ete donnes");
+            return null;
         }
-        if(!expre.equals(Type.STRING.toString())){
-            System.out.println("erreur: print requiert un paramètre dont le type de retour est STRING");
+        for (Ast ast : param) {
+            if(!ast.accept(this).equals(Type.STRING.toString())){
+                System.out.println("erreur: print requiert un paramètre dont le type de retour est string");
+                return null;
+            }
         }
-        return Type.STRING.toString();
+        return Type.VOID.toString();
     
     }
 
     @Override
     public String visit(Printi printi) {
-        // verifier qu'on a bien int et 1 seul paramètre
         String expre = printi.expr.accept(this);
+        // si expre est null on return null
+        // pour chaque vérification , si il ya erreur on return null
         Expr_list list = (Expr_list)printi.expr;
         ArrayList<Ast> param = list.array;
+        if (expre==null){
+            return null;
+        }
         if(param.size() != 1){
             System.out.println("erreur: printi requiert 1 paramètre, mais " + param.size() + "paramètres ont ete donnes");
+            return null;
         }
         if(!expre.equals(Type.INT.toString())){
             System.out.println("erreur: printi requiert un paramètre dont le type de retour est INT");
+            return null;
         }
 
-        return Type.STRING.toString();
+        return Type.VOID.toString();
     }
 
     @Override
     public String visit(Negation negation) {
         String expre = negation.right.accept(this);
-        Expr_list list = (Expr_list)negation.right;  
-        ArrayList<Ast> param = list.array;
-        if(param.size() != 1){
-            System.out.println("erreur: la négation requiert 1 paramètre, mais " + param.size() + "paramètres ont ete donnes");
+        if(expre==null){
+            return null;
         }
         if(!expre.equals(Type.INT.toString())){
             System.out.println("erreur: la  négation s'effectue exclusivement sur des expressions de type INT");
@@ -530,7 +561,9 @@ public class TdsCreator implements AstVisitor<String> {
     @Override
     public String visit(Expr_list expr_list) {
         for (Ast expr : expr_list.array) {
-            expr.accept(this);
+            if(expr.accept(this)==null){
+                return null;
+            }
         }
         return Type.VOID.toString();  
     }
@@ -550,12 +583,14 @@ public class TdsCreator implements AstVisitor<String> {
             ArrayList<String> listParametresAttendus = func.getParameters();
             if(paramFournis.size() != listParametresAttendus.size()){// Vérification du nombre d'arguments
                 System.out.println("Erreur: l'appel de cette fonction requiert "+ listParametresAttendus.size() +" paramètre(s), mais " + paramFournis.size() + "paramètre(s) ont été donné(s)");
+                return null;
             }
             else{
                 for (int i=0;i< paramFournis.size(); i++) {           // Vérification des types d'arguments
                     String param = paramFournis.get(i).accept(this);
                     if( param != listParametresAttendus.get(i)) {         
-                        System.out.println("erreur: l'appel de cette fonction requiert un argument de type"+ listParametresAttendus.get(i) +" mais un argument de type" + param + "a été donné(s)");
+                        System.out.println("erreur: l'appel de cette fonction requiert un argument de type " + listParametresAttendus.get(i) + " à la position " + Integer.toString(i+1)  +" mais un argument de type" + param + "a été donné");
+                        return null;
                     }
                 } 
             }
@@ -574,39 +609,52 @@ public class TdsCreator implements AstVisitor<String> {
         }
         if(!leftIdentifier.equals(rightIdentifier)){
             System.out.println("Erreur : on ne peut pas assigner un type "+rightIdentifier+" à une variable de type "+leftIdentifier);
+            return null;
         }
-        return Type.VOID.toString();
+        return Type.INT.toString();
     }
 
     @Override
     public String visit(IfThenElse ifthenelse) {
-        ifthenelse.left.accept(this);
-        ifthenelse.middle.accept(this);
-        if(ifthenelse.right!=null){
-            ifthenelse.right.accept(this);
+        String left = ifthenelse.left.accept(this);
+        String middle = ifthenelse.middle.accept(this);
+        String returType = middle;
+        if (left == null || middle == null){
+            return null;
         }
-        return null;
+        if(!left.equals(Type.INT.toString())){
+            System.out.println("Erreur: la condition d'un ifthenelse doit etre de type INT");
+            return null;
+        }
+        String right = null;
+        if(ifthenelse.right!=null){
+            right = ifthenelse.right.accept(this);
+            returType = right;
+        }
+        if (right == null){
+            return null;
+        }
+        return returType;
     }
 
     @Override
     public String visit(Substring_ substring) {
         Expr_list list = (Expr_list)substring.right;
         ArrayList<Ast> param = list.array;
+        if(substring.right.accept(this)==null){
+            return null;
+        }
         if(param.size() != 3){
-            System.out.println("erreur: substring requiert 3 parametres, mais seulement " + param.size() + " ont ete donnes");
+            System.out.println("Erreur: substring requiert 3 parametres,  " + param.size() + " ont ete donnes");
+            return null;
         }else{
-            int countint = 0;
-            int countstring = 0;
+            String[] types = {Type.STRING.toString(),Type.INT.toString(),Type.INT.toString()};
             for(int i = 0; i < param.size(); i++){
-                Identifier id = (Identifier)param.get(i);
-                if( id.accept(this) == Type.INT.toString()){
-                    countint++;
-                }else if(id.accept(this) == Type.STRING.toString()){
-                    countstring++;
+                Ast id = param.get(i);
+                if( id.accept(this) != types[i]){
+                    System.out.println("Erreur: substring requiert un parametre de type " + types[i] + " à la position " + Integer.toString(i+1) + " mais un parametre de type " + id.accept(this) + " a été donné");
+                    return null;
                 }
-            }
-            if(!(countint == 2 && countstring ==  1)){
-                System.out.println("erreur: substring requiert de 2 parametres de type int et 1 paramenre de type String ");
             }
         }
         return Type.STRING.toString();
@@ -616,8 +664,12 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Concat_ concat_) {
         Expr_list list = (Expr_list)concat_.right;
         ArrayList<Ast> param = list.array;
+        if(concat_.right.accept(this)==null){
+            return null;
+        }
         if(param.size() != 2){
-            System.out.println("erreur: concat requiert 2 parametres, mais seulement " + param.size() + " ont ete donnes");
+            System.out.println("erreur: concat requiert 2 parametres, mais " + param.size() + " ont ete donnes");
+            return null;
         }else{
             int countstring = 0;
             for(int i = 0; i < param.size(); i++){
@@ -628,6 +680,7 @@ public class TdsCreator implements AstVisitor<String> {
             }
             if(!(countstring ==  2)){
                 System.out.println("erreur: concat requiert de 2 parametres de type string ");
+                return null;
             }
         }
         return Type.STRING.toString();
@@ -637,8 +690,12 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Ord_ ord_) {
         Expr_list list = (Expr_list)ord_.right;
         ArrayList<Ast> param = list.array;
+        if(ord_.right.accept(this)==null){
+            return null;
+        }
         if(param.size() != 1){
-            System.out.println("erreur: ord requiert 1 parametre, mais seulement " + param.size() + " ont ete donnes");
+            System.out.println("erreur: ord requiert 1 parametre, " + param.size() + " ont ete donnes");
+            return null;
         }else{
             int countstring = 0;
             for(int i = 0; i < param.size(); i++){
@@ -649,6 +706,7 @@ public class TdsCreator implements AstVisitor<String> {
             }
             if(!(countstring ==  1)){
                 System.out.println("erreur: ord requiert de 1 paramètres de type string ");
+                return null;
             }
         }
         return Type.INT.toString();
@@ -658,8 +716,12 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Size_ size_) {
         Expr_list list = (Expr_list)size_.right;
         ArrayList<Ast> param = list.array;
+        if (size_.right.accept(this)==null){
+            return null;
+        }
         if(param.size() != 1){
-            System.out.println("erreur: size requiert 1 paraèetre, mais seulement " + param.size() + " ont été donnes");
+            System.out.println("erreur: size requiert 1 paraèetre, " + param.size() + " ont été donnes");
+            return null;
         }else{
             int countstring = 0;
             for(int i = 0; i < param.size(); i++){
@@ -670,6 +732,7 @@ public class TdsCreator implements AstVisitor<String> {
             }
             if(!(countstring ==  1)){
                 System.out.println("erreur: size requiert de 1 paramètres de type string ");
+                return null;
             }
         }
         return Type.INT.toString();
@@ -679,8 +742,12 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Not_ not_) {
         Expr_list list = (Expr_list)not_.right;
         ArrayList<Ast> param = list.array;
+        if(not_.right.accept(this)==null){
+            return null;
+        }
         if(param.size() != 1){
-            System.out.println("erreur: not requiert 1 parametre, mais seulement " + param.size() + " ont ete donnes");
+            System.out.println("erreur: not requiert 1 parametre, mais " + param.size() + " ont ete donnes");
+            return null;
         }else{
             int countint = 0;
             for(int i = 0; i < param.size(); i++){
@@ -691,6 +758,7 @@ public class TdsCreator implements AstVisitor<String> {
             }
             if(!(countint ==  1)){
                 System.out.println("erreur: not requiert de 1 parametres de type int ");
+                return null;
             }
         }
         return Type.INT.toString();
@@ -762,7 +830,21 @@ public class TdsCreator implements AstVisitor<String> {
         String type= null;
         Tds save = currentTds;
         if(variable_declaration.type!=null){
-            type = variable_declaration.type.accept(this);
+            Identifier id2 = (Identifier)variable_declaration.type;
+            type = id2.value;
+            TdsType t = findType(type);
+            if(t == null){
+                System.out.println("Erreur : le type "+ type + " n'existe pas");
+                currentTds=save;
+                return null;
+            }
+            type= t.getName();
+            String type2 = variable_declaration.expr.accept(this);
+            if(type != type2){
+                System.out.println("Erreur : le type de la variable " + name + " n'est pas le même que celui de l'expression associée");
+                currentTds=save;
+                return null;
+            }
         }
         else{
             type = variable_declaration.expr.accept(this);
@@ -785,7 +867,7 @@ public class TdsCreator implements AstVisitor<String> {
         currentBlock++;
         currentImbrication++;
         ArrayList<String> params = new ArrayList<String>();
-        String returnType= null;
+        String returnType= Type.VOID.toString();
         if(function_declaration.paramsOrReturnType!=null){
             if(function_declaration.paramsOrReturnType instanceof Identifier){
                 returnType = function_declaration.paramsOrReturnType.accept(this);
@@ -794,13 +876,15 @@ public class TdsCreator implements AstVisitor<String> {
                 }
             }
             else{
+                Tds save = currentTds;
                 if(function_declaration.paramsOrReturnType.accept(this)!=null){
                     Type_fields e = (Type_fields)function_declaration.paramsOrReturnType;
                     for (Ast f : e.fields) {
-                        params.add(((Identifier)((Field)f).expr).value);
+                        params.add(((Identifier)((Type_field)f).name).value);
                     }
                 }
                 else{
+                    currentTds=save;
                     return null;
                 }
             }
@@ -814,12 +898,16 @@ public class TdsCreator implements AstVisitor<String> {
         Tds tds = new Tds(name, currentBlock, currentImbrication, currentTds);
         currentTds = tds;
         String r = function_declaration.body.accept(this);
+        if (r == null) {
+            return null;
+        }
         if (!r.equals(returnType)) {
             System.out.println("Erreur : la fonction doit retourner un type "+returnType);
+            return null;
         }
-        currentTds.addElement(new TdsFunction(name,params,returnType, currentTds));
         tdsList.add(tds);
         currentTds = tds.getParent();
+        currentTds.addElement(new TdsFunction(name,params,returnType, currentTds));
         currentImbrication--;
         return Type.VOID.toString();
     }

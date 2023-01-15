@@ -58,17 +58,17 @@ variable_declaration : 'var 'IDF(':'IDF)?':='expr;
 function_declaration : 'function' IDF '(' type_fields? ')' (':' IDF)? '=' expr; 
 
 stdlib :print_|printi|flush_|exit_|getchar_|chr_|substring_|concat_|ord_|size_|not_;
-print_ : 'print('expr')';
-printi : 'printi('expr')';
+print_ : 'print('expr_list')';
+printi : 'printi('expr_list')';
 flush_ : 'flush()';
-exit_ : 'exit('expr')';
+exit_ : 'exit('expr_list')';
 getchar_ : 'getchar()';
-chr_ : 'chr('expr')';
-substring_ : 'substring('expr')';
-concat_ : 'concat('expr')';
-ord_ : 'ord('expr')';
-size_ : 'size('expr')';
-not_ : 'not('expr')';
+chr_ : 'chr('expr_list')';
+substring_ : 'substring('expr_list')';
+concat_ : 'concat('expr_list')';
+ord_ : 'ord('expr_list')';
+size_ : 'size('expr_list')';
+not_ : 'not('expr_list')';
 
 IDF : ('a'..'z'|'A'..'Z')(('a'..'z'|'A'..'Z'|'_'|INT)*) ;
 INT : '0'..'9'+;

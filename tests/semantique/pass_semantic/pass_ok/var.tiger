@@ -1,6 +1,0 @@
-let 
-    var N:=8
-
-in
-    N := 0
-end

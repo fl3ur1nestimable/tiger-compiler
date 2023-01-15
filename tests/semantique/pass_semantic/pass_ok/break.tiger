@@ -1,0 +1,10 @@
+
+let
+    var n := 8
+in
+    for index := 0 to 1 do (
+        n := n+1;
+        break
+    )
+end
+

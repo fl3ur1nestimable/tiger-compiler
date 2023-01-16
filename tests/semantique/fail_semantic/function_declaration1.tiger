@@ -1,7 +1,8 @@
-function try() (
-    var N:int
-    
-)
-function try() (
-    var N:int:=0
-)
+
+let
+    function try() = (
+        
+    )
+in
+
+end

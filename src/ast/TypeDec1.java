@@ -6,8 +6,10 @@ public class TypeDec1 implements Ast{
     }
 
     public Ast typefields;
+    public int line;
 
-    public TypeDec1(Ast typefields){
+    public TypeDec1(Ast typefields,int line){
         this.typefields = typefields;
+        this.line = line;
     }
 }

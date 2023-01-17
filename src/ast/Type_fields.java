@@ -8,9 +8,11 @@ public class Type_fields implements Ast {
     }
 
     public ArrayList<Ast> fields;
+    public int line;
 
-    public Type_fields() {
+    public Type_fields(int line) {
         this.fields = new ArrayList<Ast>();
+        this.line=line;
     }
 
     public void addType_field(Ast field) {

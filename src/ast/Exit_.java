@@ -6,10 +6,10 @@ public class Exit_ implements Ast{
     }
 
     public Ast exp;
-    
+    public int line;
 
 
-    public Exit_(Ast exp){
+    public Exit_(Ast exp, int line){
         this.exp=exp;
     }
     

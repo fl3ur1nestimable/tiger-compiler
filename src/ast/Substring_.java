@@ -5,9 +5,11 @@ public class Substring_ implements Ast{
         return visitor.visit(this);
     }
     public Ast right;
+    public int line;
     
-    public Substring_(Ast r){
+    public Substring_(Ast r,int line){
         this.right=r;
+        this.line=line;
     }
 
 }

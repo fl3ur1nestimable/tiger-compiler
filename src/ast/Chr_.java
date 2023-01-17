@@ -6,11 +6,12 @@ public class Chr_ implements Ast{
     }
 
     public Ast exp;
-    
+    public int line;
 
 
-    public Chr_(Ast exp){
+    public Chr_(Ast exp, int line){
         this.exp=exp;
+        this.line=line;
     }
     
 }

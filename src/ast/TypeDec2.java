@@ -7,9 +7,13 @@ public class TypeDec2 implements Ast {
     }
 
     public Ast idf;
+    public int line;
 
-    public TypeDec2(Ast idf) {
+
+
+    public TypeDec2(Ast idf, int line) {
         this.idf = idf;
+        this.line = line;
     }
     
 }

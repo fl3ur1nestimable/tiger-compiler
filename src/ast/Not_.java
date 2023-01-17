@@ -5,9 +5,11 @@ public class Not_ implements Ast{
         return visitor.visit(this);
     }
     public Ast right;
+    public int line;
     
-    public Not_(Ast r){
+    public Not_(Ast r, int line){
         this.right=r;
+        this.line=line;
     }
 
 }

@@ -10,6 +10,7 @@ public class TdsCreator implements AstVisitor<String> {
     private int currentBlock = 0;
     private ArrayList<Tds> tdsList = new ArrayList<Tds>();
     private Tds currentTds;
+    private boolean inFunction = false;
 
     public TdsCreator() {
         currentTds = new Tds("global", currentBlock, currentImbrication, null);
@@ -62,11 +63,11 @@ public class TdsCreator implements AstVisitor<String> {
     public TdsType findType(String name){
         switch (name) {
             case "int":
-                return new TdsType("INT", "INT", currentTds);
+                return new TdsType("int_t", "int_t", currentTds);
             case "string":
-                return new TdsType("STRING", "STRING", currentTds);
+                return new TdsType("string_t", "string_t", currentTds);
             case "nil" :
-                return new TdsType("STRING", "STRING", currentTds);
+                return new TdsType("string_t", "string_t", currentTds);
             default:
                 break;
         }
@@ -90,17 +91,17 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
 
-        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
-            System.out.println("Le or compare deux int");
+        if(!gauche.equals(Type.int_t.toString())||!droit.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + or.line+ " : Le or compare deux int");
             return null;
         }
         
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
     public String visit(Flush_ flush_) {
-        return Type.VOID.toString();
+        return Type.void_t.toString();
     }
 
     @Override
@@ -112,20 +113,20 @@ public class TdsCreator implements AstVisitor<String> {
         Expr_list list = (Expr_list)exit_.exp;
         ArrayList<Ast> param = list.array;
         if (param.size()!=1){
-            System.out.println("exit attend qu'un seul paramètre");
+            System.out.println("Ligne " + exit_.line+ " : exit attend qu'un seul paramètre");
             return null;
         }
 
-        else if(!exp.equals(Type.INT.toString())){
-            System.out.println("exit attend un int comme paramètre");
+        else if(!exp.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + exit_.line+ " : exit attend un int comme paramètre");
             return null;
         }
-        return Type.VOID.toString();
+        return Type.void_t.toString();
     }
 
     @Override
     public String visit(Getchar getchar) {
-        return Type.STRING.toString();
+        return Type.string_t.toString();
     }
 
     @Override
@@ -137,12 +138,12 @@ public class TdsCreator implements AstVisitor<String> {
         Expr_list list = (Expr_list)chr_.exp;
         ArrayList<Ast> param = list.array;
         if (param.size()!=1){
-            System.out.println("chr attend qu'un seul paramètre");
+            System.out.println("Ligne " + chr_.line+ " : chr attend qu'un seul paramètre");
             return null;
         }
 
-        if(!index.equals(Type.INT.toString())){
-            System.out.println("chr attend un int comme paramètre");
+        if(!index.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + chr_.line+ " : chr attend un int comme paramètre");
             return null;
         }
         return null;
@@ -156,11 +157,11 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
 
-        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
-            System.out.println("Le and compare deux int");
+        if(!gauche.equals(Type.int_t.toString())||!droit.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + and.line+ " : Le and compare deux int");
             return null;
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
         
     }
 
@@ -173,10 +174,10 @@ public class TdsCreator implements AstVisitor<String> {
         }
         
         if(!leftIdentifier.equals(rightIdentifier)){
-            System.out.println("<> compare que les objets de même type");
+            System.out.println("Ligne " + compare_equal_1.line+ " : <> compare que les objets de même type");
             return null;
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
@@ -188,10 +189,10 @@ public class TdsCreator implements AstVisitor<String> {
         }
 
         if(!leftIdentifier.equals(rightIdentifier)){
-            System.out.println("== compare que les objets de même type");
+            System.out.println("Ligne " + compare_equal_2.line+ " : == compare que les objets de même type");
             return null;
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
@@ -202,11 +203,11 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
 
-        if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
-            System.out.println(">= compare deux int ou deux String");
+        if(!((leftIdentifier.equals(Type.int_t.toString()) && rightIdentifier.equals(Type.int_t.toString()))||(leftIdentifier.equals(Type.string_t.toString()) && rightIdentifier.equals(Type.string_t.toString())))){
+            System.out.println("Ligne " + greaterThan1.line+ " : >= compare deux int ou deux String");
             return null;
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
@@ -217,11 +218,11 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
 
-        if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
-            System.out.println("> compare deux int ou deux String");
+        if(!((leftIdentifier.equals(Type.int_t.toString()) && rightIdentifier.equals(Type.int_t.toString()))||(leftIdentifier.equals(Type.string_t.toString()) && rightIdentifier.equals(Type.string_t.toString())))){
+            System.out.println("Ligne " + greaterThan2.line+ " : > compare deux int ou deux String");
             return null;
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
@@ -231,11 +232,11 @@ public class TdsCreator implements AstVisitor<String> {
         if (leftIdentifier == null || rightIdentifier == null) {
             return null;
         }
-        if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
-            System.out.println("<= compare deux int ou deux String");
+        if(!((leftIdentifier.equals(Type.int_t.toString()) && rightIdentifier.equals(Type.int_t.toString()))||(leftIdentifier.equals(Type.string_t.toString()) && rightIdentifier.equals(Type.string_t.toString())))){
+            System.out.println("Ligne " + lessThan1.line+ " : <= compare deux int ou deux String");
             return null;
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
@@ -245,11 +246,11 @@ public class TdsCreator implements AstVisitor<String> {
         if (leftIdentifier == null || rightIdentifier == null) {
             return null;
         }
-        if(!((leftIdentifier.equals(Type.INT.toString()) && rightIdentifier.equals(Type.INT.toString()))||(leftIdentifier.equals(Type.STRING.toString()) && rightIdentifier.equals(Type.STRING.toString())))){
-            System.out.println("< compare deux int ou deux String");
+        if(!((leftIdentifier.equals(Type.int_t.toString()) && rightIdentifier.equals(Type.int_t.toString()))||(leftIdentifier.equals(Type.string_t.toString()) && rightIdentifier.equals(Type.string_t.toString())))){
+            System.out.println("Ligne " + lessThan2.line+ " : < compare deux int ou deux String");
             return null;
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
@@ -260,11 +261,11 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
 
-        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
-            System.out.println("+ ne fait des opérations que sur des int");
+        if(!gauche.equals(Type.int_t.toString())||!droit.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + plus.line+ " : + ne fait des opérations que sur des int");
             return null;
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
         
     }
 
@@ -275,12 +276,12 @@ public class TdsCreator implements AstVisitor<String> {
         if (gauche == null || droit == null) {
             return null;
         }
-        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
-            System.out.println("- ne fait des opérations que sur des int");
+        if(!gauche.equals(Type.int_t.toString())||!droit.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + moins.line+ " : - ne fait des opérations que sur des int");
             return null;
         }
 
-        return Type.INT.toString();
+        return Type.int_t.toString();
         
     }
 
@@ -291,12 +292,12 @@ public class TdsCreator implements AstVisitor<String> {
         if (gauche == null || droit == null) {
             return null;
         }
-        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
-            System.out.println("* ne fait des opérations que sur des int");
+        if(!gauche.equals(Type.int_t.toString())||!droit.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + mult.line+ " : * ne fait des opérations que sur des int");
             return null;
         }
 
-        return Type.INT.toString();
+        return Type.int_t.toString();
         
     }
 
@@ -307,12 +308,12 @@ public class TdsCreator implements AstVisitor<String> {
         if (gauche == null || droit == null) {
             return null;
         }
-        if(!gauche.equals(Type.INT.toString())||!droit.equals(Type.INT.toString())){
-            System.out.println("/ ne fait des opérations que sur des int");
+        if(!gauche.equals(Type.int_t.toString())||!droit.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + divide.line+ " : / ne fait des opérations que sur des int");
             return null;
         }
 
-        return Type.INT.toString();
+        return Type.int_t.toString();
         
     }
     @Override
@@ -323,8 +324,8 @@ public class TdsCreator implements AstVisitor<String> {
         if (c == null){
             return null;
         }
-        if (!c.equals(Type.INT.toString())){
-            System.out.println("La condition du while doit être un int");
+        if (!c.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + whiledo.line+ " : Erreur : la condition du while doit être un int");
             return null;
         }
         Tds tds = new Tds("while", currentBlock, currentImbrication, currentTds);
@@ -357,23 +358,23 @@ public class TdsCreator implements AstVisitor<String> {
         for_.expr3.accept(this);
         currentTds = tds.getParent();
         currentImbrication--;
-        return Type.VOID.toString();
+        return Type.void_t.toString();
     }
    //------
     @Override
     public String visit(Identifier identifier) {
        switch (identifier.value) {
         case "int":
-            return Type.INT.toString();
+            return Type.int_t.toString();
         case "string":
-            return Type.STRING.toString();
+            return Type.string_t.toString();
         case "nil":
-            return Type.NIL.toString();
+            return Type.nil_t.toString();
         default:
             TdsVariable var = findVar(identifier.value);
             String returnType = null;
             if (var==null) {
-                System.out.println("Erreur : la variable "+identifier.value+" n'est pas définie");
+                System.out.println("Ligne " + identifier.line+ " : Erreur : la variable "+identifier.value+" n'est pas définie");
             }
             else{
                 returnType = var.getType();
@@ -387,7 +388,7 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Expr_seq expr_seq) {
-        String returnType = Type.VOID.toString();
+        String returnType = Type.void_t.toString();
         for (Ast expr : expr_seq.array) {
             returnType = expr.accept(this);
         }
@@ -427,7 +428,7 @@ public class TdsCreator implements AstVisitor<String> {
         String name = id.value;
         TdsType t = findType(name);
         if (t!=null) {
-            System.out.println("Erreur : double déclaration du type :" + t.getName());
+            System.out.println("Ligne " + type_declaration.line+ " : Erreur : double déclaration du type :" + t.getName());
             return null;
         }
         else{
@@ -438,19 +439,22 @@ public class TdsCreator implements AstVisitor<String> {
             String type = type_declaration.type.accept(this);
             Tds save = currentTds.getParent();
             if(type!=null){
-                if (type==Type.ARRAY.toString()) {
+                if (type==Type.array_t.toString()) {
                     TypeDec2 typeDec2 = (TypeDec2) type_declaration.type;
                     Identifier id2 = (Identifier)typeDec2.idf;
                     String type2 = id2.value;
                     TdsType t1 = findType(type2);
                     if(t1 == null){
-                        System.out.println("Erreur : type "+ type2 + " non declare");
+                        System.out.println("Ligne " + type_declaration.line+ " : Erreur : type "+ type2 + " non declare");
                         currentTds = save;
                         currentImbrication--;
                         currentBlock--;
                         return null;
                     }else{
-                        TdsArrayType tdsArrayType = new TdsArrayType(id.value,Type.ARRAY.toString(),type2.toUpperCase(),currentTds);
+                        if(type2.equals("int")||type2.equals("string")||type2.equals("nil")){
+                            type2+="_t";
+                        }
+                        TdsArrayType tdsArrayType = new TdsArrayType(id.value,Type.array_t.toString(),type2,currentTds);
                         currentTds.addElement(tdsArrayType);
                         save.addElement(tdsArrayType);
                         tdsList.add(typeTds);
@@ -466,25 +470,25 @@ public class TdsCreator implements AstVisitor<String> {
             }
             currentTds = save;
         }
-        return Type.VOID.toString();
+        return Type.void_t.toString();
     }
     
     @Override
     public String visit(StringNode string_node) {
         // on peut afficher directement string
-        return Type.STRING.toString();
+        return Type.string_t.toString();
     }
 
     @Override
     public String visit(IntNode int_node) {
         // on peut afficher directement int
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
     public String visit(Nil nil) {
         // on peut afficher directement int
-        return Type.NIL.toString();
+        return Type.nil_t.toString();
     }
 
     @Override
@@ -493,11 +497,11 @@ public class TdsCreator implements AstVisitor<String> {
         Tds tds = currentTds;
         while(tds != null){
             if(tds.getName().equals("for") || tds.getName().equals("while")){
-                return Type.VOID.toString();
+                return Type.void_t.toString();
             }
             tds = tds.getParent();
         }
-        System.out.println("Break n'est pas autorisé hors des for et while");
+        System.out.println("Ligne " + break_.line+ " : Erreur : break n'est pas autorisé hors des for et while");
 		return null;
     }
 
@@ -511,16 +515,16 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         if(param.size() != 1){
-            System.out.println("erreur: print requiert 1 parametre, mais " + param.size() + "paramètres ont ete donnes");
+            System.out.println("Ligne " + print_.line+ " : Erreur : print requiert 1 parametre, mais " + param.size() + "paramètres ont ete donnes");
             return null;
         }
         for (Ast ast : param) {
-            if(!ast.accept(this).equals(Type.STRING.toString())){
-                System.out.println("erreur: print requiert un paramètre dont le type de retour est string");
+            if(!ast.accept(this).equals(Type.string_t.toString())){
+                System.out.println("Ligne " + print_.line+ " : Erreur : print requiert un paramètre dont le type de retour est string");
                 return null;
             }
         }
-        return Type.VOID.toString();
+        return Type.void_t.toString();
     
     }
 
@@ -535,15 +539,15 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         if(param.size() != 1){
-            System.out.println("erreur: printi requiert 1 paramètre, mais " + param.size() + "paramètres ont ete donnes");
+            System.out.println("Ligne " + printi.line + " : " + "Erreur : printi requiert 1 paramètre, mais " + param.size() + "paramètres ont ete donnes");
             return null;
         }
-        if(!expre.equals(Type.INT.toString())){
-            System.out.println("erreur: printi requiert un paramètre dont le type de retour est INT");
+        if(!expre.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + printi.line + " : " + "Erreur : printi requiert un paramètre dont le type de retour est int_t");
             return null;
         }
 
-        return Type.VOID.toString();
+        return Type.void_t.toString();
     }
 
     @Override
@@ -552,10 +556,10 @@ public class TdsCreator implements AstVisitor<String> {
         if(expre==null){
             return null;
         }
-        if(!expre.equals(Type.INT.toString())){
-            System.out.println("erreur: la  négation s'effectue exclusivement sur des expressions de type INT");
+        if(!expre.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + negation.line + " : " + "Erreur : la  négation s'effectue exclusivement sur des expressions de type int_t");
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
@@ -565,7 +569,7 @@ public class TdsCreator implements AstVisitor<String> {
                 return null;
             }
         }
-        return Type.VOID.toString();  
+        return Type.void_t.toString();  
     }
 
      //-------------------------------------------
@@ -575,21 +579,21 @@ public class TdsCreator implements AstVisitor<String> {
         String name = id.value;
         TdsFunction func = findFunc(name);
         if (func==null) {//Vérification de l'existence de la fonction
-            System.out.println("Erreur : la fonction " + name + " n'est pas définie");
+            System.out.println("Ligne " + functionCall.line + " : " + "Erreur : la fonction " + name + " n'est pas définie");
             return null;
         }else{
             Expr_list list = (Expr_list)functionCall.right; 
             ArrayList<Ast> paramFournis = list.array;
             ArrayList<String> listParametresAttendus = func.getParameters();
             if(paramFournis.size() != listParametresAttendus.size()){// Vérification du nombre d'arguments
-                System.out.println("Erreur: l'appel de cette fonction requiert "+ listParametresAttendus.size() +" paramètre(s), mais " + paramFournis.size() + "paramètre(s) ont été donné(s)");
+                System.out.println("Ligne " + functionCall.line + " : " + "Erreur : l'appel de cette fonction requiert "+ listParametresAttendus.size() +" paramètre(s), mais " + paramFournis.size() + " paramètre(s) ont été donné(s)");
                 return null;
             }
             else{
                 for (int i=0;i< paramFournis.size(); i++) {           // Vérification des types d'arguments
                     String param = paramFournis.get(i).accept(this);
-                    if( param != listParametresAttendus.get(i)) {         
-                        System.out.println("erreur: l'appel de cette fonction requiert un argument de type " + listParametresAttendus.get(i) + " à la position " + Integer.toString(i+1)  +" mais un argument de type" + param + "a été donné");
+                    if( !param.equals(listParametresAttendus.get(i))) {         
+                        System.out.println("Ligne " + functionCall.line + " : " + "Erreur : l'appel de cette fonction requiert un argument de type " + listParametresAttendus.get(i) + " à la position " + Integer.toString(i+1)  +" mais un argument de type " + param + " a été donné");
                         return null;
                     }
                 } 
@@ -608,10 +612,10 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         if(!leftIdentifier.equals(rightIdentifier)){
-            System.out.println("Erreur : on ne peut pas assigner un type "+rightIdentifier+" à une variable de type "+leftIdentifier);
+            System.out.println("Ligne " + assignement.line + " : " + "Erreur : on ne peut pas assigner un type "+rightIdentifier+" à une variable de type "+leftIdentifier);
             return null;
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
@@ -622,8 +626,8 @@ public class TdsCreator implements AstVisitor<String> {
         if (left == null || middle == null){
             return null;
         }
-        if(!left.equals(Type.INT.toString())){
-            System.out.println("Erreur: la condition d'un ifthenelse doit etre de type INT");
+        if(!left.equals(Type.int_t.toString())){
+            System.out.println("Ligne " + ifthenelse.line + " : " + "Erreur : la condition d'un ifthenelse doit etre de type int_t");
             return null;
         }
         String right = null;
@@ -645,19 +649,19 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         if(param.size() != 3){
-            System.out.println("Erreur: substring requiert 3 parametres,  " + param.size() + " ont ete donnes");
+            System.out.println("Ligne " + substring.line + " : " + "Erreur : substring requiert 3 parametres,  " + param.size() + " ont ete donnes");
             return null;
         }else{
-            String[] types = {Type.STRING.toString(),Type.INT.toString(),Type.INT.toString()};
+            String[] types = {Type.string_t.toString(),Type.int_t.toString(),Type.int_t.toString()};
             for(int i = 0; i < param.size(); i++){
                 Ast id = param.get(i);
                 if( id.accept(this) != types[i]){
-                    System.out.println("Erreur: substring requiert un parametre de type " + types[i] + " à la position " + Integer.toString(i+1) + " mais un parametre de type " + id.accept(this) + " a été donné");
+                    System.out.println("Ligne " + substring.line + " : " + "Erreur : substring requiert un parametre de type " + types[i] + " à la position " + Integer.toString(i+1) + " mais un parametre de type " + id.accept(this) + " a été donné");
                     return null;
                 }
             }
         }
-        return Type.STRING.toString();
+        return Type.string_t.toString();
     }
 
     @Override
@@ -668,22 +672,22 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         if(param.size() != 2){
-            System.out.println("erreur: concat requiert 2 parametres, mais " + param.size() + " ont ete donnes");
+            System.out.println("Ligne " + concat_.line + " : " + "Erreur : concat requiert 2 parametres, mais " + param.size() + " ont ete donnes");
             return null;
         }else{
             int countstring = 0;
             for(int i = 0; i < param.size(); i++){
-                Identifier id = (Identifier)param.get(i);
-                if(id.accept(this) == Type.STRING.toString()){
+                Ast  id  = param.get(i);
+                if(id.accept(this) == Type.string_t.toString()){
                     countstring++;
                 }
             }
             if(!(countstring ==  2)){
-                System.out.println("erreur: concat requiert de 2 parametres de type string ");
+                System.out.println("Ligne " + concat_.line + " : " + "Erreur : concat requiert de 2 parametres de type string ");
                 return null;
             }
         }
-        return Type.STRING.toString();
+        return Type.string_t.toString();
     }
 
     @Override
@@ -694,22 +698,22 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         if(param.size() != 1){
-            System.out.println("erreur: ord requiert 1 parametre, " + param.size() + " ont ete donnes");
+            System.out.println("Ligne " + ord_.line + " : " + "Erreur : ord requiert 1 parametre, " + param.size() + " ont ete donnes");
             return null;
         }else{
             int countstring = 0;
             for(int i = 0; i < param.size(); i++){
-                Identifier id = (Identifier)param.get(i);
-                if(id.accept(this) == Type.STRING.toString()){
+                Ast  id  = param.get(i);
+                if(id.accept(this) == Type.string_t.toString()){
                     countstring++;
                 }
             }
             if(!(countstring ==  1)){
-                System.out.println("erreur: ord requiert de 1 paramètres de type string ");
+                System.out.println("Ligne " + ord_.line + " : " + "Erreur : ord requiert de 1 paramètres de type string ");
                 return null;
             }
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
@@ -720,22 +724,22 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         if(param.size() != 1){
-            System.out.println("erreur: size requiert 1 paraèetre, " + param.size() + " ont été donnes");
+            System.out.println("Ligne " + size_.line + " : " + "Erreur : size requiert 1 paraèetre, " + param.size() + " ont été donnes");
             return null;
         }else{
             int countstring = 0;
             for(int i = 0; i < param.size(); i++){
-                Identifier id = (Identifier)param.get(i);
-                if(id.accept(this) == Type.STRING.toString()){
+                Ast  id  = param.get(i);
+                if(id.accept(this) == Type.string_t.toString()){
                     countstring++;
                 }
             }
             if(!(countstring ==  1)){
-                System.out.println("erreur: size requiert de 1 paramètres de type string ");
+                System.out.println("Ligne " + size_.line + " : " + "Erreur : size requiert de 1 paramètres de type string ");
                 return null;
             }
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
 
     @Override
@@ -746,22 +750,22 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         if(param.size() != 1){
-            System.out.println("erreur: not requiert 1 parametre, mais " + param.size() + " ont ete donnes");
+            System.out.println("Ligne " + not_.line + " : " + "Erreur : not requiert 1 parametre, mais " + param.size() + " ont ete donnes");
             return null;
         }else{
             int countint = 0;
             for(int i = 0; i < param.size(); i++){
-                Identifier id = (Identifier)param.get(i);
-                if(id.accept(this) == Type.INT.toString()){
+                Ast  id  = param.get(i);
+                if(id.accept(this) == Type.int_t.toString()){
                     countint++;
                 }
             }
             if(!(countint ==  1)){
-                System.out.println("erreur: not requiert de 1 parametres de type int ");
+                System.out.println("Ligne " + not_.line + " : " + "Erreur : not requiert de 1 parametres de type int ");
                 return null;
             }
         }
-        return Type.INT.toString();
+        return Type.int_t.toString();
     }
      
     @Override
@@ -769,12 +773,12 @@ public class TdsCreator implements AstVisitor<String> {
         if(typeDec1.typefields.accept(this) == null){
             return null;
         }
-        return Type.RECORD.toString();
+        return Type.record_t.toString();
     }
      
     @Override
     public String visit(TypeDec2 typeDec2) {
-        return Type.ARRAY.toString();
+        return Type.array_t.toString();
     }
      
     @Override
@@ -784,38 +788,43 @@ public class TdsCreator implements AstVisitor<String> {
                     return null;
                 }
         }
-        return Type.VOID.toString();
+        return Type.void_t.toString();
     }
-     
+    
     @Override
     public String visit(Type_field type_field) {
         String id = ((Identifier)type_field.name).value;
         if (currentTds.contains(id)) {
-            System.out.println("Erreur : duplication du champ "+ id);
+            System.out.println("Ligne " + type_field.line + " : " + "Erreur : duplication du champ "+ id);
             return null;
         }else{
             Identifier id2 = (Identifier)type_field.type;
             String type = id2.value;
             TdsType t = findType(type);
             if(t == null){
-                System.out.println("Erreur : le type "+ type + " n'existe pas");
+                System.out.println("Ligne " + type_field.line + " : " + "Erreur : le type "+ type + " n'existe pas");
                 return null;
             }
             switch(type){
                 case "int":
-                    type = Type.INT.toString();
+                    type = Type.int_t.toString();
                     break;
                 case "string":
-                    type = Type.STRING.toString();
+                    type = Type.string_t.toString();
                     break;
                 case "nil": 
-                    type = Type.NIL.toString();
+                    type = Type.nil_t.toString();
                     break;
             }
-            TdsTypeField f = new TdsTypeField(id,type, currentTds);
-            currentTds.addElement(f);
+            if(inFunction){
+                TdsVariable f = new TdsVariable(id,type,0, currentTds);
+                currentTds.addElement(f);
+            }else{
+                TdsTypeField f = new TdsTypeField(id,type, currentTds);
+                currentTds.addElement(f);
+            }
         }
-        return Type.VOID.toString();
+        return Type.void_t.toString();
     }
      //------------------------------------------
     @Override
@@ -824,7 +833,7 @@ public class TdsCreator implements AstVisitor<String> {
         String name = id.value;
         TdsVariable var = findVar(name);
         if (var != null) {
-            System.out.println("Erreur : double déclaration de la variable " + var.getName());
+            System.out.println("Ligne " + variable_declaration.line + " : " + "Erreur : double déclaration de la variable " + var.getName());
             return null;
         }
         String type= null;
@@ -834,14 +843,14 @@ public class TdsCreator implements AstVisitor<String> {
             type = id2.value;
             TdsType t = findType(type);
             if(t == null){
-                System.out.println("Erreur : le type "+ type + " n'existe pas");
+                System.out.println("Ligne " + variable_declaration.line + " : " + "Erreur : le type "+ type + " n'existe pas");
                 currentTds=save;
                 return null;
             }
             type= t.getName();
             String type2 = variable_declaration.expr.accept(this);
             if(type != type2){
-                System.out.println("Erreur : le type de la variable " + name + " n'est pas le même que celui de l'expression associée");
+                System.out.println("Ligne " + variable_declaration.line + " : " + "Erreur : le type de la variable " + name + " n'est pas le même que celui de l'expression associée");
                 currentTds=save;
                 return null;
             }
@@ -853,38 +862,49 @@ public class TdsCreator implements AstVisitor<String> {
         if(type!=null){
             currentTds.addElement(new TdsVariable(name, type, 0, currentTds));
         }
-        return Type.VOID.toString();
+        return Type.void_t.toString();
     }
      //-------------------------------------------
     @Override
     public String visit(Function_declaration function_declaration) {
+        inFunction = true;
         String name = ((Identifier)function_declaration.name).value;
         TdsFunction func = findFunc(name);
         if (func != null) {
-            System.out.println("Erreur : double déclaration de la fonction " + func.getName());
+            System.out.println("Ligne " + function_declaration.line + " : " + "Erreur : double déclaration de la fonction " + func.getName());
+            inFunction = false;
             return null;
         }
         currentBlock++;
         currentImbrication++;
+        Tds save = currentTds;
+        Tds tds = new Tds(name, currentBlock, currentImbrication, currentTds);
+        currentTds = tds;
         ArrayList<String> params = new ArrayList<String>();
-        String returnType= Type.VOID.toString();
+        String returnType= Type.void_t.toString();
         if(function_declaration.paramsOrReturnType!=null){
             if(function_declaration.paramsOrReturnType instanceof Identifier){
                 returnType = function_declaration.paramsOrReturnType.accept(this);
                 if(returnType==null){
+                    currentTds=save;
+                    inFunction = false;
                     return null;
                 }
             }
             else{
-                Tds save = currentTds;
                 if(function_declaration.paramsOrReturnType.accept(this)!=null){
                     Type_fields e = (Type_fields)function_declaration.paramsOrReturnType;
                     for (Ast f : e.fields) {
-                        params.add(((Identifier)((Type_field)f).name).value);
+                        String t = ((Identifier)((Type_field)f).type).value;
+                        if(t.equals("int") || t.equals("string") || t.equals("nil")){
+                            t+= "_t";
+                        }
+                        params.add(t);
                     }
                 }
                 else{
                     currentTds=save;
+                    inFunction = false;
                     return null;
                 }
             }
@@ -892,24 +912,31 @@ public class TdsCreator implements AstVisitor<String> {
         if(function_declaration.return_type!=null){
             returnType = function_declaration.return_type.accept(this);
             if(returnType==null){
+                currentTds=save;
+                inFunction = false;
                 return null;
             }
         }
-        Tds tds = new Tds(name, currentBlock, currentImbrication, currentTds);
-        currentTds = tds;
         String r = function_declaration.body.accept(this);
         if (r == null) {
+            currentTds=save;
+            inFunction = false;
             return null;
         }
-        if (!r.equals(returnType)) {
-            System.out.println("Erreur : la fonction doit retourner un type "+returnType);
+        if (!r.equals(returnType) && !returnType.equals(Type.void_t.toString())) {
+            System.out.println("Ligne " + function_declaration.line + " : " + "Erreur : la fonction doit retourner un type "+returnType);
+            currentTds=save;
+            inFunction = false;
             return null;
+        }else{
+            returnType = r;
         }
         tdsList.add(tds);
         currentTds = tds.getParent();
         currentTds.addElement(new TdsFunction(name,params,returnType, currentTds));
         currentImbrication--;
-        return Type.VOID.toString();
+        inFunction = false;
+        return Type.void_t.toString();
     }
      //-------------------------------------------
 
@@ -917,7 +944,7 @@ public class TdsCreator implements AstVisitor<String> {
     public String visit(Field field) {
         String name = ((Identifier)field.name).value;
         if (!currentTds.contains(name)) {
-            System.out.println("Erreur : le champ " + name + " n'existe pas pour la structure "+currentTds.getElements().get(0).getName() );
+            System.out.println("Ligne " + field.line + " : " + "Erreur : le champ " + name + " n'existe pas pour la structure "+currentTds.getElements().get(0).getName() );
             return null;
         }else{
             String type = field.expr.accept(this);
@@ -925,18 +952,18 @@ public class TdsCreator implements AstVisitor<String> {
                 return null;
             }else{
                 if (!currentTds.getElement(name).getType().equals(type)) {
-                    System.out.println("Erreur : le champ "+name+" doit être de type "+ currentTds.getElement(name).getType());
+                    System.out.println("Ligne " + field.line + " : " + "Erreur : le champ "+name+" doit être de type "+ currentTds.getElement(name).getType());
                     return null;
                 }
             }
         }
-        return Type.VOID.toString();
+        return Type.void_t.toString();
     }
      //-----------------------------------------
     @Override
     public String visit(Field_list field_list) {
         if(currentTds.getElements().size()-1!=field_list.fields.size()){
-            System.out.println("Erreur : la structure " + currentTds.getElements().get(currentTds.getElements().size()-1).getName() +" possède " + Integer.toString(currentTds.getElements().size()-1) +" champs");
+            System.out.println("Ligne " + field_list.line + " : " + "Erreur : la structure " + currentTds.getElements().get(currentTds.getElements().size()-1).getName() +" possède " + Integer.toString(currentTds.getElements().size()-1) +" champs");
             return null;
         }
         for (Ast f : field_list.fields) {
@@ -944,7 +971,7 @@ public class TdsCreator implements AstVisitor<String> {
                 return null;
             }
         }
-        return Type.VOID.toString();
+        return Type.void_t.toString();
     }
 
      //-----------------------------------------
@@ -954,60 +981,50 @@ public class TdsCreator implements AstVisitor<String> {
         if (left == null) {
             return null;
         }
-        Identifier idr = (Identifier)accessId.rigth;
-        String right = idr.value;
-        String id = ((Identifier)(accessId.left)).value;
-        TdsType tdsType = findType(findVar(id).getType());
-        if (left.equals(Type.RECORD.toString()) ||(tdsType!=null && tdsType.getType().equals(Type.RECORD.toString()))) {  //  verifier que c'est une variable qui existe
-            Tds tds = getTds(findType(findVar(id).getType()).getName()+"_t");
-            if(tds==null){
-                System.out.println("Erreur : la structure "+id+" n'existe pas");
+        TdsType tdsType = findType(left);
+        if(!(tdsType instanceof TdsType) || tdsType instanceof TdsArrayType){
+            System.out.println("Ligne " + accessId.line + " : " + "Erreur : la variable de type " + left + " n'est pas une structure");
+            return null;
+        }else{
+            String right = ((Identifier)accessId.rigth).value;
+            Tds t = getTds(left+"_t");
+            if(t==null){
                 return null;
-
+            }
+            if (!t.contains(right)) {
+                System.out.println("Ligne " + accessId.line + " : " + "Erreur : le champ " + right + " n'existe pas pour la structure "+left);
+                return null;
             }else{
-                if (tds.contains(right)){
-                        return tds.getElement(right).getType().toString();
-                    }               
-                
-                System.out.println("Erreur : le champ " + right + " n'existe pas pour " + left);
-                return null;
-            } 
-        }
-        else{
-            System.out.println("Erreur : la variable " + id + " n'est pas une structure");
-        }
-        return null;         
+                return t.getElement(right).getType();
+            }
+        }   
+
+                 
     }
 
      //-----------------------------------------
     @Override
     public String visit(AccessIndex accessIndex) {
         String left = accessIndex.left.accept(this);
-        String right = accessIndex.rigth.accept(this);
-        if (left == null || right == null) {
+        if (left == null) {
             return null;
         }
-        String id = ((Identifier)(accessIndex.left)).value;
-        TdsType tdsType = findType(findVar(id).getType());
-        if (left.equals(Type.ARRAY.toString()) || (tdsType!=null && tdsType.getType().equals(Type.ARRAY.toString()))) {  //  verifier que c'est un tableau qui existe
-            String type = findType(findVar(id).getType()).getName();
-            Tds tds = getTds(type +"_t");
-            if(tds==null){
-                System.out.println("Erreur : le tableau "+id+" n'existe pas");
+        TdsType tdsType = findType(left);
+        if(!(tdsType instanceof TdsArrayType)){
+            System.out.println("Ligne " + accessIndex.line + " : " + "Erreur : la variable de type " + left + " n'est pas un tableau");
+            return null;
+        }else{
+            String right = accessIndex.rigth.accept(this);
+            if(right==null){
                 return null;
-            }else {
-                                            //  verifier que right est bien de type int     
-                if (right.equals(Type.INT.toString())){
-                    return ((TdsArrayType)tds.getElement(type)).getBaseType();
-                }
-                System.out.println("Erreur : l'indice doit être de type int");
-                return null;    
-            }               
+            }
+            if(!right.equals(Type.int_t.toString())){
+                System.out.println("Ligne " + accessIndex.line + " : " + "Erreur : l'indice doit être de type entier");
+                return null;
+            }else{
+                return ((TdsArrayType)tdsType).getBaseType();
+            }
         }
-        else{
-            System.out.println("Erreur : la variable " + id + " n'est pas un tableau");
-        }      
-        return null;
     }
     
      //-----------------------------------------
@@ -1017,14 +1034,14 @@ public class TdsCreator implements AstVisitor<String> {
         String name = id.value;
         TdsType type = findType(name);
         if (type==null) {
-            System.out.println("Erreur : le type "+name+" n'est pas défini" );
+            System.out.println("Ligne " + recordDec.line + " : " + "Erreur : le type "+name+" n'est pas défini" );
             return null;
         }
         else{
             Tds tds = getTds(name+"_t");
             TdsType e = (TdsType)tds.getElement(name);
-                if (!e.getType().equals(Type.RECORD.toString())) {
-                    System.out.println("Erreur : " + id + " n'est pas un type de structure");
+                if (!e.getType().equals(Type.record_t.toString())) {
+                    System.out.println("Ligne " + recordDec.line + " : " + "Erreur : " + id + " n'est pas un type de structure");
                     return null;
                 }
                 else{
@@ -1044,7 +1061,7 @@ public class TdsCreator implements AstVisitor<String> {
         String name = id.value;
         TdsType type = findType(name);
         if (type==null) {
-            System.out.println("Erreur : le type "+name+" n'est pas défini" );
+            System.out.println("Ligne " + arrayDec.line + " : " + "Erreur : le type "+name+" n'est pas défini" );
             return null;
         }
         else{
@@ -1053,21 +1070,21 @@ public class TdsCreator implements AstVisitor<String> {
                 System.out.println("tds null");
             }
             TdsType e = (TdsType)tds.getElement(name);
-                if (!e.getType().equals(Type.ARRAY.toString())) {
-                    System.out.println("Erreur : " + id + " n'est pas un type de tableau");
+                if (!e.getType().equals(Type.array_t.toString())) {
+                    System.out.println("Ligne " + arrayDec.line + " : " + "Erreur : " + id + " n'est pas un type de tableau");
                     return null;
                 }
         }
         String size = arrayDec.expr1.accept(this);
-        if (!size.equals(Type.INT.toString())) {
-            System.out.println("Erreur : la taille d'un array doit être de type int");
+        if (!size.equals(Type.int_t.toString())) {
+            System.out.println("Ligne " + arrayDec.line + " : " + "Erreur : la taille d'un array doit être de type int");
             return null;
         }
         String base = arrayDec.expr2.accept(this);
         Tds tds = getTds(name+"_t");
         TdsArrayType e = (TdsArrayType)tds.getElement(name);
         if(!e.getBaseType().equals(base)){
-            System.out.println("Erreur : le type " + base + " ne correspond pas au type " + e.getBaseType() + " de " +name);
+            System.out.println("Ligne " + arrayDec.line + " : " + "Erreur : le type " + base + " ne correspond pas au type " + e.getBaseType() + " de " +name);
             return null;
         }
         return name;

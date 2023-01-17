@@ -7,10 +7,12 @@ public class Type_declaration implements Ast {
 
     public Ast idf;
     public Ast type;
+    public int line;
 
-    public Type_declaration(Ast idf, Ast type){
+    public Type_declaration(Ast idf, Ast type, int line){
         this.idf=idf;
         this.type=type;
+        this.line=line;
     }
     
 }

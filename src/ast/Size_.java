@@ -5,9 +5,11 @@ public class Size_ implements Ast{
         return visitor.visit(this);
     }
     public Ast right;
+    public int line;
     
-    public Size_(Ast r){
+    public Size_(Ast r, int line){
         this.right=r;
+        this.line=line;
     }
 
 }

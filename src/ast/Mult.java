@@ -7,9 +7,11 @@ public class Mult implements Ast {
 
     public Ast left;
     public Ast rigth;
+    public int line;
 
-    public Mult(Ast l, Ast r){
+    public Mult(Ast l, Ast r, int line){
         this.left=l;
         this.rigth=r;
+        this.line=line;
     }
 }

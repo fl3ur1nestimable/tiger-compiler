@@ -6,9 +6,10 @@ public class Print_ implements Ast{
     }
    
     public Ast expr;
+    public int line;
 
-    public Print_(Ast expr){
-     
+    public Print_(Ast expr,int line){
+        this.line=line;
         this.expr=expr;
     }
 }

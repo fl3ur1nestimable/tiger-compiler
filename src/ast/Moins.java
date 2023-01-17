@@ -7,9 +7,11 @@ public class Moins implements Ast{
 
     public Ast left;
     public Ast rigth;
+    public int line;
 
-    public Moins(Ast l, Ast r){
+    public Moins(Ast l, Ast r,int line){
         this.left=l;
         this.rigth=r;
+        this.line=line;
     }
 }

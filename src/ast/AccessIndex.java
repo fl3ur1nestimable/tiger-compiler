@@ -7,10 +7,12 @@ public class AccessIndex implements Ast {
 
     public Ast rigth;
     public Ast left;
+    public int line;
 
-    public AccessIndex(Ast l, Ast r) {
+    public AccessIndex(Ast l, Ast r,int line) {
         this.rigth=r;
         this.left=l;
+        this.line=line;
     }
 
     @Override

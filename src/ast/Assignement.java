@@ -6,10 +6,12 @@ public class Assignement implements Ast{
     }
     public Ast right;
     public Ast left;
+    public int line;
 
-    public Assignement(Ast left, Ast right){
+    public Assignement(Ast left, Ast right, int line){
         this.left=left;
         this.right=right;
+        this.line=line;
     }
 
 }

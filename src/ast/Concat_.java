@@ -6,9 +6,11 @@ public class Concat_ implements Ast{
         return visitor.visit(this);
     }
     public Ast right;
+    public int line;
     
-    public Concat_(Ast r){
+    public Concat_(Ast r, int line){
         this.right=r;
+        this.line=line;
     }
 
 }

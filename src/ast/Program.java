@@ -6,8 +6,10 @@ public class Program implements Ast {
     }
 
     public Ast expr;
+    public int line;
 
-    public Program(Ast e){
+    public Program(Ast e, int line){
         this.expr=e;
+        this.line=line;
     }
 }

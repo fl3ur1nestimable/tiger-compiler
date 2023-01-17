@@ -7,9 +7,11 @@ public class Compare_equal_1 implements Ast {
 
     public Ast left;
     public Ast rigth;
+    public int line;
 
-    public Compare_equal_1(Ast l, Ast r){
+    public Compare_equal_1(Ast l, Ast r,int line){
         this.left=l;
         this.rigth=r;
+        this.line=line;
     }
 }

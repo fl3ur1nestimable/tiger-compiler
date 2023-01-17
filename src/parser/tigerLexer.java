@@ -1,4 +1,4 @@
-// Generated from tiger.g by ANTLR 4.9.2
+// Generated from ./tiger.g by ANTLR 4.9.2
 
     package parser;
 

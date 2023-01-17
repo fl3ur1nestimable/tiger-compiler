@@ -1,4 +1,4 @@
-// Generated from tiger.g by ANTLR 4.9.2
+// Generated from ./tiger.g by ANTLR 4.9.2
 
     package parser;
 
@@ -132,6 +132,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_program; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitProgram(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ProgramContext program() throws RecognitionException {
@@ -165,6 +170,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expr; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitExpr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExprContext expr() throws RecognitionException {
@@ -199,6 +209,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_or; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitOr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final OrContext or() throws RecognitionException {
@@ -252,6 +267,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_and; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitAnd(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AndContext and() throws RecognitionException {
@@ -305,6 +325,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_compare; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitCompare(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final CompareContext compare() throws RecognitionException {
@@ -367,6 +392,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_plus; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitPlus(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PlusContext plus() throws RecognitionException {
@@ -435,6 +465,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_mult; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitMult(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MultContext mult() throws RecognitionException {
@@ -527,15 +562,30 @@ public class tigerParser extends Parser {
 	}
 	public static class NilContext extends ValueContext {
 		public NilContext(ValueContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitNil(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class Break_Context extends ValueContext {
 		public Break_Context(ValueContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitBreak_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class ParenthesesContext extends ValueContext {
 		public Expr_seqContext expr_seq() {
 			return getRuleContext(Expr_seqContext.class,0);
 		}
 		public ParenthesesContext(ValueContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitParentheses(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class TypeInstanceContext extends ValueContext {
 		public TerminalNode IDF() { return getToken(tigerParser.IDF, 0); }
@@ -549,14 +599,29 @@ public class tigerParser extends Parser {
 			return getRuleContext(Field_listContext.class,0);
 		}
 		public TypeInstanceContext(ValueContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitTypeInstance(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class StringNodeContext extends ValueContext {
 		public TerminalNode STRING() { return getToken(tigerParser.STRING, 0); }
 		public StringNodeContext(ValueContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitStringNode(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class IntNodeContext extends ValueContext {
 		public TerminalNode INT() { return getToken(tigerParser.INT, 0); }
 		public IntNodeContext(ValueContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitIntNode(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ValueContext value() throws RecognitionException {
@@ -710,6 +775,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_instruction; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitInstruction(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final InstructionContext instruction() throws RecognitionException {
@@ -803,6 +873,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_negation; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitNegation(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final NegationContext negation() throws RecognitionException {
@@ -839,6 +914,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expr_seq; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitExpr_seq(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Expr_seqContext expr_seq() throws RecognitionException {
@@ -890,6 +970,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expr_list; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitExpr_list(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Expr_listContext expr_list() throws RecognitionException {
@@ -941,6 +1026,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_field_list; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitField_list(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Field_listContext field_list() throws RecognitionException {
@@ -990,6 +1080,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_field; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitField(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final FieldContext field() throws RecognitionException {
@@ -1032,6 +1127,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_lvalue; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitLvalue(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LvalueContext lvalue() throws RecognitionException {
@@ -1099,6 +1199,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_functionCall; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitFunctionCall(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final FunctionCallContext functionCall() throws RecognitionException {
@@ -1148,6 +1253,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignement; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitAssignement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AssignementContext assignement() throws RecognitionException {
@@ -1186,6 +1296,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ifthenelse; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitIfthenelse(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final IfthenelseContext ifthenelse() throws RecognitionException {
@@ -1238,6 +1353,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_whiledo; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitWhiledo(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final WhiledoContext whiledo() throws RecognitionException {
@@ -1279,6 +1399,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_for_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitFor_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final For_Context for_() throws RecognitionException {
@@ -1327,6 +1452,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_let_in_end; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitLet_in_end(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Let_in_endContext let_in_end() throws RecognitionException {
@@ -1378,6 +1508,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_declaration_list; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitDeclaration_list(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Declaration_listContext declaration_list() throws RecognitionException {
@@ -1428,6 +1563,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_declaration; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DeclarationContext declaration() throws RecognitionException {
@@ -1482,6 +1622,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type_declaration; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitType_declaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Type_declarationContext type_declaration() throws RecognitionException {
@@ -1525,16 +1670,31 @@ public class tigerParser extends Parser {
 	public static class IdentifierContext extends TypeContext {
 		public TerminalNode IDF() { return getToken(tigerParser.IDF, 0); }
 		public IdentifierContext(TypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitIdentifier(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class TypeDec1Context extends TypeContext {
 		public Type_fieldsContext type_fields() {
 			return getRuleContext(Type_fieldsContext.class,0);
 		}
 		public TypeDec1Context(TypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitTypeDec1(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class TypeDec2Context extends TypeContext {
 		public TerminalNode IDF() { return getToken(tigerParser.IDF, 0); }
 		public TypeDec2Context(TypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitTypeDec2(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TypeContext type() throws RecognitionException {
@@ -1609,6 +1769,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type_fields; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitType_fields(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Type_fieldsContext type_fields() throws RecognitionException {
@@ -1658,6 +1823,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type_field; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitType_field(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Type_fieldContext type_field() throws RecognitionException {
@@ -1697,6 +1867,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_variable_declaration; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitVariable_declaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Variable_declarationContext variable_declaration() throws RecognitionException {
@@ -1754,6 +1929,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_function_declaration; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitFunction_declaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Function_declarationContext function_declaration() throws RecognitionException {
@@ -1848,6 +2028,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_stdlib; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitStdlib(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final StdlibContext stdlib() throws RecognitionException {
@@ -1957,6 +2142,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_print_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitPrint_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Print_Context print_() throws RecognitionException {
@@ -1992,6 +2182,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_printi; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitPrinti(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PrintiContext printi() throws RecognitionException {
@@ -2024,6 +2219,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_flush_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitFlush_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Flush_Context flush_() throws RecognitionException {
@@ -2055,6 +2255,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_exit_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitExit_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Exit_Context exit_() throws RecognitionException {
@@ -2087,6 +2292,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_getchar_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitGetchar_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Getchar_Context getchar_() throws RecognitionException {
@@ -2118,6 +2328,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_chr_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitChr_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Chr_Context chr_() throws RecognitionException {
@@ -2153,6 +2368,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_substring_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitSubstring_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Substring_Context substring_() throws RecognitionException {
@@ -2188,6 +2408,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_concat_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitConcat_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Concat_Context concat_() throws RecognitionException {
@@ -2223,6 +2448,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ord_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitOrd_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Ord_Context ord_() throws RecognitionException {
@@ -2258,6 +2488,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_size_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitSize_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Size_Context size_() throws RecognitionException {
@@ -2293,6 +2528,11 @@ public class tigerParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_not_; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof tigerVisitor ) return ((tigerVisitor<? extends T>)visitor).visitNot_(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Not_Context not_() throws RecognitionException {

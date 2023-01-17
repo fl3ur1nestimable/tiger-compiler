@@ -160,7 +160,7 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 
 		String left = ctx.getChild(0).toString();
 		Identifier id = new Identifier(left);
-		
+
 		if (ctx.getChildCount()==4){
 			Ast right = ctx.getChild(2).accept(this);
 			return new FunctionCall(id,right);
@@ -252,24 +252,13 @@ public class AstCreator extends tigerBaseVisitor<Ast>{
 		}
 	}
 	@Override public Ast visitFunction_declaration(tigerParser.Function_declarationContext ctx) {
-		// modifications ici: avant >= 
-		// if (ctx.getChildCount()>=9) {
-		// 	return new Function_declaration(new Identifier(ctx.getChild(1).toString()),ctx.getChild(3).accept(this),new Identifier(ctx.getChild(6).toString()),ctx.getChild(8).accept(this));
-		// }
-		// else if(ctx.getChildCount()>=8){
-		// 	return new Function_declaration(new Identifier(ctx.getChild(1).toString()),new Identifier(ctx.getChild(5).toString()),ctx.getChild(7).accept(this));
-		// }
-		// else if (ctx.getChildCount()>=7) {
-		// 	return new Function_declaration(new Identifier(ctx.getChild(1).toString()),ctx.getChild(3).accept(this),ctx.getChild(6).accept(this));
-		// }
-		// return new Function_declaration(new Identifier(ctx.getChild(1).toString()),ctx.getChild(5).accept(this));
-		if (ctx.getChildCount()==9) {
+		if (ctx.getChildCount()>=9) {
 			return new Function_declaration(new Identifier(ctx.getChild(1).toString()),ctx.getChild(3).accept(this),new Identifier(ctx.getChild(6).toString()),ctx.getChild(8).accept(this));
 		}
-		else if(ctx.getChildCount()==8){
+		else if(ctx.getChildCount()>=8){
 			return new Function_declaration(new Identifier(ctx.getChild(1).toString()),new Identifier(ctx.getChild(5).toString()),ctx.getChild(7).accept(this));
 		}
-		else if (ctx.getChildCount()==7) {
+		else if (ctx.getChildCount()>=7) {
 			return new Function_declaration(new Identifier(ctx.getChild(1).toString()),ctx.getChild(3).accept(this),ctx.getChild(6).accept(this));
 		}
 		return new Function_declaration(new Identifier(ctx.getChild(1).toString()),ctx.getChild(5).accept(this));

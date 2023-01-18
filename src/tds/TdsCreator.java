@@ -322,10 +322,14 @@ public class TdsCreator implements AstVisitor<String> {
         currentImbrication++;
         String c = whiledo.cond.accept(this);
         if (c == null){
+            currentBlock--;
+            currentImbrication--;
             return null;
         }
         if (!c.equals(Type.int_t.toString())){
             System.out.println("Ligne " + whiledo.line+ " : Erreur : la condition du while doit être un int");
+            currentBlock--;
+            currentImbrication--;
             return null;
         }
         Tds tds = new Tds("while", currentBlock, currentImbrication, currentTds);
@@ -333,6 +337,8 @@ public class TdsCreator implements AstVisitor<String> {
         currentTds = tds;
         String r = whiledo.doBlock.accept(this);
         if (r == null){
+            currentBlock--;
+            currentImbrication--;
             return null;
         }
         currentTds = tds.getParent();
@@ -466,8 +472,11 @@ public class TdsCreator implements AstVisitor<String> {
                     tdsList.add(typeTds);
                 }
             currentTds = typeTds.getParent();
-            currentImbrication--;
             }
+            else{
+                currentBlock--;
+            }
+            currentImbrication--;
             currentTds = save;
         }
         return Type.void_t.toString();
@@ -888,6 +897,8 @@ public class TdsCreator implements AstVisitor<String> {
                 if(returnType==null){
                     currentTds=save;
                     inFunction = false;
+                    currentBlock--;
+                    currentImbrication--;
                     return null;
                 }
             }
@@ -905,6 +916,8 @@ public class TdsCreator implements AstVisitor<String> {
                 else{
                     currentTds=save;
                     inFunction = false;
+                    currentBlock--;
+                    currentImbrication--;
                     return null;
                 }
             }
@@ -914,6 +927,8 @@ public class TdsCreator implements AstVisitor<String> {
             if(returnType==null){
                 currentTds=save;
                 inFunction = false;
+                currentBlock--;
+                currentImbrication--;
                 return null;
             }
         }
@@ -921,12 +936,16 @@ public class TdsCreator implements AstVisitor<String> {
         if (r == null) {
             currentTds=save;
             inFunction = false;
+            currentBlock--;
+            currentImbrication--;
             return null;
         }
         if (!r.equals(returnType) && !returnType.equals(Type.void_t.toString())) {
             System.out.println("Ligne " + function_declaration.line + " : " + "Erreur : la fonction doit retourner un type "+returnType);
             currentTds=save;
             inFunction = false;
+            currentBlock--; 
+            currentImbrication--;
             return null;
         }else{
             returnType = r;

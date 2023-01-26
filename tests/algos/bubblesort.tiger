@@ -20,4 +20,5 @@ let
 		end
 	)
 in
+	bubble_sort (sorted, 10)
 end

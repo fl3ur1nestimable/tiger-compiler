@@ -5,16 +5,6 @@ public abstract class TdsElement {
     protected String type;
     protected Tds tds;
 
-    public TdsElement(String name, Tds tds){
-        this.name = name;
-        this.tds = tds;
-    }
-
-    public TdsElement(String name, String type, Tds tds){
-        this.name = name;
-        this.type = type;
-        this.tds = tds;
-    }
 
     public String getName(){
         return name;

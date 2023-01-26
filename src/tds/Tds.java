@@ -45,6 +45,9 @@ public class Tds {
     public void addElement(TdsElement element) {
         this.elements.add(element);
     }
+    public void supprimerElement(TdsElement element) {
+        this.elements.remove(element);
+    }
 
     public TdsElement getElement(String name) {
         for (TdsElement element : elements) {

@@ -4,10 +4,21 @@ import java.util.*;
 
 public class TdsFunction extends TdsElement {
     ArrayList<String> parameters;
+    
+    public TdsFunction(String name) {
+        this.name = name;
+    }
 
-    public TdsFunction(String name, ArrayList<String> parameters, String returnType, Tds tds) {
-        super(name,returnType,tds);
-        this.parameters = parameters;
+    public void setTds(Tds t){
+        this.tds=t;
+    }
+
+    public void setParametres(ArrayList<String> p){
+        this.parameters=p;
+    }
+
+    public void setReturnType(String returnT){
+        this.type=returnT;
     }
 
     public ArrayList<String> getParameters() {

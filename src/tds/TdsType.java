@@ -1,8 +1,14 @@
 package tds;
 
 public class TdsType extends TdsElement {
-    public TdsType(String name, String type,Tds tds) {
-        super(name,type,tds);
+    public TdsType(String name) {
+        this.name=name;
+    }
+    public void setType(String t){
+        this.type=t;
+    }
+    public void setTds(Tds tds){
+        this.tds=tds;
     }
 
     @Override

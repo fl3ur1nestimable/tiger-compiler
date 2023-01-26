@@ -1,0 +1,12 @@
+let
+	var sorted : int := 0
+	type int_array = array of int
+	function bubble_sort (x : int, n : int) = (
+		let
+			var t :=2
+		in
+		end
+	)
+in
+	bubble_sort (sorted, 10)
+end

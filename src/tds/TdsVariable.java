@@ -4,9 +4,18 @@ public class TdsVariable extends TdsElement{
 
     int size;
 
-    public TdsVariable(String name, String type,int size,Tds tds) {
-        super(name,type,tds);
-        this.size = size;
+    public TdsVariable(String name) {
+        this.name=name;
+        
+    }
+    public void setType(String t){
+        this.type=t;
+    }
+    public void setSize(int size){
+        this.size=size;
+    }
+    public void setTds(Tds tds){
+        this.tds=tds;
     }
 
     @Override

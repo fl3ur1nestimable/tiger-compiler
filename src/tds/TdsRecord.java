@@ -1,22 +1,15 @@
 package tds;
 
-import java.util.ArrayList;
 
-public class TdsRecord extends TdsElement {
-    private ArrayList<TdsVariable> variables;
+public class TdsRecord extends TdsType {
 
-    public TdsRecord(String name, Tds tds, ArrayList<TdsVariable> variables) {
-        super(name, tds);
-        this.variables = variables;
+    public TdsRecord(String name) {
+        super(name);
+        
     }
 
-    public int getSize() {
-        return variables.size();
+    public void setTds(Tds tds){
+        this.tds=tds;
     }
 
-    @Override
-    public String toString() {
-        return "Record [name=" + getName() + ", variables=" + variables.toString() + "]";
-    }
-    
 }

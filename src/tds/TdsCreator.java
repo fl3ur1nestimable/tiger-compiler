@@ -10,8 +10,7 @@ public class TdsCreator implements AstVisitor<String> {
     private int currentBlock = 0;
     private ArrayList<Tds> tdsList = new ArrayList<Tds>();
     private Tds currentTds;
-    private boolean inFunction = false;
-
+    private boolean inFunction=false;
     public TdsCreator() {
         currentTds = new Tds("global", currentBlock, currentImbrication, null);
         tdsList.add(currentTds);
@@ -19,6 +18,27 @@ public class TdsCreator implements AstVisitor<String> {
 
     public void addTds(Tds tds) {
         tdsList.add(tds);
+    }
+
+    public TypeTds getTypeTds(String name){
+        TypeTds t = null;
+        for (Tds tds : tdsList) {
+            if(tds instanceof TypeTds && tds.getName().equals(name)){
+                t=(TypeTds)tds;
+            }
+        }
+        return t;
+    }
+
+    public void supprimerTds(int numBlock, int numImbric){
+        for (Tds TDS : tdsList){
+            if (TDS.getNumBloc() == numBlock && TDS.getNumImbrication() == numImbric) {
+                // for (TdsElement elem : TDS.getElements()){
+                //     TDS.supprimerElement(elem);
+                // }
+                this.tdsList.remove(TDS);
+            }
+        }
     }
 
     public ArrayList<Tds> getTdsList() {
@@ -63,11 +83,20 @@ public class TdsCreator implements AstVisitor<String> {
     public TdsType findType(String name){
         switch (name) {
             case "int":
-                return new TdsType("int_t", "int_t", currentTds);
+                TdsType t = new TdsType("int_t");
+                t.setType("int_t");
+                t.setTds(currentTds);
+                return t;
             case "string":
-                return new TdsType("string_t", "string_t", currentTds);
-            case "nil" :
-                return new TdsType("string_t", "string_t", currentTds);
+                TdsType t2 = new TdsType("string_t");
+                t2.setType("string_t");
+                t2.setTds(currentTds);
+                return t2;
+            case "nil" :                
+                TdsType t3 = new TdsType("nil_t");
+                t3.setType("nil_t");
+                t3.setTds(currentTds);
+                return t3;
             default:
                 break;
         }
@@ -318,31 +347,18 @@ public class TdsCreator implements AstVisitor<String> {
     }
     @Override
     public String visit(Whiledo whiledo) {
-        currentBlock++;
-        currentImbrication++;
         String c = whiledo.cond.accept(this);
         if (c == null){
-            currentBlock--;
-            currentImbrication--;
             return null;
         }
         if (!c.equals(Type.int_t.toString())){
             System.out.println("Ligne " + whiledo.line+ " : Erreur : la condition du while doit être un int");
-            currentBlock--;
-            currentImbrication--;
             return null;
         }
-        Tds tds = new Tds("while", currentBlock, currentImbrication, currentTds);
-        tdsList.add(tds);
-        currentTds = tds;
         String r = whiledo.doBlock.accept(this);
         if (r == null){
-            currentBlock--;
-            currentImbrication--;
             return null;
         }
-        currentTds = tds.getParent();
-        currentImbrication--;
         return r;
     }
 
@@ -358,7 +374,9 @@ public class TdsCreator implements AstVisitor<String> {
         if (type == null) {
             return null;
         }
-        TdsVariable var = new TdsVariable(id.value, type, 0, currentTds);
+        TdsVariable var = new TdsVariable(id.value);
+        var.setType(type);
+        var.setTds(currentTds);
         tds.addElement(var);
         for_.expr2.accept(this);
         for_.expr3.accept(this);
@@ -440,7 +458,7 @@ public class TdsCreator implements AstVisitor<String> {
         else{
             currentBlock++;
             currentImbrication++;
-            Tds typeTds = new Tds(id.value+"_t", currentBlock, currentImbrication, currentTds);
+            Tds typeTds = new TypeTds(id.value, currentBlock, currentImbrication, currentTds);
             currentTds = typeTds;
             String type = type_declaration.type.accept(this);
             Tds save = currentTds.getParent();
@@ -460,13 +478,18 @@ public class TdsCreator implements AstVisitor<String> {
                         if(type2.equals("int")||type2.equals("string")||type2.equals("nil")){
                             type2+="_t";
                         }
-                        TdsArrayType tdsArrayType = new TdsArrayType(id.value,Type.array_t.toString(),type2,currentTds);
+                        TdsArrayType tdsArrayType = new TdsArrayType(id.value);
+                        tdsArrayType.setTds(currentTds);
+                        tdsArrayType.setType(Type.array_t.toString());
+                        tdsArrayType.setBaseType(type2);
                         currentTds.addElement(tdsArrayType);
                         save.addElement(tdsArrayType);
                         tdsList.add(typeTds);
                     }
                 }else{
-                    TdsType tdsType = new TdsType(id.value,type,currentTds);
+                    TdsType tdsType = new TdsType(id.value);
+                    tdsType.setType(type);
+                    tdsType.setTds(currentTds);
                     currentTds.addElement(tdsType);
                     save.addElement(tdsType);
                     tdsList.add(typeTds);
@@ -826,10 +849,15 @@ public class TdsCreator implements AstVisitor<String> {
                     break;
             }
             if(inFunction){
-                TdsVariable f = new TdsVariable(id,type,0, currentTds);
+                TdsVariable f = new TdsVariable(id);
+                f.setType(type);
+                f.setSize(0);
+                f.setTds(currentTds);
                 currentTds.addElement(f);
             }else{
-                TdsTypeField f = new TdsTypeField(id,type, currentTds);
+                TdsTypeField f = new TdsTypeField(id);
+                f.setTds(currentTds);
+                f.setType(type);
                 currentTds.addElement(f);
             }
         }
@@ -869,7 +897,11 @@ public class TdsCreator implements AstVisitor<String> {
         }
         currentTds=save;
         if(type!=null){
-            currentTds.addElement(new TdsVariable(name, type, 0, currentTds));
+            TdsVariable v = new TdsVariable(name);
+            v.setType(type);
+            v.setSize(0);
+            v.setTds(currentTds);
+            currentTds.addElement(v);
         }
         return Type.void_t.toString();
     }
@@ -887,7 +919,14 @@ public class TdsCreator implements AstVisitor<String> {
         currentBlock++;
         currentImbrication++;
         Tds save = currentTds;
-        Tds tds = new Tds(name, currentBlock, currentImbrication, currentTds);
+        FuncTds tds = new FuncTds(name, currentBlock, currentImbrication, currentTds);
+        TdsFunction f = new TdsFunction(name);
+        System.out.println(currentTds.toString());
+        currentTds.addElement(f);
+        System.out.println(f.toString());
+
+        f.setTds(currentTds);
+        tdsList.add(tds);
         currentTds = tds;
         ArrayList<String> params = new ArrayList<String>();
         String returnType= Type.void_t.toString();
@@ -897,6 +936,8 @@ public class TdsCreator implements AstVisitor<String> {
                 if(returnType==null){
                     currentTds=save;
                     inFunction = false;
+                    currentTds.supprimerElement(f);                    
+                    supprimerTds(currentBlock, currentImbrication);
                     currentBlock--;
                     currentImbrication--;
                     return null;
@@ -905,17 +946,20 @@ public class TdsCreator implements AstVisitor<String> {
             else{
                 if(function_declaration.paramsOrReturnType.accept(this)!=null){
                     Type_fields e = (Type_fields)function_declaration.paramsOrReturnType;
-                    for (Ast f : e.fields) {
-                        String t = ((Identifier)((Type_field)f).type).value;
+                    for (Ast f_ : e.fields) {
+                        String t = ((Identifier)((Type_field)f_).type).value;
                         if(t.equals("int") || t.equals("string") || t.equals("nil")){
                             t+= "_t";
                         }
                         params.add(t);
+                        f.setParametres(params);
                     }
                 }
                 else{
                     currentTds=save;
                     inFunction = false;
+                    currentTds.supprimerElement(f);
+                    supprimerTds(currentBlock, currentImbrication);
                     currentBlock--;
                     currentImbrication--;
                     return null;
@@ -927,32 +971,41 @@ public class TdsCreator implements AstVisitor<String> {
             if(returnType==null){
                 currentTds=save;
                 inFunction = false;
+                currentTds.supprimerElement(f);
+                supprimerTds(currentBlock, currentImbrication);
                 currentBlock--;
                 currentImbrication--;
                 return null;
             }
         }
-        String r = function_declaration.body.accept(this);
-        if (r == null) {
-            currentTds=save;
-            inFunction = false;
-            currentBlock--;
-            currentImbrication--;
-            return null;
+        
+        String r = null;
+        if (function_declaration.body != null){
+            r= function_declaration.body.accept(this);
+            if (r == null) {
+                currentTds=save;
+                inFunction = false;
+                currentTds.supprimerElement(f);
+                supprimerTds(currentBlock, currentImbrication);
+                currentBlock--;
+                currentImbrication--;
+                return null;
+            }
+            if (!r.equals(returnType) && !returnType.equals(Type.void_t.toString())) {
+                System.out.println("Ligne " + function_declaration.line + " : " + "Erreur : la fonction doit retourner un type "+returnType);
+                currentTds=save;
+                inFunction = false;
+                currentTds.supprimerElement(f);
+                supprimerTds(currentBlock, currentImbrication);
+                currentBlock--; 
+                currentImbrication--;
+                return null;
+            }else{
+                returnType = r;
+                f.setReturnType(returnType);
+            }
         }
-        if (!r.equals(returnType) && !returnType.equals(Type.void_t.toString())) {
-            System.out.println("Ligne " + function_declaration.line + " : " + "Erreur : la fonction doit retourner un type "+returnType);
-            currentTds=save;
-            inFunction = false;
-            currentBlock--; 
-            currentImbrication--;
-            return null;
-        }else{
-            returnType = r;
-        }
-        tdsList.add(tds);
         currentTds = tds.getParent();
-        currentTds.addElement(new TdsFunction(name,params,returnType, currentTds));
         currentImbrication--;
         inFunction = false;
         return Type.void_t.toString();
@@ -1006,7 +1059,7 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }else{
             String right = ((Identifier)accessId.rigth).value;
-            Tds t = getTds(left+"_t");
+            Tds t = getTypeTds(left);
             if(t==null){
                 return null;
             }
@@ -1057,7 +1110,7 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         else{
-            Tds tds = getTds(name+"_t");
+            Tds tds = getTypeTds(name);
             TdsType e = (TdsType)tds.getElement(name);
                 if (!e.getType().equals(Type.record_t.toString())) {
                     System.out.println("Ligne " + recordDec.line + " : " + "Erreur : " + id + " n'est pas un type de structure");
@@ -1084,7 +1137,7 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         else{
-            Tds tds = getTds(name+"_t");
+            Tds tds = getTypeTds(name);
             if (tds==null) {
                 System.out.println("tds null");
             }
@@ -1100,7 +1153,7 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         String base = arrayDec.expr2.accept(this);
-        Tds tds = getTds(name+"_t");
+        Tds tds = getTypeTds(name);
         TdsArrayType e = (TdsArrayType)tds.getElement(name);
         if(!e.getBaseType().equals(base)){
             System.out.println("Ligne " + arrayDec.line + " : " + "Erreur : le type " + base + " ne correspond pas au type " + e.getBaseType() + " de " +name);

@@ -24,7 +24,7 @@ let
     var c := myRecord{x=0,z="oui"}
     var f := myRecord{x=0,z="oui",a=7}
 
-    function myfunc(x:int) : int  = (
+    function myRecord(x:int) : int  = (
         print("b");
         8
     )

@@ -600,7 +600,6 @@ public class GraphVizVisitor implements AstVisitor<String> {
         String node = this.nextState();
         this.addNode(node, "funcDec");
         String idfNode=function_declaration.name.accept(this);
-        String bodyNOde = function_declaration.body.accept(this);
         this.addTransition(node, idfNode);
         
         if (function_declaration.paramsOrReturnType!=null) {
@@ -622,10 +621,14 @@ public class GraphVizVisitor implements AstVisitor<String> {
             String typeNode=function_declaration.return_type.accept(this);
             this.addTransition(node3, typeNode);
         }
-        String node4 = this.nextState();
-        this.addNode(node4, "body");
-        this.addTransition(node, node4);
-        this.addTransition(node4, bodyNOde);
+        String bodyNOde = null;
+        if(function_declaration.body != null){
+            bodyNOde = function_declaration.body.accept(this);
+            String node4 = this.nextState();
+            this.addNode(node4, "body");
+            this.addTransition(node, node4);
+            this.addTransition(node4, bodyNOde);
+        }
         return node;
         
     }

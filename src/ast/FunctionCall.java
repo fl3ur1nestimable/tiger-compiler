@@ -6,13 +6,16 @@ public class FunctionCall implements Ast{
     }
     public Ast right;
     public Ast left;
-    public FunctionCall(Ast left){
+    public int line;
+    public FunctionCall(Ast left, int line){
         this.left=left;
+        this.line=line;
     }
 
-    public FunctionCall(Ast left, Ast right){
+    public FunctionCall(Ast left, Ast right, int line){
         this.left=left;
         this.right=right;
+        this.line=line;
     }
 }
 

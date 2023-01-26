@@ -5,8 +5,10 @@ public class Negation implements Ast {
         return visitor.visit(this);
     }
     public Ast right;
+    public int line;
     
-    public Negation(Ast r){
+    public Negation(Ast r, int line){
         this.right=r;
+        this.line=line;
     }
 }

@@ -3,11 +3,15 @@ let
     var a := 0
     var a := "test"
     var b := x
+    var r := "oui"
     type intArray = array of bool
     type myType = array of int
     type myRecord = {x:int,z:string}
     type myRecord = {x:int,y:string}
     type myRec = {a:string,a:string,e:int}
+    type arrayRec = array of myRecord
+    var rec1 := myRecord{x=0,z="oui"}
+    var g := arrayRec[10] of rec1
     var r:int := "ceci n'est pas un int"
     var l := myType["oui"] of 5
     var m := myRecord[10] of 5
@@ -20,12 +24,28 @@ let
     var c := myRecord{x=0,z="oui"}
     var f := myRecord{x=0,z="oui",a=7}
 
-    function myfunc(x:int) = (
-        print("a")
+    function myfunc(x:int) : int  = (
+        print("b");
+        8
     )
     function myfunc() = (
         print("b")
     )
+    function myfunc2(x:int,x:int)  = (
+        print("b");
+        8
+    )
+    function myfunc3(x:int) : int  = (
+        print("b")
+        
+    )
+
+    function empty() = nil
+
+    function myInt() : int = "oui"
+
+    
+
 
 in
     c := 9;
@@ -33,7 +53,6 @@ in
     c.x := "oui";
     c.x := 15;
     c.a := "non";
-    /*c.x[5] := 2;*/
     if "oui" then 1 else 0;
     if c.x then 1 else 0;
     while c.z do a := 3;
@@ -58,6 +77,7 @@ in
     k[5] := 2;
     u.c := "fin";
     k.x := 2;
+
     /*test all operators errors*/
     a := a + "oui";
     a := a - "oui";
@@ -68,7 +88,13 @@ in
     a := a * 5;
     a := a / 5;
     1=2=3;/* a corriger */
-    1=(2=3)
+    1=(2=3);
+    a := myfunc(5);myfunc("oui");r := myfunc(5);myfunc555();myfunc(5,5,12);r := concat("oui mais", 5);
+    r := concat("oui mais"," non");
+    
+    a.r := 5
+
+
     /*faire le reste des opérateurs*/
 
 

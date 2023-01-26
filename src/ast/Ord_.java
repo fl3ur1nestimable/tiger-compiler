@@ -5,9 +5,11 @@ public class Ord_ implements Ast{
         return visitor.visit(this);
     }
     public Ast right;
+    public int line;
     
-    public Ord_(Ast r){
+    public Ord_(Ast r, int line){
         this.right=r;
+        this.line=line;
     }
 
 }

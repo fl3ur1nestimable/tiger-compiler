@@ -8,17 +8,21 @@ public class Variable_declaration implements Ast {
     public Ast name;
     public Ast type;
     public Ast expr;
+    public int line;
 
-    public Variable_declaration(Ast name, Ast type, Ast expr) {
+
+    public Variable_declaration(Ast name, Ast type, Ast expr, int line) {
         this.name = name;
         this.type = type;
         this.expr = expr;
+        this.line = line;
     }
 
-    public Variable_declaration(Ast name, Ast expr) {
+    public Variable_declaration(Ast name, Ast expr, int line) {
         this.name = name;
         this.expr = expr;
         this.type = null;
+        this.line=line;
     }
     
 }

@@ -8,9 +8,11 @@ public class Declaration_list implements Ast {
     }
     
     public ArrayList<Ast> decList;
+    public int line;
 
-    public Declaration_list(){
+    public Declaration_list(int line){
         this.decList=new ArrayList<Ast>();
+        this.line=line;
     }
 
     public void addDeclaration(Ast declaration){

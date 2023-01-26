@@ -7,9 +7,11 @@ public class Plus implements Ast{
 
     public Ast left;
     public Ast rigth;
+    public int line;
 
-    public Plus(Ast l, Ast r){
+    public Plus(Ast l, Ast r, int line){
         this.left=l;
         this.rigth=r;
+        this.line=line;
     }
 }

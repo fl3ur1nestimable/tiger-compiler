@@ -7,9 +7,11 @@ public class And implements Ast {
 
     public Ast left;
     public Ast rigth;
+    public int line;
 
-    public And(Ast l, Ast r){
+    public And(Ast l, Ast r,int line){
         this.left=l;
         this.rigth=r;
+        this.line=line;
     }
 }

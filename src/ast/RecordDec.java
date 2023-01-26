@@ -7,9 +7,11 @@ public class RecordDec implements Ast {
 
     public Ast id;
     public Ast list;
+    public int line;
 
-    public RecordDec(Ast id, Ast list) {
+    public RecordDec(Ast id, Ast list, int line) {
         this.id = id;
         this.list = list;
+        this.line=line;
     }
 }

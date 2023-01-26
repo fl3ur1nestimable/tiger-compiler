@@ -8,10 +8,12 @@ public class Field implements Ast {
 
     public Ast name;
     public Ast expr;
+    public int line;
 
-    public Field(Ast name, Ast expr) {
+    public Field(Ast name, Ast expr, int line) {
         this.name = name;
         this.expr = expr;
+        this.line = line;
     }
 
     @Override

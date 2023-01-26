@@ -7,9 +7,11 @@ public class GreaterThan1  implements Ast{
 
     public Ast left;
     public Ast rigth;
+    public int line;
 
-    public GreaterThan1(Ast l, Ast r){
+    public GreaterThan1(Ast l, Ast r,int line){
         this.left=l;
         this.rigth=r;
+        this.line=line;
     }
 }

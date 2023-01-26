@@ -7,9 +7,12 @@ public class Whiledo implements Ast {
 
     public Ast cond;
     public Ast doBlock;
+    public int line;
 
-    public Whiledo(Ast c, Ast d){
+
+    public Whiledo(Ast c, Ast d, int line){
         this.cond=c;
         this.doBlock=d;
+        this.line=line;
     }
 }

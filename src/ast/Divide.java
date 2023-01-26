@@ -7,9 +7,11 @@ public class Divide implements Ast{
 
     public Ast left;
     public Ast rigth;
+    public int line;
 
-    public Divide(Ast l, Ast r){
+    public Divide(Ast l, Ast r,int line){
         this.left=l;
         this.rigth=r;
+        this.line=line;
     }
 }

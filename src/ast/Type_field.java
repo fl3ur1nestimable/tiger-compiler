@@ -7,10 +7,12 @@ public class Type_field implements Ast{
 
     public Ast name;
     public Ast type;
+    public int line;
 
-    public Type_field(Ast name, Ast type) {
+    public Type_field(Ast name, Ast type, int line) {
         this.name = name;
         this.type = type;
+        this.line=line;
     }
 
     @Override

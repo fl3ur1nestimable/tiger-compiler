@@ -8,8 +8,10 @@ public class Expr_seq implements Ast {
     }
 
     public ArrayList<Ast> array;
-    public Expr_seq(){
+    public int line;
+    public Expr_seq(int line){
         array = new ArrayList<Ast>();
+        this.line=line;
     }
 
     public void addExpr(Ast right){

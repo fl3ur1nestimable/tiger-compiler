@@ -5,9 +5,11 @@ public class StringNode implements Ast{
         return visitor.visit(this);
     }
     public String value;
+    public int line;
 
-    public StringNode(String value){
+    public StringNode(String value,int line){
         this.value=value;
+        this.line=line;
     }
     
 }

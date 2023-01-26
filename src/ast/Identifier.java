@@ -6,9 +6,11 @@ public class Identifier implements Ast {
     }
     
     public String value;
+    public int line;
 
-    public Identifier(String v){
+    public Identifier(String v, int line){
         this.value=v;
+        this.line=line;
     }
 
     @Override

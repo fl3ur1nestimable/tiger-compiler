@@ -7,9 +7,11 @@ public class LessThan2  implements Ast{
 
     public Ast left;
     public Ast rigth;
+    public int line;
 
-    public LessThan2(Ast l, Ast r){
+    public LessThan2(Ast l, Ast r,int line){
         this.left=l;
         this.rigth=r;
+        this.line=line;
     }
 }

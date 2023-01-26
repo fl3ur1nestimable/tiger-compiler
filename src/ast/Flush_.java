@@ -6,8 +6,10 @@ public class Flush_ implements Ast {
         return visitor.visit(this);
     }
 
-    public Flush_(){
-        
+    public int line;
+
+    public Flush_(int line){
+        this.line=line;
     }
     
 }

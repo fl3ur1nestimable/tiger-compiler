@@ -1,0 +1,11 @@
+ajout des déplacements
+pas de besoin de TDS dans le while et le if
+
+
+suppression d'une TDS
+suppression d'un élément d'une TDS
+
+TDS qui donne tdstype, tdsfunction
+type -> arraytype, recordtype
+
+setters dans les classes 

@@ -29,7 +29,7 @@ let
         8
     )
     function myfunc() = (
-        print("b")
+        8
     )
     function myfunc2(x:int,x:int)  = (
         print("b");
@@ -87,9 +87,9 @@ in
     a := a - 5;
     a := a * 5;
     a := a / 5;
-    1=2=3;/* a corriger */
+    1=2=3;          /* a corriger */
     1=(2=3);
-    a := myfunc(5);myfunc("oui");r := myfunc(5);myfunc555();myfunc(5,5,12);r := concat("oui mais", 5);
+    a := myfunc(5); /*myfunc("oui");r := myfunc(5);myfunc555();myfunc(5,5,12);r := concat("oui mais", 5); */
     r := concat("oui mais"," non");
     
     a.r := 5

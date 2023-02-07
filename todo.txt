@@ -1,12 +1,4 @@
-ajout des déplacements
-pas de besoin de TDS dans le while et le if
-type de retour du if then else
+rajouter le déplacement dans les variables
+gerer les 4 cas : chaine de caratères, int, tableau, record
+gerer les déplacement dans l'ajout dans une tds
 
-
-suppression d'une TDS
-suppression d'un élément d'une TDS
-
-TDS qui donne tdstype, tdsfunction --- done
-type -> arraytype, recordtype
-
-[x]refaire le constructeur des elements tds, et setters dans les classes 

@@ -1,6 +1,6 @@
 let
-	var sorted : int := 0
 	type int_array = array of int
+	var sorted := int_array[5] of 0
 	function bubble_sort (x : int_array, n : int) = (
 		let
 			var changed : int := 1

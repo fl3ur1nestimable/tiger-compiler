@@ -921,12 +921,14 @@ public class TdsCreator implements AstVisitor<String> {
         Tds save = currentTds;
         FuncTds tds = new FuncTds(name, currentBlock, currentImbrication, currentTds);
         TdsFunction f = new TdsFunction(name);
-        System.out.println(currentTds.toString());
         currentTds.addElement(f);
-        System.out.println(f.toString());
+        for (TdsElement t : currentTds.getElements()) {
+            System.out.println(t.getName());
+        }
 
         f.setTds(currentTds);
         tdsList.add(tds);
+
         currentTds = tds;
         ArrayList<String> params = new ArrayList<String>();
         String returnType= Type.void_t.toString();
@@ -936,8 +938,9 @@ public class TdsCreator implements AstVisitor<String> {
                 if(returnType==null){
                     currentTds=save;
                     inFunction = false;
-                    currentTds.supprimerElement(f);                    
-                    supprimerTds(currentBlock, currentImbrication);
+                    currentTds.supprimerElement(f); 
+                    System.out.println("here");                   
+                    supprimerTds(f.getTds().getNumBloc(), f.getTds().getNumImbrication());
                     currentBlock--;
                     currentImbrication--;
                     return null;
@@ -959,7 +962,8 @@ public class TdsCreator implements AstVisitor<String> {
                     currentTds=save;
                     inFunction = false;
                     currentTds.supprimerElement(f);
-                    supprimerTds(currentBlock, currentImbrication);
+                    System.out.println("here2");  
+                    supprimerTds(f.getTds().getNumBloc(), f.getTds().getNumImbrication());
                     currentBlock--;
                     currentImbrication--;
                     return null;
@@ -972,7 +976,8 @@ public class TdsCreator implements AstVisitor<String> {
                 currentTds=save;
                 inFunction = false;
                 currentTds.supprimerElement(f);
-                supprimerTds(currentBlock, currentImbrication);
+                System.out.println("here3");  
+                supprimerTds(f.getTds().getNumBloc(), f.getTds().getNumImbrication());
                 currentBlock--;
                 currentImbrication--;
                 return null;
@@ -986,7 +991,9 @@ public class TdsCreator implements AstVisitor<String> {
                 currentTds=save;
                 inFunction = false;
                 currentTds.supprimerElement(f);
-                supprimerTds(currentBlock, currentImbrication);
+                System.out.println("here4");  
+                System.out.println(currentBlock + " " + currentImbrication);
+                supprimerTds(f.getTds().getNumBloc(), f.getTds().getNumImbrication());
                 currentBlock--;
                 currentImbrication--;
                 return null;
@@ -996,7 +1003,8 @@ public class TdsCreator implements AstVisitor<String> {
                 currentTds=save;
                 inFunction = false;
                 currentTds.supprimerElement(f);
-                supprimerTds(currentBlock, currentImbrication);
+                System.out.println("here5");  
+                supprimerTds(f.getTds().getNumBloc(), f.getTds().getNumImbrication());
                 currentBlock--; 
                 currentImbrication--;
                 return null;

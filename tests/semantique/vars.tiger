@@ -1,0 +1,8 @@
+let
+    var a := 1
+    var b := "oui"
+    var c := "non"
+    var d := 2
+in
+    
+end

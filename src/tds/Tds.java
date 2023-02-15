@@ -87,6 +87,26 @@ public class Tds {
         return types;
     }
 
+    public ArrayList<TdsElement> getFuncs() {
+        ArrayList<TdsElement> funcs = new ArrayList<TdsElement>();
+        for (TdsElement element : elements) {
+            if (element instanceof TdsFunction) {
+                funcs.add(element);
+            }
+        }
+        return funcs;
+    }
+
+    public ArrayList<TdsElement> getVars() {
+        ArrayList<TdsElement> vars = new ArrayList<TdsElement>();
+        for (TdsElement element : elements) {
+            if (element instanceof TdsVariable) {
+                vars.add(element);
+            }
+        }
+        return vars;
+    }
+
     public TdsVariable findVar(String name) {
         ArrayList<TdsElement> funcAndVars = getFuncAndVars();
         TdsVariable var = null;

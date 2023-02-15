@@ -2,6 +2,7 @@ package tds;
 
 public class TdsVariable extends TdsElement{
 
+    int deplacement;
     int size;
 
     public TdsVariable(String name) {
@@ -11,6 +12,9 @@ public class TdsVariable extends TdsElement{
     public void setType(String t){
         this.type=t;
     }
+    public void setDeplacement(int deplacement){
+        this.deplacement=deplacement;
+    }
     public void setSize(int size){
         this.size=size;
     }
@@ -18,9 +22,17 @@ public class TdsVariable extends TdsElement{
         this.tds=tds;
     }
 
+    public int getDeplacement(){
+        return deplacement;
+    }
+
+    public int getSize(){
+        return size;
+    }
+
     @Override
     public String toString() {
-        return "Variable [name=" + getName() + ", type=" + type+"]";
+        return "Variable [name=" + getName() + ", type=" + type+ ", deplacement=" + deplacement + ", size=" + size + "]";
     }
     
 }

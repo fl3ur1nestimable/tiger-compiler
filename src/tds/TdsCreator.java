@@ -11,6 +11,7 @@ public class TdsCreator implements AstVisitor<String> {
     private ArrayList<Tds> tdsList = new ArrayList<Tds>();
     private Tds currentTds;
     private boolean inFunction=false;
+
     public TdsCreator() {
         currentTds = new Tds("global", currentBlock, currentImbrication, null);
         tdsList.add(currentTds);
@@ -105,6 +106,18 @@ public class TdsCreator implements AstVisitor<String> {
             return type;
         }
         return null;
+    }
+
+    public int getBaseSize(String type){
+        switch (type) {
+            case "int_t":
+                return 4;
+            case "string_t":
+                return 8;
+            default:
+                break;
+        }
+        return 0;
     }
 
     @Override
@@ -376,6 +389,16 @@ public class TdsCreator implements AstVisitor<String> {
         }
         TdsVariable var = new TdsVariable(id.value);
         var.setType(type);
+        if(type=="int_t" || type=="string_t"){
+                var.setSize(getBaseSize(type));
+            }
+            if(currentTds.getElements().size()==0){
+                var.setDeplacement(0);
+            }else{
+                ArrayList<TdsElement> vars = currentTds.getVars();
+                TdsVariable last = (TdsVariable)vars.get(vars.size()-1);
+                var.setDeplacement(last.getDeplacement()+last.getSize());
+            }
         var.setTds(currentTds);
         tds.addElement(var);
         for_.expr2.accept(this);
@@ -866,7 +889,16 @@ public class TdsCreator implements AstVisitor<String> {
             if(inFunction){
                 TdsVariable f = new TdsVariable(id);
                 f.setType(type);
-                f.setSize(0);
+                if(type=="int_t" || type=="string_t"){
+                f.setSize(getBaseSize(type));
+            }
+            if(currentTds.getElements().size()==0){
+                f.setDeplacement(0);
+            }else{
+                ArrayList<TdsElement> vars = currentTds.getVars();
+                TdsVariable last = (TdsVariable)vars.get(vars.size()-1);
+                f.setDeplacement(last.getDeplacement()+last.getSize());
+            }
                 f.setTds(currentTds);
                 currentTds.addElement(f);
             }else{
@@ -889,7 +921,11 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         String type= null;
-        Tds save = currentTds;
+        Tds save = currentTds;type = id2.value;
+        TdsType t = findType(type);
+        if(t == null){
+            System.out.println("Ligne " + variable_declaration.line + " : " + "Erreur : le type "+ type + " n'existe pas");
+            currentTds=save;
         if(variable_declaration.type!=null){
             Identifier id2 = (Identifier)variable_declaration.type;
             type = id2.value;
@@ -914,7 +950,16 @@ public class TdsCreator implements AstVisitor<String> {
         if(type!=null){
             TdsVariable v = new TdsVariable(name);
             v.setType(type);
-            v.setSize(0);
+            if(type=="int_t" || type=="string_t"){
+                v.setSize(getBaseSize(type));
+            }
+            if(currentTds.getElements().size()==0){
+                v.setDeplacement(0);
+            }else{
+                ArrayList<TdsElement> vars = currentTds.getVars();
+                TdsVariable last = (TdsVariable)vars.get(vars.size()-1);
+                v.setDeplacement(last.getDeplacement()+last.getSize());
+            }
             v.setTds(currentTds);
             currentTds.addElement(v);
         }

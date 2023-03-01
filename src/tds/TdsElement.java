@@ -5,7 +5,6 @@ public abstract class TdsElement {
     protected String type;
     protected Tds tds;
 
-
     public String getName(){
         return name;
     }

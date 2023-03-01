@@ -1,8 +1,16 @@
 let
-    var a := 1
+    type intarray = array of string
+    type myrec = {a: string, b: int, c : int}
+    var a := let
+        var e := 1
+    in
+        "oui"
+    end
     var b := "oui"
     var c := "non"
     var d := 2
+    var f := intarray [5] of "oui"
+    var g := myrec {a = "oui", b = 1, c = 2}
 in
     
 end

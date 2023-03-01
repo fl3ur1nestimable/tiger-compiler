@@ -921,11 +921,7 @@ public class TdsCreator implements AstVisitor<String> {
             return null;
         }
         String type= null;
-        Tds save = currentTds;type = id2.value;
-        TdsType t = findType(type);
-        if(t == null){
-            System.out.println("Ligne " + variable_declaration.line + " : " + "Erreur : le type "+ type + " n'existe pas");
-            currentTds=save;
+        Tds save = currentTds;
         if(variable_declaration.type!=null){
             Identifier id2 = (Identifier)variable_declaration.type;
             type = id2.value;
@@ -953,7 +949,34 @@ public class TdsCreator implements AstVisitor<String> {
             if(type=="int_t" || type=="string_t"){
                 v.setSize(getBaseSize(type));
             }
-            if(currentTds.getElements().size()==0){
+            else{
+                if (variable_declaration.expr instanceof ArrayDec) {
+                    ArrayDec array = (ArrayDec)variable_declaration.expr;
+                    IntNode intnode = (IntNode)array.expr1;
+                    int size = intnode.value;
+                    String num2 = array.expr2.accept(this);
+                    int num3 = getBaseSize(num2);
+                    v.setSize(size*num3);
+                    System.out.println("size : " + size + " size2 : " + num3 + " v.size : " + v.getSize());
+                }
+                else if (variable_declaration.expr instanceof RecordDec) {
+                    RecordDec record = (RecordDec)variable_declaration.expr;
+                    int size = 0;
+                    Field_list fields = (Field_list)record.list;
+                    for (Ast t : fields.fields) {
+                        Field field = (Field)t;
+                        String num2 = field.expr.accept(this);
+                        int num3 = getBaseSize(num2);
+                        size += num3;
+                    }
+                    v.setSize(size);
+                }
+
+                else{
+                    v.setSize(0);
+                }
+            }
+            if(currentTds.getVars().size()==0){
                 v.setDeplacement(0);
             }else{
                 ArrayList<TdsElement> vars = currentTds.getVars();

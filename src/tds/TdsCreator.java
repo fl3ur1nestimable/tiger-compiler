@@ -6,11 +6,11 @@ import ast.*;
 
 
 public class TdsCreator implements AstVisitor<String> {
-    private int currentImbrication = 0;
-    private int currentBlock = 0;
-    private ArrayList<Tds> tdsList = new ArrayList<Tds>();
-    private Tds currentTds;
-    private boolean inFunction=false;
+    public int currentImbrication = 0;
+    public int currentBlock = 0;
+    public ArrayList<Tds> tdsList = new ArrayList<Tds>();
+    public Tds currentTds;
+    public boolean inFunction=false;
 
     public TdsCreator() {
         currentTds = new Tds("global", currentBlock, currentImbrication, null);

@@ -26,7 +26,7 @@ public class CodeGenerator implements AstVisitor<String>{
 
     public void saveCode(){
         //save code in file
-        Path path = Path.of("./out/main.s");
+        Path path = Path.of("./src/codegen/out/main.s");
         try {
             Files.writeString(path, mainCode);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class CodeGenerator implements AstVisitor<String>{
         return null;
     }
 
-
+    
     @Override
     public String visit(Program affect) {
         affect.expr.accept(this);
@@ -145,23 +145,38 @@ public class CodeGenerator implements AstVisitor<String>{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
     }
-
+    //
     @Override
     public String visit(Whiledo whiledo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        currentBlock++;
+        currentImbrication++;
+        Tds tds = getTds(currentBlock, currentImbrication);
+        currenTds = tds;
+        
+        currentBlock--;
+        currentImbrication--;
+
+        return null;
     }
 
+    //
     @Override
     public String visit(For_ for_) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        currentBlock++;
+        currentImbrication++;
+        Tds tds = getTds(currentBlock, currentImbrication);
+        currenTds = tds;
+
+        currentBlock--;
+        currentImbrication--;
+
+        return null;
+
     }
 
     @Override
     public String visit(Identifier identifier) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        return identifier.value;
     }
 
     @Override
@@ -172,14 +187,27 @@ public class CodeGenerator implements AstVisitor<String>{
 
     @Override
     public String visit(Declaration_list declaration_list) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        for (Ast a : declaration_list.decList){
+            a.accept(this);
+        }
+        return null;
     }
 
+    //
     @Override
     public String visit(Let_in_end let_in_end) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        currentBlock++;
+        currentImbrication++;
+        Tds tds = getTds(currentBlock, currentImbrication);
+        currenTds = tds;
+        let_in_end.block1.accept(this);
+        if (let_in_end.block2 != null){
+            let_in_end.block2.accept(this);
+
+        }
+        currentBlock--;
+        currentImbrication--;
+        return null;
     }
 
     @Override
@@ -196,8 +224,7 @@ public class CodeGenerator implements AstVisitor<String>{
 
     @Override
     public String visit(IntNode int_node) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        return Integer.toString(int_node.value);
     }
 
     @Override
@@ -205,7 +232,7 @@ public class CodeGenerator implements AstVisitor<String>{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
     }
-
+    // - ??? vu qu'on sort du while ?
     @Override
     public String visit(Break_ break_) {
         // TODO Auto-generated method stub
@@ -310,14 +337,26 @@ public class CodeGenerator implements AstVisitor<String>{
 
     @Override
     public String visit(Variable_declaration variable_declaration) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        String value = variable_declaration.expr.accept(this);
+        String name  = variable_declaration.name.accept(this);
+        TdsVariable e = (TdsVariable)currenTds.getElement(name);
+        int deplacement = e.getDeplacement();
+        //ajout de la valeur au sommet de pile
+        write("\t MOV R0,#"+value);
+        write("\t STR R0,[R13,#-"+ deplacement +"]");
+        return null;
     }
 
     @Override
     public String visit(Function_declaration function_declaration) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        currentBlock++;
+        currentImbrication++;
+        Tds tds = getTds(currentBlock, currentImbrication);
+        currenTds = tds;
+
+        currentBlock--;
+        currentImbrication--;
+        return null;
     }
 
     @Override

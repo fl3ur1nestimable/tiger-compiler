@@ -1,4 +1,1 @@
-rajouter le déplacement dans les variables
-gerer les 4 cas : chaine de caratères, int, tableau, record
-gerer les déplacement dans l'ajout dans une tds
-
+le 15/03 -> 8reines marche tjrs pas miskine

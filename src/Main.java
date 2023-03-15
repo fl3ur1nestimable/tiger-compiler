@@ -1,6 +1,7 @@
 import ast.*;
 import graphViz.*;
 import tds.*;
+import codegen.*;
 
 import java.util.Arrays;
 import javax.swing.JFrame;
@@ -69,6 +70,11 @@ public class Main {
 
             // Affichage de la TDS
             tdsCreator.printAll();
+
+            CodeGenerator codeGenerator = new CodeGenerator(tdsCreator);
+            ast.accept(codeGenerator);
+            codeGenerator.saveCode();
+
 
 
         } 

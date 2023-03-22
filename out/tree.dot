@@ -14,6 +14,9 @@ digraph "ast"{
 	N10 [label="valDec", shape="box"];
 	N11 [label="n", shape="box"];
 	N12 [label="2", shape="box"];
+	N13 [label="valDec", shape="box"];
+	N14 [label="x", shape="box"];
+	N15 [label="oui", shape="box"];
 	N1 [label="Let_in_End", shape="box"];
 	N0 [label="Program", shape="box"];
 
@@ -26,6 +29,9 @@ digraph "ast"{
 	N10 -> N11; 
 	N10 -> N12; 
 	N3 -> N10; 
+	N13 -> N14; 
+	N13 -> N15; 
+	N3 -> N13; 
 	N1 -> N2; 
 	N2 -> N3; 
 	N0 -> N1; 

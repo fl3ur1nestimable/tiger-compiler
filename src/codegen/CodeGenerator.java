@@ -43,6 +43,14 @@ public class CodeGenerator implements AstVisitor<String>{
         return null;
     }
 
+    public String convertHexa(String s){
+        String hexa = "0x";
+        for (int i = 0; i < s.length(); i++) {
+            hexa += Integer.toHexString(s.charAt(i));
+        }
+        return hexa;
+    }
+
     
     @Override
     public String visit(Program affect) {
@@ -218,8 +226,8 @@ public class CodeGenerator implements AstVisitor<String>{
 
     @Override
     public String visit(StringNode string_node) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        System.out.println(convertHexa(string_node.value.replace("\"", "")));
+        return convertHexa(string_node.value.replace("\"", ""));
     }
 
     @Override
@@ -342,7 +350,7 @@ public class CodeGenerator implements AstVisitor<String>{
         TdsVariable e = (TdsVariable)currenTds.getElement(name);
         int deplacement = e.getDeplacement();
         //ajout de la valeur au sommet de pile
-        write("\t MOV R0,#"+value);
+        write("\t LDR R0,="+value);
         write("\t STR R0,[R13,#-"+ deplacement +"]");
         return null;
     }

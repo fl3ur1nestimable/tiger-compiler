@@ -2,6 +2,7 @@ let
     var a:= 10
     var b:= 0
     var n:= 2
+    var x := "oui"
 
 in 
 

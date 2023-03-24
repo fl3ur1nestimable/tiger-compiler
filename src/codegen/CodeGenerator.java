@@ -113,37 +113,53 @@ public class CodeGenerator implements AstVisitor<String> {
     }
 
     @Override
-    public String visit(Compare_equal_1 compare_equal_1) {
+    public String visit(Compare_equal_1 compare_equal_1) { //<>
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
     }
 
     @Override
-    public String visit(Compare_equal_2 compare_equal_2) {
+    public String visit(Compare_equal_2 compare_equal_2) { //=
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
     }
 
     @Override
-    public String visit(GreaterThan1 greaterThan1) {
+    public String visit(GreaterThan1 greaterThan1) { // >=   question: est-ce qu'on peut écrire a >2 > 3 ? (car a>2 produit 1 ou 0 qui est aussi comparable)
+        greaterThan1.left.accept(this);                    // sinon pas la peine utiliser pile, on oeut direct utiliser R et R2
+        write("\tSTR R0,[R13,#-4]!");
+        greaterThan1.rigth.accept(this);
+        write("\tLDMFD R13!,{R1}");
+        write("\tMOV R2,R0");
+        write("\tMOV R0,0"); 
+        write("\tCMP R1,R2"); 
+        write("\tMOVGT R0,#1");
+        write("\tCMP R1,R2"); 
+        write("\tMOVEQ R0,R2");
+        return null;
+    }
+
+    @Override
+    public String visit(GreaterThan2 greaterThan2) { //>
+        greaterThan2.left.accept(this);
+        write("\tSTR R0,[R13,#-4]!");
+        greaterThan2.rigth.accept(this);
+        write("\tLDMFD R13!,{R1}");
+        write("\tMOV R2,R0");
+        write("\tMOV R0,0"); 
+        write("\tCMP R1,R2"); 
+        write("\tMOVGT R0,#1");
+        return null;
+    }
+
+    @Override
+    public String visit(LessThan1 lessThan1) { //<=
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
     }
 
     @Override
-    public String visit(GreaterThan2 greaterThan2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
-    }
-
-    @Override
-    public String visit(LessThan1 lessThan1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
-    }
-
-    @Override
-    public String visit(LessThan2 lessThan2) {
+    public String visit(LessThan2 lessThan2) { //<
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
     }

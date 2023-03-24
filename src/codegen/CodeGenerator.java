@@ -350,8 +350,8 @@ public class CodeGenerator implements AstVisitor<String>{
         TdsVariable e = (TdsVariable)currenTds.getElement(name);
         int deplacement = e.getDeplacement();
         //ajout de la valeur au sommet de pile
-        write("\t LDR R0,="+value);
-        write("\t STR R0,[R13,#-"+ deplacement +"]");
+        write("\tLDR R0,="+value);
+        write("\tSTR R0,[R13,#-"+ deplacement +"]!");
         return null;
     }
 

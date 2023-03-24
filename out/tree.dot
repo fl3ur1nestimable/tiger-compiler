@@ -16,7 +16,7 @@ digraph "ast"{
 	N12 [label="2", shape="box"];
 	N13 [label="valDec", shape="box"];
 	N14 [label="x", shape="box"];
-	N15 [label="oui", shape="box"];
+	N15 [label="je suis ton pere", shape="box"];
 	N1 [label="Let_in_End", shape="box"];
 	N0 [label="Program", shape="box"];
 

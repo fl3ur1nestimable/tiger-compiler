@@ -14,6 +14,7 @@ public class CodeGenerator implements AstVisitor<String> {
     public Tds currenTds;
     public int currentImbrication = 0;
     public int currentBlock = 0;
+    public int id = 0;
 
     public CodeGenerator(TdsCreator tdsCreator) {
         mainCode = "";
@@ -60,8 +61,17 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Or or) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        or.left.accept(this);
+        write("\tSTR R0,[R13,#-4]!");
+        or.rigth.accept(this);
+        write("\tLDMFD R13!,{R1}");
+        write("\tMOV R2,R0");
+        write("\tMOV R0,#0"); // on met 0 dans RO juste avant le OR, si TRUE alors ramplacé par 1
+        write("\tCMP R1,#0"); // si c'est superieur à 0
+        write("\tMOVGT R0,#1");
+        write("\tCMP R2,#0"); // si c'est superieur à 0
+        write("\tMOVGT R0,#1");
+        return null;
     }
 
     @Override
@@ -90,8 +100,16 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(And and) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        and.left.accept(this);
+        write("\tSTR R0,[R13,#-4]!");
+        and.rigth.accept(this);
+        write("\tLDMFD R13!,{R1}");
+        write("\tMOV R2,R0");
+        write("\tCMP R1,#0"); // si c'est superieur à 0
+        write("\tMOVGT R0,#1");
+        write("\tCMP R2,#0"); // si c'est superieur à 0
+        write("\tMOVEQ R0,#0");
+        return null;
     }
 
     @Override
@@ -282,8 +300,9 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Negation negation) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        negation.right.accept(this);
+        write("\tRSB R0, R0, #0");
+        return null;
     }
 
     @Override

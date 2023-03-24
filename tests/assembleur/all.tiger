@@ -1,9 +1,7 @@
 let
-    var a:= 10
     var b:= 0
     var n:= 2
-    var x := "oui"
-
 in 
-
+    b:=5-4;
+    n:=b+n
 end

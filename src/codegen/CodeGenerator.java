@@ -1,4 +1,5 @@
 package codegen;
+
 import tds.*;
 
 import java.nio.file.Files;
@@ -6,14 +7,14 @@ import java.nio.file.Path;
 
 import ast.*;
 
-public class CodeGenerator implements AstVisitor<String>{
+public class CodeGenerator implements AstVisitor<String> {
 
     public String mainCode;
     public TdsCreator tdsCreator;
     public Tds currenTds;
     public int currentImbrication = 0;
     public int currentBlock = 0;
-    
+
     public CodeGenerator(TdsCreator tdsCreator) {
         mainCode = "";
         this.tdsCreator = tdsCreator;
@@ -21,11 +22,11 @@ public class CodeGenerator implements AstVisitor<String>{
     }
 
     public void write(String s) {
-        mainCode += s+'\n';
+        mainCode += s + '\n';
     }
 
-    public void saveCode(){
-        //save code in file
+    public void saveCode() {
+        // save code in file
         Path path = Path.of("./src/codegen/out/main.s");
         try {
             Files.writeString(path, mainCode);
@@ -34,16 +35,16 @@ public class CodeGenerator implements AstVisitor<String>{
         }
     }
 
-    public Tds getTds(int bloc, int imbrication){
+    public Tds getTds(int bloc, int imbrication) {
         for (Tds tds : tdsCreator.tdsList) {
-            if(tds.getNumBloc() == bloc && tds.getNumImbrication() == imbrication){
+            if (tds.getNumBloc() == bloc && tds.getNumImbrication() == imbrication) {
                 return tds;
             }
         }
         return null;
     }
 
-    public String convertHexa(String s){
+    public String convertHexa(String s) {
         String hexa = "0x";
         for (int i = 0; i < s.length(); i++) {
             hexa += Integer.toHexString(s.charAt(i));
@@ -51,7 +52,6 @@ public class CodeGenerator implements AstVisitor<String>{
         return hexa;
     }
 
-    
     @Override
     public String visit(Program affect) {
         affect.expr.accept(this);
@@ -132,14 +132,22 @@ public class CodeGenerator implements AstVisitor<String>{
 
     @Override
     public String visit(Plus plus) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        plus.left.accept(this);
+        write("\tMOV R1,R0");
+        plus.rigth.accept(this);
+
+        write("\tADD R0,R1,R0");
+        return null;
     }
 
     @Override
     public String visit(Moins moins) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        moins.left.accept(this);
+        write("\tMOV R1,R0");
+        moins.rigth.accept(this);
+
+        write("\tSUB R0,R1,R0");
+        return null;
     }
 
     @Override
@@ -153,6 +161,7 @@ public class CodeGenerator implements AstVisitor<String>{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
     }
+
     //
     @Override
     public String visit(Whiledo whiledo) {
@@ -160,7 +169,8 @@ public class CodeGenerator implements AstVisitor<String>{
         currentImbrication++;
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
-        
+        write("\tMOV R11,R13");
+
         currentBlock--;
         currentImbrication--;
 
@@ -174,6 +184,7 @@ public class CodeGenerator implements AstVisitor<String>{
         currentImbrication++;
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
+        write("\tMOV R11,R13");
 
         currentBlock--;
         currentImbrication--;
@@ -184,18 +195,24 @@ public class CodeGenerator implements AstVisitor<String>{
 
     @Override
     public String visit(Identifier identifier) {
+        String valeur = identifier.value;
+        TdsVariable e = (TdsVariable) currenTds.getElement(valeur);
+        int deplacement = e.getDeplacement();
+        write("\tLDR R0,[R11,#-" + deplacement + "]");
         return identifier.value;
     }
 
     @Override
     public String visit(Expr_seq expr_seq) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        for (Ast a : expr_seq.array) {
+            a.accept(this);
+        }
+        return null;
     }
 
     @Override
     public String visit(Declaration_list declaration_list) {
-        for (Ast a : declaration_list.decList){
+        for (Ast a : declaration_list.decList) {
             a.accept(this);
         }
         return null;
@@ -208,8 +225,10 @@ public class CodeGenerator implements AstVisitor<String>{
         currentImbrication++;
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
+        write("\tMOV R11,R13");
+
         let_in_end.block1.accept(this);
-        if (let_in_end.block2 != null){
+        if (let_in_end.block2 != null) {
             let_in_end.block2.accept(this);
 
         }
@@ -226,20 +245,22 @@ public class CodeGenerator implements AstVisitor<String>{
 
     @Override
     public String visit(StringNode string_node) {
-        System.out.println(convertHexa(string_node.value.replace("\"", "")));
-        return convertHexa(string_node.value.replace("\"", ""));
+        // System.out.println(convertHexa(string_node.value.replace("\"", "")));
+        write("\tLDR R0,=" + convertHexa(string_node.value.replace("\"", "")));
+        return null;
     }
 
     @Override
     public String visit(IntNode int_node) {
-        return Integer.toString(int_node.value);
+        write("\tLDR R0,=" + int_node.value);
+        return null;
     }
 
     @Override
     public String visit(Nil nil) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        return "0";
     }
+
     // - ??? vu qu'on sort du while ?
     @Override
     public String visit(Break_ break_) {
@@ -279,8 +300,15 @@ public class CodeGenerator implements AstVisitor<String>{
 
     @Override
     public String visit(Assignement assignement) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        Tds tds = getTds(currentBlock, currentImbrication);
+        String v = assignement.left.accept(this);
+        assignement.right.accept(this);
+        TdsVariable e = (TdsVariable) tds.getElement(v);
+        int deplacement = e.getDeplacement();
+        // write("\tLDR R0,=" + value);
+        write("\tSTR R0,[R11,#-" + deplacement + "]");
+
+        return null;
     }
 
     @Override
@@ -346,12 +374,11 @@ public class CodeGenerator implements AstVisitor<String>{
     @Override
     public String visit(Variable_declaration variable_declaration) {
         String value = variable_declaration.expr.accept(this);
-        String name  = variable_declaration.name.accept(this);
-        TdsVariable e = (TdsVariable)currenTds.getElement(name);
-        int deplacement = e.getDeplacement();
-        //ajout de la valeur au sommet de pile
-        write("\tLDR R0,="+value);
-        write("\tSTR R0,[R13,#-"+ deplacement +"]!");
+        // String name = variable_declaration.name.accept(this);
+        // TdsVariable e = (TdsVariable) currenTds.getElement(name);
+        // int deplacement = e.getDeplacement();
+        // ajout de la valeur au sommet de pile
+        write("\tSTR R0,[R13],#-4");
         return null;
     }
 
@@ -402,8 +429,5 @@ public class CodeGenerator implements AstVisitor<String>{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
     }
-    
 
-    
-    
 }

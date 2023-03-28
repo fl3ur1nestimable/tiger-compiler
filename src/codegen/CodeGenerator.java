@@ -275,15 +275,14 @@ public class CodeGenerator implements AstVisitor<String> {
     //
     @Override
     public String visit(Whiledo whiledo) {
-        currentBlock++;
-        currentImbrication++;
-        Tds tds = getTds(currentBlock, currentImbrication);
-        currenTds = tds;
-        write("\tMOV R11,R13");
-
-        currentBlock--;
-        currentImbrication--;
-
+        write("while_"+id);
+        whiledo.cond.accept(this);
+        write("\tCMP R0,#0");
+        write("\tBEQ end_while_"+id);
+        whiledo.doBlock.accept(this);
+        write("\tB while_"+id);
+        write("end_while_"+id);
+        id++;
         return null;
     }
 
@@ -294,10 +293,26 @@ public class CodeGenerator implements AstVisitor<String> {
         currentImbrication++;
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
+        write("\tMOV R12,R11");
         write("\tMOV R11,R13");
-
+        /*for_.expr1.accept(this);
+        write("\tSTR R0,[R13],#-4");
+        write("\t MOV R1,R0");
+        for_.expr2.accept(this);
+        write("\t MOV R2,R0");
+        write("for_"+id);
+        write("\tCMP R1,R2");
+        write("\tBGT end_for_"+id);
+        for_.expr3.accept(this);
+        write("\tADD R1,R1,#1");
+        write("\tLDR R1,[R11,#-4]");
+        write("\tB for_"+id);
+        write("end_for_"+id);*/
+        write("\tMOV R11,R12");
+        //id++;
         currentBlock--;
         currentImbrication--;
+        currenTds = getTds(currentBlock, currentImbrication);
 
         return null;
 
@@ -424,8 +439,21 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(IfThenElse ifthenelse) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        ifthenelse.left.accept(this);
+        write("\tCMP R0,#0");
+        if(ifthenelse.right != null){
+            write("\tBEQ else_"+id);
+            ifthenelse.middle.accept(this);
+            write("\tB endif_"+id);
+            write("else_"+id);
+            ifthenelse.right.accept(this);
+        }else{
+            write("\tBEQ endif_"+id);
+            ifthenelse.middle.accept(this);
+        }
+        write("endif_"+id);
+        id++;
+        return null;
     }
 
     @Override

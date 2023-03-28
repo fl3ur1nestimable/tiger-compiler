@@ -5,36 +5,59 @@
 	STR R0,[R13],#-4
 	LDR R0,=3
 	STR R0,[R13],#-4
-	LDR R0,[R11,#-4]
+while_0
 	LDR R0,[R11,#-0]
-	MOV R1,R0
-	LDR R0,[R11,#-8]
-	ADD R0,R1,R0
-	STR R0,[R11,#-4]
-	LDR R0,[R11,#-8]
-	LDR R0,=3
-	MOV R1,R0
-	LDR R0,=5
+	STR R0,[R13,#-4]!
+	LDR R0,=10
+	LDMFD R13!,{R1}
 	MOV R2,R0
-	BL mul
-	STR R0,[R11,#-8]
+	MOV R0,#0
+	CMP R1,R2
+	MOVLE R0,#1
+	CMP R0,#0
+	BEQ end_while_0
 	LDR R0,[R11,#-0]
+	LDR R0,[R11,#-0]
+	MOV R1,R0
+	LDR R0,=1
+	ADD R0,R1,R0
+	STR R0,[R11,#-0]
+	B while_0
+end_while_0
+	LDR R0,[R11,#-4]
 	LDR R0,=2
 	MOV R1,R0
-	LDR R0,[R11,#-4]
+	LDR R0,[R11,#-0]
 	MOV R2,R0
 	BL mul
-	STR R0,[R11,#-0]
-	LDR R0,[R11,#-4]
+	STR R0,[R11,#-4]
+	LDR R0,[R11,#-8]
 	LDR R0,[R11,#-0]
 	MOV R1,R0
+	LDR R0,[R11,#-4]
+	ADD R0,R1,R0
+	STR R0,[R11,#-8]
 	LDR R0,[R11,#-8]
+	STR R0,[R13,#-4]!
+	LDR R0,[R11,#-4]
+	LDMFD R13!,{R1}
+	MOV R2,R0
+	MOV R0,#0
+	CMP R1,R2
+	MOVGT R0,#1
+	CMP R0,#0
+	BEQ endif_1
+	LDR R0,[R11,#-4]
+	LDR R0,[R11,#-4]
+	MOV R1,R0
+	LDR R0,=1
 	ADD R0,R1,R0
 	STR R0,[R11,#-4]
+endif_1
 	LDR R0,[R11,#-0]
-	LDR R0,[R11,#-4]
+	LDR R0,[R11,#-8]
 	MOV R1,R0
-	LDR R0,=4
+	LDR R0,[R11,#-4]
 	MOV R2,R0
 	BL div
 	STR R0,[R11,#-0]

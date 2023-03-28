@@ -131,7 +131,7 @@ public class CodeGenerator implements AstVisitor<String> {
         greaterThan1.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,0"); 
+        write("\tMOV R0,#0"); 
         write("\tCMP R1,R2"); 
         write("\tMOVGT R0,#1");
         write("\tCMP R1,R2"); 
@@ -146,22 +146,37 @@ public class CodeGenerator implements AstVisitor<String> {
         greaterThan2.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,0"); 
+        write("\tMOV R0,#0"); 
         write("\tCMP R1,R2"); 
         write("\tMOVGT R0,#1");
         return null;
     }
 
     @Override
-    public String visit(LessThan1 lessThan1) { //<=
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+    public String visit(LessThan1 lessThan1) {
+        lessThan1.left.accept(this);
+        write("\tSTR R0,[R13,#-4]!");
+        lessThan1.rigth.accept(this);
+        write("\tLDMFD R13!,{R1}");
+        write("\tMOV R2,R0");
+        write("\tMOV R0,#0"); 
+        write("\tCMP R1,R2"); 
+        write("\tMOVLE R0,#1");
+        return null;
+        
     }
 
     @Override
-    public String visit(LessThan2 lessThan2) { //<
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+    public String visit(LessThan2 lessThan2) {
+        lessThan2.left.accept(this);
+        write("\tSTR R0,[R13,#-4]!");
+        lessThan2.rigth.accept(this);
+        write("\tLDMFD R13!,{R1}");
+        write("\tMOV R2,R0");
+        write("\tMOV R0,#0"); 
+        write("\tCMP R1,R2"); 
+        write("\tMOVLT R0,#1");
+        return null;
     }
 
     @Override
@@ -169,7 +184,6 @@ public class CodeGenerator implements AstVisitor<String> {
         plus.left.accept(this);
         write("\tMOV R1,R0");
         plus.rigth.accept(this);
-
         write("\tADD R0,R1,R0");
         return null;
     }
@@ -179,7 +193,6 @@ public class CodeGenerator implements AstVisitor<String> {
         moins.left.accept(this);
         write("\tMOV R1,R0");
         moins.rigth.accept(this);
-
         write("\tSUB R0,R1,R0");
         return null;
     }

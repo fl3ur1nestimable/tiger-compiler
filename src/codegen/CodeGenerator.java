@@ -15,6 +15,7 @@ public class CodeGenerator implements AstVisitor<String> {
     public int currentImbrication = 0;
     public int currentBlock = 0;
     public int id = 0;
+    public boolean muldone = false;
 
     public CodeGenerator(TdsCreator tdsCreator) {
         mainCode = "";
@@ -26,8 +27,61 @@ public class CodeGenerator implements AstVisitor<String> {
         mainCode += s + '\n';
     }
 
+    public void addOp(){
+        //mutiplication
+        write("");
+        write("mul");
+        write("\tSTMFD R13!,{R1,R2,LR}");
+        write("\tMOV R0,#0");
+        write("mul_loop");
+        write("\tLSRS R2,R2,#1");
+        write("\tADDCS R0,R0,R1");
+        write("\tLSL R1,R1,#1");
+        write("\tTST R2,R2");
+        write("\tBNE mul_loop");
+        write("\tLDMFD R13!,{R1,R2,PC}");
+        write("");
+        //division
+        write("div");
+        write("\tSTMFD R13!,{R2-R5,LR}");
+        write("\tMOV R0,#0");
+        write("\tMOV R3,#0");
+        write("\tCMP R1,#0");
+        write("\tRSBLT R1,R1,#0");
+        write("\tEORLT R3,R3,#1");
+        write("\tCMP R2,#0");
+        write("\tRSBLT R2,R2,#0");
+        write("\tEORLT R3,R3,#1");
+        write("\tMOV R4,R2");
+        write("\tMOV R5,#1");
+        write("div_max");
+        write("\tLSL R4,R4,#1");
+        write("\tLSL R5,R5,#1");
+        write("\tCMP R4,R1");
+        write("\tBLE div_max");
+        write("div_loop");
+        write("\tLSR R4,R4,#1");
+        write("\tLSR R5,R5,#1");
+        write("\tCMP R4,R1");
+        write("\tBGT div_loop");
+        write("\tADD R0,R0,R5");
+        write("\tSUB R1,R1,R4");
+        write("\tCMP R1,R2");
+        write("\tBGE div_loop");
+        write("\tCMP R3,#1");
+        write("\tBNE div_end");
+        write("\tCMP R1,#0");
+        write("\tADDNE R0,R0,#1");
+        write("\tRSB R0,R0,#0");
+        write("\tRSB R1,R1,#0");
+        write("\tADDNE R1,R1,R2");
+        write("div_end");
+        write("\tLDMFD R13!,{R2-R5,PC}");
+    }
+
     public void saveCode() {
         // save code in file
+        addOp();
         Path path = Path.of("./src/codegen/out/main.s");
         try {
             Files.writeString(path, mainCode);
@@ -56,6 +110,7 @@ public class CodeGenerator implements AstVisitor<String> {
     @Override
     public String visit(Program affect) {
         affect.expr.accept(this);
+        write("\tEND");
         return null;
     }
 
@@ -199,14 +254,22 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Mult mult) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        mult.left.accept(this);
+        write("\tMOV R1,R0");
+        mult.rigth.accept(this);
+        write("\tMOV R2,R0");
+        write("\tBL mul");
+        return null;
     }
 
     @Override
     public String visit(Divide divide) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        divide.left.accept(this);
+        write("\tMOV R1,R0");
+        divide.rigth.accept(this);
+        write("\tMOV R2,R0");
+        write("\tBL div");
+        return null;
     }
 
     //
@@ -421,11 +484,7 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Variable_declaration variable_declaration) {
-        String value = variable_declaration.expr.accept(this);
-        // String name = variable_declaration.name.accept(this);
-        // TdsVariable e = (TdsVariable) currenTds.getElement(name);
-        // int deplacement = e.getDeplacement();
-        // ajout de la valeur au sommet de pile
+        variable_declaration.expr.accept(this);
         write("\tSTR R0,[R13],#-4");
         return null;
     }

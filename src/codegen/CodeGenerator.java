@@ -27,8 +27,8 @@ public class CodeGenerator implements AstVisitor<String> {
         mainCode += s + '\n';
     }
 
-    public void addOp(){
-        //mutiplication
+    public void addOp() {
+        write(";    fin de programme : multiplication ");
         write("");
         write("mul");
         write("\tSTMFD R13!,{R1,R2,LR}");
@@ -41,7 +41,8 @@ public class CodeGenerator implements AstVisitor<String> {
         write("\tBNE mul_loop");
         write("\tLDMFD R13!,{R1,R2,PC}");
         write("");
-        //division
+
+        write(";    fin de programme : division ");
         write("div");
         write("\tSTMFD R13!,{R2-R5,LR}");
         write("\tMOV R0,#0");
@@ -116,6 +117,7 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Or or) {
+        write(";    or");
         or.left.accept(this);
         write("\tSTR R0,[R13,#-4]!");
         or.rigth.accept(this);
@@ -155,6 +157,7 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(And and) {
+        write(";    and");
         and.left.accept(this);
         write("\tSTR R0,[R13,#-4]!");
         and.rigth.accept(this);
@@ -168,74 +171,82 @@ public class CodeGenerator implements AstVisitor<String> {
     }
 
     @Override
-    public String visit(Compare_equal_1 compare_equal_1) { //<>
+    public String visit(Compare_equal_1 compare_equal_1) { // <>
+        write(";    <>");
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
     }
 
     @Override
-    public String visit(Compare_equal_2 compare_equal_2) { //=
+    public String visit(Compare_equal_2 compare_equal_2) { // =
+        write(";    =");
+
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
     }
 
     @Override
-    public String visit(GreaterThan1 greaterThan1) { // >=   question: est-ce qu'on peut écrire a >2 > 3 ? (car a>2 produit 1 ou 0 qui est aussi comparable)
-        greaterThan1.left.accept(this);                    // sinon pas la peine utiliser pile, on oeut direct utiliser R et R2
+    public String visit(GreaterThan1 greaterThan1) { // >= question: est-ce qu'on peut écrire a >2 > 3 ? (car a>2
+        write(";    >=");
+        greaterThan1.left.accept(this); // sinon pas la peine utiliser pile, on oeut direct utiliser R et R2
         write("\tSTR R0,[R13,#-4]!");
         greaterThan1.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,#0"); 
-        write("\tCMP R1,R2"); 
+        write("\tMOV R0,#0");
+        write("\tCMP R1,R2");
         write("\tMOVGT R0,#1");
-        write("\tCMP R1,R2"); 
+        write("\tCMP R1,R2");
         write("\tMOVEQ R0,R2");
         return null;
     }
 
     @Override
-    public String visit(GreaterThan2 greaterThan2) { //>
+    public String visit(GreaterThan2 greaterThan2) { // >
+        write(";    >");
         greaterThan2.left.accept(this);
         write("\tSTR R0,[R13,#-4]!");
         greaterThan2.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,#0"); 
-        write("\tCMP R1,R2"); 
+        write("\tMOV R0,#0");
+        write("\tCMP R1,R2");
         write("\tMOVGT R0,#1");
         return null;
     }
 
     @Override
     public String visit(LessThan1 lessThan1) {
+        write(";    <=");
         lessThan1.left.accept(this);
         write("\tSTR R0,[R13,#-4]!");
         lessThan1.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,#0"); 
-        write("\tCMP R1,R2"); 
+        write("\tMOV R0,#0");
+        write("\tCMP R1,R2");
         write("\tMOVLE R0,#1");
         return null;
-        
+
     }
 
     @Override
     public String visit(LessThan2 lessThan2) {
+        write(";    <");
         lessThan2.left.accept(this);
         write("\tSTR R0,[R13,#-4]!");
         lessThan2.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,#0"); 
-        write("\tCMP R1,R2"); 
+        write("\tMOV R0,#0");
+        write("\tCMP R1,R2");
         write("\tMOVLT R0,#1");
         return null;
     }
 
     @Override
     public String visit(Plus plus) {
+        write(";    addition");
         plus.left.accept(this);
         write("\tMOV R1,R0");
         plus.rigth.accept(this);
@@ -245,6 +256,7 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Moins moins) {
+        write(";    soustraction");
         moins.left.accept(this);
         write("\tMOV R1,R0");
         moins.rigth.accept(this);
@@ -254,6 +266,7 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Mult mult) {
+        write(";    multiplication");
         mult.left.accept(this);
         write("\tMOV R1,R0");
         mult.rigth.accept(this);
@@ -264,6 +277,7 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Divide divide) {
+        write(";    division");
         divide.left.accept(this);
         write("\tMOV R1,R0");
         divide.rigth.accept(this);
@@ -275,13 +289,14 @@ public class CodeGenerator implements AstVisitor<String> {
     //
     @Override
     public String visit(Whiledo whiledo) {
-        write("while_"+id);
+        write(";    boucle while");
+        write("while_" + id);
         whiledo.cond.accept(this);
         write("\tCMP R0,#0");
-        write("\tBEQ end_while_"+id);
+        write("\tBEQ end_while_" + id);
         whiledo.doBlock.accept(this);
-        write("\tB while_"+id);
-        write("end_while_"+id);
+        write("\tB while_" + id);
+        write("end_while_" + id);
         id++;
         return null;
     }
@@ -289,41 +304,67 @@ public class CodeGenerator implements AstVisitor<String> {
     //
     @Override
     public String visit(For_ for_) {
+        int idbis = id;
+        id++;
         currentBlock++;
         currentImbrication++;
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
-        write("\tMOV R12,R11");
+        write(";    boucle for");
+        write("\tSTR R11,[R13,#-4]!");
         write("\tMOV R11,R13");
-        /*for_.expr1.accept(this);
-        write("\tSTR R0,[R13],#-4");
+        for_.expr1.accept(this);
+        write("\tSTR R0,[R13,#-4]!");
         write("\t MOV R1,R0");
         for_.expr2.accept(this);
         write("\t MOV R2,R0");
-        write("for_"+id);
+        write("for_" + idbis);
         write("\tCMP R1,R2");
-        write("\tBGT end_for_"+id);
+        write("\tBGT end_for_" + idbis);
         for_.expr3.accept(this);
         write("\tADD R1,R1,#1");
-        write("\tLDR R1,[R11,#-4]");
-        write("\tB for_"+id);
-        write("end_for_"+id);*/
-        write("\tMOV R11,R12");
-        //id++;
+        write("\tSTR R1,[R11,#-4]");
+        write("\tB for_" + idbis);
+        write("end_for_" + idbis);
+        write(";    dépiler le compteur et la base de la TDS du for");
+        write("\tLDMFD R13!,{R0,R11}");
         currentBlock--;
         currentImbrication--;
         currenTds = getTds(currentBlock, currentImbrication);
-
         return null;
 
     }
 
     @Override
     public String visit(Identifier identifier) {
+        int nx = currenTds.getNumImbrication();
+        int ny = nx - 1;
         String valeur = identifier.value;
         TdsVariable e = (TdsVariable) currenTds.getElement(valeur);
-        int deplacement = e.getDeplacement();
-        write("\tLDR R0,[R11,#-" + deplacement + "]");
+        if (e != null) {
+            int deplacement = e.getDeplacement();
+            write("\tLDR R0,[R11,#-" + deplacement + "]");
+        } else {
+            Tds parent = currenTds.getParent();
+            int deplacement = 0;
+            while (parent != null) {
+                e = (TdsVariable) parent.getElement(valeur);
+                if (e != null) {
+                    deplacement = e.getDeplacement();
+                    break;
+                }
+                parent = parent.getParent();
+                ny--;
+            }
+            write("\tMOV R1,#" + Integer.toString(nx - ny));
+            write("\tMOV R10,R11");
+            write("loop_chainage_statique_" + id);
+            write("\tSUB R10,R10,#-8");
+            write("\tSUBS R1,R1,#1");
+            write("\tBNE loop_chainage_statique_" + id);
+            write("\tLDR R0,[R10,#-" + deplacement + "]");
+            id++;
+        }
         return identifier.value;
     }
 
@@ -412,7 +453,6 @@ public class CodeGenerator implements AstVisitor<String> {
         return null;
     }
 
-    @Override
     public String visit(Expr_list expr_list) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visit'");
@@ -426,13 +466,36 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Assignement assignement) {
+        int nx = currenTds.getNumImbrication();
+        int ny = nx - 1;
         Tds tds = getTds(currentBlock, currentImbrication);
         String v = assignement.left.accept(this);
         assignement.right.accept(this);
         TdsVariable e = (TdsVariable) tds.getElement(v);
-        int deplacement = e.getDeplacement();
-        // write("\tLDR R0,=" + value);
-        write("\tSTR R0,[R11,#-" + deplacement + "]");
+        if (e != null) {
+            int deplacement = e.getDeplacement();
+            write("\tSTR R0,[R11,#-" + deplacement + "]");
+        } else {
+            Tds parent = currenTds.getParent();
+            int deplacement = 0;
+            while (parent != null) {
+                e = (TdsVariable) parent.getElement(v);
+                if (e != null) {
+                    deplacement = e.getDeplacement();
+                    break;
+                }
+                parent = parent.getParent();
+                ny--;
+            }
+            write("\tMOV R1,#" + Integer.toString(nx - ny));
+            write("\tMOV R10,R11");
+            write("loop_chainage_statique_" + id);
+            write("\tSUB R10,R10,#-8");
+            write("\tSUBS R1,R1,#1");
+            write("\tBNE loop_chainage_statique_" + id);
+            write("\tSTR R0,[R10,#-" + deplacement + "]");
+            id++;
+        }
 
         return null;
     }
@@ -441,17 +504,17 @@ public class CodeGenerator implements AstVisitor<String> {
     public String visit(IfThenElse ifthenelse) {
         ifthenelse.left.accept(this);
         write("\tCMP R0,#0");
-        if(ifthenelse.right != null){
-            write("\tBEQ else_"+id);
+        if (ifthenelse.right != null) {
+            write("\tBEQ else_" + id);
             ifthenelse.middle.accept(this);
-            write("\tB endif_"+id);
-            write("else_"+id);
+            write("\tB endif_" + id);
+            write("else_" + id);
             ifthenelse.right.accept(this);
-        }else{
-            write("\tBEQ endif_"+id);
+        } else {
+            write("\tBEQ endif_" + id);
             ifthenelse.middle.accept(this);
         }
-        write("endif_"+id);
+        write("endif_" + id);
         id++;
         return null;
     }
@@ -523,6 +586,17 @@ public class CodeGenerator implements AstVisitor<String> {
         currentImbrication++;
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
+        write(";    déclaration de fonction");
+        write("\tMOV R11,R13");
+        if (function_declaration.paramsOrReturnType.accept(this) != null) {
+            function_declaration.paramsOrReturnType.accept(this);
+            write("\tSTR R0,[R13],#-4");
+        }
+        if (function_declaration.return_type.accept(this) != null) {
+            function_declaration.return_type.accept(this);
+            write("\tSTR R0,[R13],#-4");
+        }
+        write("\t");
 
         currentBlock--;
         currentImbrication--;

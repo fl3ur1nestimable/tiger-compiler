@@ -1,16 +1,8 @@
 let
     var a := 1
     var b := 2
-    var c := 3
 
 in
-    while a<=10 do (
-        a := a + 1
-    );
-    b := 2 * a;
-    c := a + b;
-    if c>b then (
-        b := b + 1
-    );
-    a := c / b
+    for i:= 0 to 4 do 
+    a := a+1
 end

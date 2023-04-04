@@ -3,65 +3,50 @@
 	STR R0,[R13],#-4
 	LDR R0,=2
 	STR R0,[R13],#-4
-	LDR R0,=3
-	STR R0,[R13],#-4
-while_0
-	LDR R0,[R11,#-0]
+;    boucle for
+	STR R11,[R13,#-4]!
+	MOV R11,R13
+	LDR R0,=0
 	STR R0,[R13,#-4]!
-	LDR R0,=10
-	LDMFD R13!,{R1}
-	MOV R2,R0
-	MOV R0,#0
+	 MOV R1,R0
+	LDR R0,=4
+	 MOV R2,R0
+for_0
 	CMP R1,R2
-	MOVLE R0,#1
-	CMP R0,#0
-	BEQ end_while_0
-	LDR R0,[R11,#-0]
-	LDR R0,[R11,#-0]
+	BGT end_for_0
+	MOV R1,#1
+	MOV R10,R11
+loop_chainage_statique_1
+	SUB R10,R10,#-8
+	SUBS R1,R1,#1
+	BNE loop_chainage_statique_1
+	LDR R0,[R10,#-0]
+;    addition
+	MOV R1,#1
+	MOV R10,R11
+loop_chainage_statique_2
+	SUB R10,R10,#-8
+	SUBS R1,R1,#1
+	BNE loop_chainage_statique_2
+	LDR R0,[R10,#-0]
 	MOV R1,R0
 	LDR R0,=1
 	ADD R0,R1,R0
-	STR R0,[R11,#-0]
-	B while_0
-end_while_0
-	LDR R0,[R11,#-4]
-	LDR R0,=2
-	MOV R1,R0
-	LDR R0,[R11,#-0]
-	MOV R2,R0
-	BL mul
-	STR R0,[R11,#-4]
-	LDR R0,[R11,#-8]
-	LDR R0,[R11,#-0]
-	MOV R1,R0
-	LDR R0,[R11,#-4]
-	ADD R0,R1,R0
-	STR R0,[R11,#-8]
-	LDR R0,[R11,#-8]
-	STR R0,[R13,#-4]!
-	LDR R0,[R11,#-4]
-	LDMFD R13!,{R1}
-	MOV R2,R0
-	MOV R0,#0
-	CMP R1,R2
-	MOVGT R0,#1
-	CMP R0,#0
-	BEQ endif_1
-	LDR R0,[R11,#-4]
-	LDR R0,[R11,#-4]
-	MOV R1,R0
-	LDR R0,=1
-	ADD R0,R1,R0
-	STR R0,[R11,#-4]
-endif_1
-	LDR R0,[R11,#-0]
-	LDR R0,[R11,#-8]
-	MOV R1,R0
-	LDR R0,[R11,#-4]
-	MOV R2,R0
-	BL div
-	STR R0,[R11,#-0]
+	MOV R1,#1
+	MOV R10,R11
+loop_chainage_statique_3
+	SUB R10,R10,#-8
+	SUBS R1,R1,#1
+	BNE loop_chainage_statique_3
+	STR R0,[R10,#-0]
+	ADD R1,R1,#1
+	STR R1,[R11,#-4]
+	B for_0
+end_for_0
+;    dépiler le compteur et la base de la TDS du for
+	LDMFD R13!,{R0,R11}
 	END
+;    fin de programme : multiplication 
 
 mul
 	STMFD R13!,{R1,R2,LR}
@@ -74,6 +59,7 @@ mul_loop
 	BNE mul_loop
 	LDMFD R13!,{R1,R2,PC}
 
+;    fin de programme : division 
 div
 	STMFD R13!,{R2-R5,LR}
 	MOV R0,#0

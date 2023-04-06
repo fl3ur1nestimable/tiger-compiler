@@ -1,50 +1,104 @@
 	MOV R11,R13
 	LDR R0,=1
-	STR R0,[R13],#-4
+	STR R0,[R13,#-4]!
 	LDR R0,=2
-	STR R0,[R13],#-4
+	STR R0,[R13,#-4]!
+	LDR R0,=3
+	STR R0,[R13,#-4]!
 ;    boucle for
 	STR R11,[R13,#-4]!
 	MOV R11,R13
 	LDR R0,=0
 	STR R0,[R13,#-4]!
-	 MOV R1,R0
+	 MOV R4,R0
 	LDR R0,=4
 	 MOV R2,R0
 for_0
-	CMP R1,R2
+	CMP R4,R2
 	BGT end_for_0
-	MOV R1,#1
-	MOV R10,R11
+	MOV R3,#1
+	LDR R10,[R11]
 loop_chainage_statique_1
-	SUB R10,R10,#-8
-	SUBS R1,R1,#1
-	BNE loop_chainage_statique_1
-	LDR R0,[R10,#-0]
+	SUBS R3,R3,#1
+	BEQ exit_chainage_statique_1
+	LDR R10,[R10]
+	B loop_chainage_statique_1
+exit_chainage_statique_1
+	LDR R0,[R10,#-4]
 ;    addition
-	MOV R1,#1
-	MOV R10,R11
+	MOV R3,#1
+	LDR R10,[R11]
 loop_chainage_statique_2
-	SUB R10,R10,#-8
-	SUBS R1,R1,#1
-	BNE loop_chainage_statique_2
-	LDR R0,[R10,#-0]
+	SUBS R3,R3,#1
+	BEQ exit_chainage_statique_2
+	LDR R10,[R10]
+	B loop_chainage_statique_2
+exit_chainage_statique_2
+	LDR R0,[R10,#-4]
 	MOV R1,R0
 	LDR R0,=1
 	ADD R0,R1,R0
-	MOV R1,#1
-	MOV R10,R11
+	MOV R3,#1
+	LDR R10,[R11]
 loop_chainage_statique_3
-	SUB R10,R10,#-8
-	SUBS R1,R1,#1
-	BNE loop_chainage_statique_3
-	STR R0,[R10,#-0]
-	ADD R1,R1,#1
-	STR R1,[R11,#-4]
+	SUBS R3,R3,#1
+	BEQ exit_chainage_statique_3
+	LDR R10,[R10]
+	B loop_chainage_statique_3
+exit_chainage_statique_3
+	STR R0,[R10,#-4]
+	MOV R3,#1
+	LDR R10,[R11]
+loop_chainage_statique_4
+	SUBS R3,R3,#1
+	BEQ exit_chainage_statique_4
+	LDR R10,[R10]
+	B loop_chainage_statique_4
+exit_chainage_statique_4
+	LDR R0,[R10,#-12]
+;    addition
+	MOV R3,#1
+	LDR R10,[R11]
+loop_chainage_statique_5
+	SUBS R3,R3,#1
+	BEQ exit_chainage_statique_5
+	LDR R10,[R10]
+	B loop_chainage_statique_5
+exit_chainage_statique_5
+	LDR R0,[R10,#-4]
+	MOV R1,R0
+	MOV R3,#1
+	LDR R10,[R11]
+loop_chainage_statique_6
+	SUBS R3,R3,#1
+	BEQ exit_chainage_statique_6
+	LDR R10,[R10]
+	B loop_chainage_statique_6
+exit_chainage_statique_6
+	LDR R0,[R10,#-8]
+	ADD R0,R1,R0
+	MOV R3,#1
+	LDR R10,[R11]
+loop_chainage_statique_7
+	SUBS R3,R3,#1
+	BEQ exit_chainage_statique_7
+	LDR R10,[R10]
+	B loop_chainage_statique_7
+exit_chainage_statique_7
+	STR R0,[R10,#-12]
+	ADD R4,R4,#1
+	STR R4,[R11,#-4]
 	B for_0
 end_for_0
 ;    dépiler le compteur et la base de la TDS du for
 	LDMFD R13!,{R0,R11}
+	LDR R0,[R11,#-4]
+;    addition
+	LDR R0,[R11,#-8]
+	MOV R1,R0
+	LDR R0,[R11,#-12]
+	ADD R0,R1,R0
+	STR R0,[R11,#-4]
 	END
 ;    fin de programme : multiplication 
 

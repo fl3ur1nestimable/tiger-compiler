@@ -1,8 +1,11 @@
 let
     var a := 1
     var b := 2
+    var c := 3
 
 in
-    for i:= 0 to 4 do 
-    a := a+1
+    for i:= 0 to 4 do (
+        a := a+1;
+        c := a+b);
+    a := b + c
 end

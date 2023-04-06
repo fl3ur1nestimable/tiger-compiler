@@ -315,15 +315,15 @@ public class CodeGenerator implements AstVisitor<String> {
         write("\tMOV R11,R13");
         for_.expr1.accept(this);
         write("\tSTR R0,[R13,#-4]!");
-        write("\t MOV R1,R0");
+        write("\t MOV R4,R0");
         for_.expr2.accept(this);
         write("\t MOV R2,R0");
         write("for_" + idbis);
-        write("\tCMP R1,R2");
+        write("\tCMP R4,R2");
         write("\tBGT end_for_" + idbis);
         for_.expr3.accept(this);
-        write("\tADD R1,R1,#1");
-        write("\tSTR R1,[R11,#-4]");
+        write("\tADD R4,R4,#1");
+        write("\tSTR R4,[R11,#-4]");
         write("\tB for_" + idbis);
         write("end_for_" + idbis);
         write(";    dépiler le compteur et la base de la TDS du for");
@@ -343,7 +343,7 @@ public class CodeGenerator implements AstVisitor<String> {
         TdsVariable e = (TdsVariable) currenTds.getElement(valeur);
         if (e != null) {
             int deplacement = e.getDeplacement();
-            write("\tLDR R0,[R11,#-" + deplacement + "]");
+            write("\tLDR R0,[R11,#-" + Integer.toString(deplacement+4) + "]");
         } else {
             Tds parent = currenTds.getParent();
             int deplacement = 0;
@@ -356,13 +356,16 @@ public class CodeGenerator implements AstVisitor<String> {
                 parent = parent.getParent();
                 ny--;
             }
-            write("\tMOV R1,#" + Integer.toString(nx - ny));
-            write("\tMOV R10,R11");
+            int diff = nx - ny;
+            write("\tMOV R3,#" + diff);
+            write("\tLDR R10,[R11]");
             write("loop_chainage_statique_" + id);
-            write("\tSUB R10,R10,#-8");
-            write("\tSUBS R1,R1,#1");
-            write("\tBNE loop_chainage_statique_" + id);
-            write("\tLDR R0,[R10,#-" + deplacement + "]");
+            write("\tSUBS R3,R3,#1");
+            write("\tBEQ exit_chainage_statique_" + id);
+            write("\tLDR R10,[R10]");
+            write("\tB loop_chainage_statique_" + id);
+            write("exit_chainage_statique_" + id);
+            write("\tLDR R0,[R10,#-" + Integer.toString(deplacement+4) + "]");
             id++;
         }
         return identifier.value;
@@ -474,7 +477,7 @@ public class CodeGenerator implements AstVisitor<String> {
         TdsVariable e = (TdsVariable) tds.getElement(v);
         if (e != null) {
             int deplacement = e.getDeplacement();
-            write("\tSTR R0,[R11,#-" + deplacement + "]");
+            write("\tSTR R0,[R11,#-" + Integer.toString(deplacement+4) + "]");
         } else {
             Tds parent = currenTds.getParent();
             int deplacement = 0;
@@ -487,13 +490,16 @@ public class CodeGenerator implements AstVisitor<String> {
                 parent = parent.getParent();
                 ny--;
             }
-            write("\tMOV R1,#" + Integer.toString(nx - ny));
-            write("\tMOV R10,R11");
+            int diff = nx - ny;
+            write("\tMOV R3,#" + diff);
+            write("\tLDR R10,[R11]");
             write("loop_chainage_statique_" + id);
-            write("\tSUB R10,R10,#-8");
-            write("\tSUBS R1,R1,#1");
-            write("\tBNE loop_chainage_statique_" + id);
-            write("\tSTR R0,[R10,#-" + deplacement + "]");
+            write("\tSUBS R3,R3,#1");
+            write("\tBEQ exit_chainage_statique_" + id);
+            write("\tLDR R10,[R10]");
+            write("\tB loop_chainage_statique_" + id);
+            write("exit_chainage_statique_" + id);
+            write("\tSTR R0,[R10,#-" + Integer.toString(deplacement+4) + "]");
             id++;
         }
 
@@ -576,7 +582,7 @@ public class CodeGenerator implements AstVisitor<String> {
     @Override
     public String visit(Variable_declaration variable_declaration) {
         variable_declaration.expr.accept(this);
-        write("\tSTR R0,[R13],#-4");
+        write("\tSTR R0,[R13,#-4]!");
         return null;
     }
 

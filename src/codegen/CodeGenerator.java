@@ -10,6 +10,7 @@ import ast.*;
 public class CodeGenerator implements AstVisitor<String> {
 
     public String mainCode;
+    public String funcCode;
     public TdsCreator tdsCreator;
     public Tds currenTds;
     public int currentImbrication = 0;
@@ -25,6 +26,10 @@ public class CodeGenerator implements AstVisitor<String> {
 
     public void write(String s) {
         mainCode += s + '\n';
+    }
+
+    public void writeFunc(String s) {
+        funcCode += s + '\n';
     }
 
     public void addOp() {
@@ -81,8 +86,8 @@ public class CodeGenerator implements AstVisitor<String> {
     }
 
     public void saveCode() {
-        // save code in file
         addOp();
+        mainCode += funcCode;
         Path path = Path.of("./src/codegen/out/main.s");
         try {
             Files.writeString(path, mainCode);
@@ -173,16 +178,33 @@ public class CodeGenerator implements AstVisitor<String> {
     @Override
     public String visit(Compare_equal_1 compare_equal_1) { // <>
         write(";    <>");
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        compare_equal_1.left.accept(this); // sinon pas la peine utiliser pile, on oeut direct utiliser R et R2
+        write("\tSTR R0,[R13,#-4]!");
+        compare_equal_1.rigth.accept(this);
+        write("\tLDMFD R13!,{R1}");
+        write("\tMOV R2,R0");
+        write("\tMOV R0,#0");
+        write("\tCMP R1,R2");
+        write("\tMOVGT R0,#1");
+        write("\tCMP R1,R2");
+        write("\tMOVEQ R0,R2");
+        return null;
     }
 
     @Override
     public String visit(Compare_equal_2 compare_equal_2) { // =
         write(";    =");
-
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        compare_equal_2.left.accept(this); // sinon pas la peine utiliser pile, on oeut direct utiliser R et R2
+        write("\tSTR R0,[R13,#-4]!");
+        compare_equal_2.rigth.accept(this);
+        write("\tLDMFD R13!,{R1}");
+        write("\tMOV R2,R0");
+        write("\tMOV R0,#0");
+        write("\tCMP R1,R2");
+        write("\tMOVGT R0,#1");
+        write("\tCMP R1,R2");
+        write("\tMOVEQ R0,R2");
+        return null;
     }
 
     @Override
@@ -463,8 +485,24 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(FunctionCall functionCall) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        write("\tSTR R11,[R13,#-4]!");
+        write("\tMOV R11,R13");
+        if(functionCall.right!=null){
+            Expr_list e = (Expr_list)functionCall.right;
+            for (Ast a : e.array) {
+                a.accept(this);
+                write("\t STR R0,[R13,#-4]!");
+            }
+        }
+        write("\t BL func_" + ((Identifier)functionCall.left).value);
+        if(functionCall.right!=null){
+            Expr_list e = (Expr_list)functionCall.right;
+            for (int i = 0; i < e.array.size(); i++) {
+                write("\t LDMFD R13!,{R12}");
+            }
+        }
+        write("\t LDMFD R13!,{R11}");
+        return null;
     }
 
     @Override
@@ -590,20 +628,17 @@ public class CodeGenerator implements AstVisitor<String> {
     public String visit(Function_declaration function_declaration) {
         currentBlock++;
         currentImbrication++;
+        int idbis = id;
+        id++;
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
         write(";    déclaration de fonction");
-        write("\tMOV R11,R13");
-        if (function_declaration.paramsOrReturnType.accept(this) != null) {
-            function_declaration.paramsOrReturnType.accept(this);
-            write("\tSTR R0,[R13],#-4");
-        }
-        if (function_declaration.return_type.accept(this) != null) {
-            function_declaration.return_type.accept(this);
-            write("\tSTR R0,[R13],#-4");
-        }
-        write("\t");
-
+        write("\t B func_end_"+idbis);
+        write("func_" + ((Identifier)function_declaration.name).value);
+        write("\t STMFD R13!,{LR}");
+        function_declaration.body.accept(this);
+        write("\tLDMFD R13!,{PC}");
+        write("func_end_"+idbis);
         currentBlock--;
         currentImbrication--;
         return null;

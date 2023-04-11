@@ -363,6 +363,7 @@ public class CodeGenerator implements AstVisitor<String> {
         int ny = nx - 1;
         String valeur = identifier.value;
         TdsVariable e = (TdsVariable) currenTds.getElement(valeur);
+        write(";    identifier");
         if (e != null) {
             int deplacement = e.getDeplacement();
             write("\tLDR R0,[R11,#-" + Integer.toString(deplacement+4) + "]");
@@ -416,6 +417,8 @@ public class CodeGenerator implements AstVisitor<String> {
         currentImbrication++;
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
+        write(";    début programme: let in end");
+
         write("\tMOV R11,R13");
 
         let_in_end.block1.accept(this);
@@ -485,6 +488,7 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(FunctionCall functionCall) {
+        write(";    function call");
         write("\tSTR R11,[R13,#-4]!");
         write("\tMOV R11,R13");
         if(functionCall.right!=null){
@@ -513,6 +517,8 @@ public class CodeGenerator implements AstVisitor<String> {
         String v = assignement.left.accept(this);
         assignement.right.accept(this);
         TdsVariable e = (TdsVariable) tds.getElement(v);
+        write(";    assignement");
+
         if (e != null) {
             int deplacement = e.getDeplacement();
             write("\tSTR R0,[R11,#-" + Integer.toString(deplacement+4) + "]");
@@ -546,6 +552,8 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(IfThenElse ifthenelse) {
+        write(";    if then else");
+
         ifthenelse.left.accept(this);
         write("\tCMP R0,#0");
         if (ifthenelse.right != null) {

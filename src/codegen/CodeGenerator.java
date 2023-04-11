@@ -476,6 +476,8 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Negation negation) {
+        // write(";    négation");
+
         negation.right.accept(this);
         write("\tRSB R0, R0, #0");
         return null;
@@ -488,7 +490,7 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(FunctionCall functionCall) {
-        write(";    function call");
+        write(";    appel de fonction");
         write("\tSTR R11,[R13,#-4]!");
         write("\tMOV R11,R13");
         if(functionCall.right!=null){

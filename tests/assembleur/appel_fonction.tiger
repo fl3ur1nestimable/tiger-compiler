@@ -1,0 +1,9 @@
+let
+    var a :=0
+    function myfunc(x:int):int = (
+        x:=x+1;
+        x
+    )
+in
+    a:= myfunc(0)
+end

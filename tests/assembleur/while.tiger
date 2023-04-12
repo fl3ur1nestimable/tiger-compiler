@@ -1,0 +1,7 @@
+let
+    var N := 8
+in
+    while N != 0 do
+        ( N:=N-1 )
+
+end

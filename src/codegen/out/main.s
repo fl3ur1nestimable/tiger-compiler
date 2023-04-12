@@ -1,12 +1,45 @@
-;    <=
-	LDR R0,=1
+;    début programme: let in end
+	MOV R11,R13
+	LDR R0,=0
 	STR R0,[R13,#-4]!
-	LDR R0,=2
-	LDMFD R13!,{R1}
-	MOV R2,R0
-	MOV R0,#0
-	CMP R1,R2
-	MOVLE R0,#1
+;    déclaration de fonction
+	 B func_end_0
+func_myfunc
+	 STMFD R13!,{LR}
+;    identifier
+	LDR R0,[R11,#-4]
+;    addition
+;    identifier
+	LDR R0,[R11,#-4]
+	MOV R1,R0
+	LDR R0,=1
+	ADD R0,R1,R0
+;    assignement
+	STR R0,[R11,#-4]
+;    identifier
+	LDR R0,[R11,#-4]
+	LDMFD R13!,{PC}
+func_end_0
+;    identifier
+	MOV R3,#1
+	LDR R10,[R11]
+loop_chainage_statique_1
+	SUBS R3,R3,#1
+	BEQ exit_chainage_statique_1
+	LDR R10,[R10]
+	B loop_chainage_statique_1
+exit_chainage_statique_1
+	LDR R0,[R10,#-4]
+;    appel de fonction
+	STR R11,[R13,#-4]!
+	MOV R11,R13
+	LDR R0,=0
+	 STR R0,[R13,#-4]!
+	 BL func_myfunc
+	 LDMFD R13!,{R12}
+	 LDMFD R13!,{R11}
+;    assignement
+	STR R0,[R11,#-4]
 	END
 ;    fin de programme : multiplication 
 

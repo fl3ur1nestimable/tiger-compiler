@@ -1,15 +1,26 @@
 let
     var a := 0
     
-    function fib(n: int) =(
-        if n<2 then (
-            n
-        )else (
-            fib(n-1) + fib(n-2)
-        )
+    function carre(n: int) =(
+        n * n
     )
 
 in
-    a := fib(5)
+    while a<5 do (
+        a := a + 1;
+    );
+
+    for i := 0 to 3 do (
+        for j := 0 to 3 do (
+            a : i + j
+        )
+    );
+
+    if a > 3 then (
+        a := 6
+    )else(
+        a := 7
+    );
     
+    a := carre(a)
 end

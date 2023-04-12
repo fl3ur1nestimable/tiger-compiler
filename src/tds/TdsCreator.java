@@ -371,6 +371,9 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Whiledo whiledo) {
+        Tds tds = new Tds("while", currentBlock, currentImbrication, currentTds);
+        tdsList.add(tds);
+        currentTds = tds;
         String c = whiledo.cond.accept(this);
         if (c == null) {
             return null;
@@ -383,6 +386,7 @@ public class TdsCreator implements AstVisitor<String> {
         if (r == null) {
             return null;
         }
+        currentTds = currentTds.getParent();
         return r;
     }
 
@@ -1040,9 +1044,9 @@ public class TdsCreator implements AstVisitor<String> {
         Tds save = currentTds;
         FuncTds tds = new FuncTds(name, currentBlock, currentImbrication, currentTds);
         TdsFunction f = new TdsFunction(name);
-        currentTds.addElement(f);
         f.setType(Type.void_t.toString());
         f.setTds(currentTds);
+        currentTds.addElement(f);
         tdsList.add(tds);
 
         currentTds = tds;
@@ -1120,6 +1124,7 @@ public class TdsCreator implements AstVisitor<String> {
         currentTds = tds.getParent();
         currentImbrication--;
         inFunction = false;
+        System.out.println(tdsList);
         return Type.void_t.toString();
     }
     // -------------------------------------------

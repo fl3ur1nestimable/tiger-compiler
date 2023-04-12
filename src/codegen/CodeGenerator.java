@@ -4,6 +4,7 @@ import tds.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 import ast.*;
 
@@ -16,6 +17,7 @@ public class CodeGenerator implements AstVisitor<String> {
     public int currentImbrication = 0;
     public int currentBlock = 0;
     public int id = 0;
+    public ArrayList<String> blocs = new ArrayList<String>();
     public boolean muldone = false;
 
     public CodeGenerator(TdsCreator tdsCreator) {
@@ -87,7 +89,6 @@ public class CodeGenerator implements AstVisitor<String> {
 
     public void saveCode() {
         addOp();
-        mainCode += funcCode;
         Path path = Path.of("./src/codegen/out/main.s");
         try {
             Files.writeString(path, mainCode);
@@ -116,6 +117,7 @@ public class CodeGenerator implements AstVisitor<String> {
     @Override
     public String visit(Program affect) {
         affect.expr.accept(this);
+        write("prog_end");
         write("\tEND");
         return null;
     }
@@ -144,8 +146,8 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Exit_ exit_) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        write("\tB prog_end");
+        return null;
     }
 
     @Override
@@ -311,21 +313,29 @@ public class CodeGenerator implements AstVisitor<String> {
     //
     @Override
     public String visit(Whiledo whiledo) {
-        write(";    boucle while");
-        write("while_" + id);
-        whiledo.cond.accept(this);
-        write("\tCMP R0,#0");
-        write("\tBEQ end_while_" + id);
-        whiledo.doBlock.accept(this);
-        write("\tB while_" + id);
-        write("end_while_" + id);
+        String label = "end_while_" + id;
+        blocs.add(label);
+        int idbis = id;
         id++;
+        write(";    boucle while");
+        write("while_" + idbis);
+        whiledo.cond.accept(this);
+        write("\tSTR R0,[R13,#-4]!");
+        write("\tCMP R0,#0");
+        write("\tBEQ end_while_" + idbis);
+        whiledo.doBlock.accept(this);
+        write("\tB while_" + idbis);
+        write("end_while_" + idbis);
+        write("\tLDMFD R13!,{R0}");
+        blocs.remove(blocs.size() - 1);
         return null;
     }
 
     //
     @Override
     public String visit(For_ for_) {
+        String label = "end_for_" + id;
+        blocs.add(label);
         int idbis = id;
         id++;
         currentBlock++;
@@ -333,6 +343,7 @@ public class CodeGenerator implements AstVisitor<String> {
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
         write(";    boucle for");
+        write("\tSTMFD R13!,{R2,R4}");
         write("\tSTR R11,[R13,#-4]!");
         write("\tMOV R11,R13");
         for_.expr1.accept(this);
@@ -350,6 +361,8 @@ public class CodeGenerator implements AstVisitor<String> {
         write("end_for_" + idbis);
         write(";    dépiler le compteur et la base de la TDS du for");
         write("\tLDMFD R13!,{R0,R11}");
+        write("\tLDMFD R13!,{R2,R4}");
+        blocs.remove(blocs.size() - 1);
         currentBlock--;
         currentImbrication--;
         currenTds = getTds(currentBlock, currentImbrication);
@@ -458,8 +471,9 @@ public class CodeGenerator implements AstVisitor<String> {
     // - ??? vu qu'on sort du while ?
     @Override
     public String visit(Break_ break_) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visit'");
+        write(";    break");
+        write("\tB " + blocs.get(blocs.size() - 1));
+        return null;
     }
 
     @Override
@@ -557,6 +571,7 @@ public class CodeGenerator implements AstVisitor<String> {
         write(";    if then else");
 
         ifthenelse.left.accept(this);
+        write("\tSTR R0,[R13,#-4]!");
         write("\tCMP R0,#0");
         if (ifthenelse.right != null) {
             write("\tBEQ else_" + id);
@@ -569,6 +584,7 @@ public class CodeGenerator implements AstVisitor<String> {
             ifthenelse.middle.accept(this);
         }
         write("endif_" + id);
+        write("\tLDMFD R13!,{R0}");
         id++;
         return null;
     }

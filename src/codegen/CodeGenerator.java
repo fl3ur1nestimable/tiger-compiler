@@ -353,12 +353,11 @@ public class CodeGenerator implements AstVisitor<String> {
         write("\tB for_" + idbis);
         write("end_for_" + idbis);
         write(";    dépiler le compteur et la base de la TDS du for");
-        write("\tLDMFD R13!,{R0}");
         write("\tLDMFD R13!,{R0,R11}");
         write("\tLDMFD R13!,{R2,R4}");
         blocs.remove(blocs.size() - 1);
-        currentBlock--;
         currentImbrication--;
+        currentBlock--;
         currenTds = getTds(currentBlock, currentImbrication);
         return null;
 
@@ -432,7 +431,6 @@ public class CodeGenerator implements AstVisitor<String> {
         if (let_in_end.block2 != null) {
             let_in_end.block2.accept(this);
         }
-        currentBlock--;
         currentImbrication--;
         return null;
     }
@@ -523,6 +521,7 @@ public class CodeGenerator implements AstVisitor<String> {
     public String visit(Assignement assignement) {
         int nx = currenTds.getNumImbrication();
         int ny = nx - 1;
+        System.out.println(currentBlock + " " + currentImbrication);
         Tds tds = getTds(currentBlock, currentImbrication);
         String v = assignement.left.accept(this);
         assignement.right.accept(this);
@@ -563,25 +562,25 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(IfThenElse ifthenelse) {
+        int idbis = id;
+        id++;
         write(";    if then else");
-
         ifthenelse.left.accept(this);
         write("\tSTR R0,[R13,#-4]!      ; on empile la condition pour les prochains 'if' potentiels");
         write("\tCMP R0,#0");
         if (ifthenelse.right != null) {
-            write("\tBEQ else_" + id + "     ;cas if=FALSE, on va directement au else");
+            write("\tBEQ else_" + idbis + "     ;cas if=FALSE, on va directement au else");
             write("                       ;sinon, on fait le then");
             ifthenelse.middle.accept(this);
-            write("\tB endif_" + id);
-            write("else_" + id);
+            write("\tB endif_" + idbis);
+            write("else_" + idbis);
             ifthenelse.right.accept(this);
         } else {
             write("\tBEQ endif_" + id + "    ;cas où la condition est FALSE");
             ifthenelse.middle.accept(this);
         }
-        write("endif_" + id);
+        write("endif_" + idbis);
         write("\tLDMFD R13!,{R0}");
-        id++;
         return null;
     }
 

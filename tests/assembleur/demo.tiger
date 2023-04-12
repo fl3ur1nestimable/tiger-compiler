@@ -6,7 +6,7 @@ let                                             /* let in end */
     var b := -3                                 /* négation */
 
 /*TODO : faut pas ecrire fib(n:int):int pour dire qu'elle return a de type int ???*/
-    function fib(n:int) =(                      /* déclaration de fonction : avec argument*/
+    function fib(n:int):int =(                      /* déclaration de fonction : avec argument*/
         for i := 2 to n do (                    /* boucle for */
             a := 3 * parent - grandparent;      /* visiter une variable, et multiplication, soustraction */
             grandparent := parent;              /* assignement */

@@ -1,0 +1,16 @@
+let
+    var a := 0
+    
+    function func(n: int) =(
+        n * a
+    )
+
+in  
+    func(2)
+end
+
+
+
+
+
+

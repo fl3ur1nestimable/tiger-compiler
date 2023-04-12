@@ -386,7 +386,6 @@ public class TdsCreator implements AstVisitor<String> {
         if (r == null) {
             return null;
         }
-        currentTds = currentTds.getParent();
         return r;
     }
 

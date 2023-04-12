@@ -311,8 +311,9 @@ public class CodeGenerator implements AstVisitor<String> {
         id++;
         write(";    boucle while");
         whiledo.cond.accept(this);
-        write("\tSTR R0,[R13,#-4]!    ;on empile la valeur de la condition, pour les imbrications");
+        write("\tSTR R0,[R13,#-4]!    ;on empile la valeur dgge la condition, pour les imbrications");
         write("while_" + idbis);
+        whiledo.cond.accept(this);
         write("\tCMP R0,#0      ;on compare la valeur de la condition, si faux on branche à la fin");
         write("\tBEQ end_while_" + idbis);
         whiledo.doBlock.accept(this);

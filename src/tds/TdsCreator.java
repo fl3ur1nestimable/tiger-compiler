@@ -1044,7 +1044,7 @@ public class TdsCreator implements AstVisitor<String> {
         Tds save = currentTds;
         FuncTds tds = new FuncTds(name, currentBlock, currentImbrication, currentTds);
         TdsFunction f = new TdsFunction(name);
-        f.setType(Type.void_t.toString());
+        f.setReturnType(Type.void_t.toString());
         f.setTds(currentTds);
         currentTds.addElement(f);
         tdsList.add(tds);
@@ -1124,7 +1124,6 @@ public class TdsCreator implements AstVisitor<String> {
         currentTds = tds.getParent();
         currentImbrication--;
         inFunction = false;
-        System.out.println(tdsList);
         return Type.void_t.toString();
     }
     // -------------------------------------------

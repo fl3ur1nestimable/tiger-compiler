@@ -1,15 +1,12 @@
 let
     var a := 0
-    var grandparent := 1
-    var parent := 3
-
-    function fib(n:int) =(
-        for i := 2 to n do (
-            a := 3 * parent - grandparent;
-            grandparent := parent;
-            parent := a
-        );
-        a
+    
+    function fib(n: int) =(
+        if n<2 then (
+            n
+        )else (
+            fib(n-1) + fib(n-2)
+        )
     )
 
 in

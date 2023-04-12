@@ -35,8 +35,7 @@ public class CodeGenerator implements AstVisitor<String> {
     }
 
     public void addOp() {
-        write(";    fin de programme : multiplication ");
-        write("");
+        write(";multiplication ");
         write("mul");
         write("\tSTMFD R13!,{R1,R2,LR}");
         write("\tMOV R0,#0");
@@ -49,7 +48,7 @@ public class CodeGenerator implements AstVisitor<String> {
         write("\tLDMFD R13!,{R1,R2,PC}");
         write("");
 
-        write(";    fin de programme : division ");
+        write(";division ");
         write("div");
         write("\tSTMFD R13!,{R2-R5,LR}");
         write("\tMOV R0,#0");
@@ -117,7 +116,7 @@ public class CodeGenerator implements AstVisitor<String> {
     @Override
     public String visit(Program affect) {
         affect.expr.accept(this);
-        write("prog_end");
+        write("prog_end ;program end");
         write("\tEND");
         return null;
     }
@@ -126,13 +125,12 @@ public class CodeGenerator implements AstVisitor<String> {
     public String visit(Or or) {
         write(";    or");
         or.left.accept(this);
-        write("\tSTR R0,[R13,#-4]!");
+        write("\tSTR R0,[R13,#-4]!  ; on empile le contenu de R0 (la partie gauche) pour pouvoir le mettre dans R1");
         or.rigth.accept(this);
-        write("\tLDMFD R13!,{R1}");
-        write("\tMOV R2,R0");
+        write("\tLDMFD R13!,{R1}    ; on met la partie droite dans R1");
+        write("\tMOV R2,R0      ; on met le contenu de R0 (la partie droite) dans R2");
         write("\tMOV R0,#0"); // on met 0 dans RO juste avant le OR, si TRUE alors ramplacé par 1
-        write("\tCMP R1,#0"); // si c'est superieur à 0
-        write("\tMOVGT R0,#1");
+        write("\tCMP R1,#0      ; on compare R1 puis R2 à TRUE (représenté par 1), on met 1 dans R0 le cas échéant, sinon on reste à FALSE (0)");
         write("\tCMP R2,#0"); // si c'est superieur à 0
         write("\tMOVGT R0,#1");
         return null;
@@ -170,9 +168,10 @@ public class CodeGenerator implements AstVisitor<String> {
         and.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tCMP R1,#0"); // si c'est superieur à 0
-        write("\tMOVGT R0,#1");
-        write("\tCMP R2,#0"); // si c'est superieur à 0
+        write("\tMOV R0,#1  ; on initialise le résultat à vrai");
+        write("\tCMP R1,#0      ;si la valeur de gauche == 0,condition FALSE donc R0=0");
+        write("\tMOVEQ R0,#0");
+        write("\tCMP R2,#0      ;si la valeur de droite == 0,condition FALSE aux 2 donc R0=0");
         write("\tMOVEQ R0,#0");
         return null;
     }
@@ -185,11 +184,9 @@ public class CodeGenerator implements AstVisitor<String> {
         compare_equal_1.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,#0");
-        write("\tCMP R1,R2");
-        write("\tMOVGT R0,#1");
-        write("\tCMP R1,R2");
-        write("\tMOVEQ R0,R2");
+        write("\tMOV R0,#0      ;on initialise le résultat à FALSE");
+        write("\tCMP R1,R2      ;si valeur de droite=valeur de gauche, R0=1");
+        write("\tMOVEQ R0,#1");
         return null;
     }
 
@@ -201,27 +198,23 @@ public class CodeGenerator implements AstVisitor<String> {
         compare_equal_2.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,#0");
-        write("\tCMP R1,R2");
-        write("\tMOVGT R0,#1");
-        write("\tCMP R1,R2");
-        write("\tMOVEQ R0,R2");
+        write("\tMOV R0,#0      ;on initialise le résultat à FALSE");
+        write("\tCMP R1,R2      ;si valeur de droite=valeur de gauche, R0=1");
+        write("\tMOVEQ R0,#1");
         return null;
     }
 
     @Override
-    public String visit(GreaterThan1 greaterThan1) { // >= question: est-ce qu'on peut écrire a >2 > 3 ? (car a>2
+    public String visit(GreaterThan1 greaterThan1) {
         write(";    >=");
-        greaterThan1.left.accept(this); // sinon pas la peine utiliser pile, on oeut direct utiliser R et R2
+        greaterThan1.left.accept(this);
         write("\tSTR R0,[R13,#-4]!");
         greaterThan1.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,#0");
-        write("\tCMP R1,R2");
-        write("\tMOVGT R0,#1");
-        write("\tCMP R1,R2");
-        write("\tMOVEQ R0,R2");
+        write("\tMOV R0,#0    ;on initialise le résultat à FALSE");
+        write("\tCMP R1,R2      ;si valeur de gauche >= valeur de droite, R0=1");
+        write("\tMOVGE R0,#1");
         return null;
     }
 
@@ -233,8 +226,8 @@ public class CodeGenerator implements AstVisitor<String> {
         greaterThan2.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,#0");
-        write("\tCMP R1,R2");
+        write("\tMOV R0,#0    ;on initialise le résultat à FALSE");
+        write("\tCMP R1,R2      ;si valeur de gauche > valeur de droite, R0=1");
         write("\tMOVGT R0,#1");
         return null;
     }
@@ -247,8 +240,8 @@ public class CodeGenerator implements AstVisitor<String> {
         lessThan1.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,#0");
-        write("\tCMP R1,R2");
+        write("\tMOV R0,#0     ;on initialise le résultat à FALSE");
+        write("\tCMP R1,R2      ;si valeur de gauche <= valeur de droite, R0=1");
         write("\tMOVLE R0,#1");
         return null;
 
@@ -262,8 +255,8 @@ public class CodeGenerator implements AstVisitor<String> {
         lessThan2.rigth.accept(this);
         write("\tLDMFD R13!,{R1}");
         write("\tMOV R2,R0");
-        write("\tMOV R0,#0");
-        write("\tCMP R1,R2");
+        write("\tMOV R0,#0      ;on initialise le résultat à FALSE");
+        write("\tCMP R1,R2      ;si valeur de gauche > valeur de droite, R0=1");
         write("\tMOVLT R0,#1");
         return null;
     }
@@ -295,7 +288,7 @@ public class CodeGenerator implements AstVisitor<String> {
         write("\tMOV R1,R0");
         mult.rigth.accept(this);
         write("\tMOV R2,R0");
-        write("\tBL mul");
+        write("\tBL mul     ;on branche vers le code commun pour toutes les multiplications");
         return null;
     }
 
@@ -306,11 +299,10 @@ public class CodeGenerator implements AstVisitor<String> {
         write("\tMOV R1,R0");
         divide.rigth.accept(this);
         write("\tMOV R2,R0");
-        write("\tBL div");
+        write("\tBL div     ;on branche vers le code commun pour toutes les divisions");
         return null;
     }
 
-    //
     @Override
     public String visit(Whiledo whiledo) {
         String label = "end_while_" + id;
@@ -318,10 +310,10 @@ public class CodeGenerator implements AstVisitor<String> {
         int idbis = id;
         id++;
         write(";    boucle while");
-        write("while_" + idbis);
         whiledo.cond.accept(this);
-        write("\tSTR R0,[R13,#-4]!");
-        write("\tCMP R0,#0");
+        write("\tSTR R0,[R13,#-4]!    ;on empile la valeur de la condition, pour les imbrications");
+        write("while_" + idbis);
+        write("\tCMP R0,#0      ;on compare la valeur de la condition, si faux on branche à la fin");
         write("\tBEQ end_while_" + idbis);
         whiledo.doBlock.accept(this);
         write("\tB while_" + idbis);
@@ -343,23 +335,24 @@ public class CodeGenerator implements AstVisitor<String> {
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
         write(";    boucle for");
-        write("\tSTMFD R13!,{R2,R4}");
-        write("\tSTR R11,[R13,#-4]!");
+        write("\tSTMFD R13!,{R2,R4}     ;on empile les potentielles bornes du for précedent (s'il existe)");
+        write("\tSTR R11,[R13,#-4]!     ;on empile l'ancienne base avant de la maj,chainage statique");
         write("\tMOV R11,R13");
         for_.expr1.accept(this);
         write("\tSTR R0,[R13,#-4]!");
-        write("\t MOV R4,R0");
+        write("\t MOV R4,R0     ;R4 borne minimale");
         for_.expr2.accept(this);
-        write("\t MOV R2,R0");
+        write("\t MOV R2,R0     ;R2 borne maximale");
         write("for_" + idbis);
-        write("\tCMP R4,R2");
+        write("\tCMP R4,R2      ;si min > max arret de la boucle");
         write("\tBGT end_for_" + idbis);
         for_.expr3.accept(this);
-        write("\tADD R4,R4,#1");
+        write("\tADD R4,R4,#1       ;incrémenter min");
         write("\tSTR R4,[R11,#-4]");
         write("\tB for_" + idbis);
         write("end_for_" + idbis);
         write(";    dépiler le compteur et la base de la TDS du for");
+        write("\tLDMFD R13!,{R0}");
         write("\tLDMFD R13!,{R0,R11}");
         write("\tLDMFD R13!,{R2,R4}");
         blocs.remove(blocs.size() - 1);
@@ -379,7 +372,8 @@ public class CodeGenerator implements AstVisitor<String> {
         write(";    identifier");
         if (e != null) {
             int deplacement = e.getDeplacement();
-            write("\tLDR R0,[R11,#-" + Integer.toString(deplacement+4) + "]");
+            write("\tLDR R0,[R11,#-" + Integer.toString(deplacement + 4)
+                    + "]       ;si la variable est locale, on la met dans R0");
         } else {
             Tds parent = currenTds.getParent();
             int deplacement = 0;
@@ -393,15 +387,15 @@ public class CodeGenerator implements AstVisitor<String> {
                 ny--;
             }
             int diff = nx - ny;
-            write("\tMOV R3,#" + diff);
+            write("\tMOV R3,#" + diff + "    ;sinon, on utilise le chaînage statique (R3 contient NX-NY)");
             write("\tLDR R10,[R11]");
             write("loop_chainage_statique_" + id);
-            write("\tSUBS R3,R3,#1");
-            write("\tBEQ exit_chainage_statique_" + id);
+            write("\tSUBS R3,R3,#1 ");
+            write("\tBEQ exit_chainage_statique_" + id + "    ; si on a remonté tout le chaînage statique");
             write("\tLDR R10,[R10]");
             write("\tB loop_chainage_statique_" + id);
             write("exit_chainage_statique_" + id);
-            write("\tLDR R0,[R10,#-" + Integer.toString(deplacement+4) + "]");
+            write("\tLDR R0,[R10,#-" + Integer.toString(deplacement + 4) + "]");
             id++;
         }
         return identifier.value;
@@ -431,13 +425,11 @@ public class CodeGenerator implements AstVisitor<String> {
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
         write(";    début programme: let in end");
-
         write("\tMOV R11,R13");
 
         let_in_end.block1.accept(this);
         if (let_in_end.block2 != null) {
             let_in_end.block2.accept(this);
-
         }
         currentBlock--;
         currentImbrication--;
@@ -490,7 +482,7 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Negation negation) {
-        // write(";    négation");
+        // write("; négation");
 
         negation.right.accept(this);
         write("\tRSB R0, R0, #0");
@@ -507,18 +499,19 @@ public class CodeGenerator implements AstVisitor<String> {
         write(";    appel de fonction");
         write("\tSTR R11,[R13,#-4]!");
         write("\tMOV R11,R13");
-        if(functionCall.right!=null){
-            Expr_list e = (Expr_list)functionCall.right;
+        if (functionCall.right != null) {
+            Expr_list e = (Expr_list) functionCall.right;
             for (Ast a : e.array) {
                 a.accept(this);
-                write("\t STR R0,[R13,#-4]!");
+                write("\t STR R0,[R13,#-4]!     ;on empile tous les paramètres");
             }
         }
-        write("\t BL func_" + ((Identifier)functionCall.left).value);
-        if(functionCall.right!=null){
-            Expr_list e = (Expr_list)functionCall.right;
+        write("\t BL func_" + ((Identifier) functionCall.left).value
+                + "     ;on se déplace au code de la fonction (et dans la TDS de la fonction)");
+        if (functionCall.right != null) {
+            Expr_list e = (Expr_list) functionCall.right;
             for (int i = 0; i < e.array.size(); i++) {
-                write("\t LDMFD R13!,{R12}");
+                write("\t LDMFD R13!,{R12}      ;on dépile les paramètres");
             }
         }
         write("\t LDMFD R13!,{R11}");
@@ -537,7 +530,7 @@ public class CodeGenerator implements AstVisitor<String> {
 
         if (e != null) {
             int deplacement = e.getDeplacement();
-            write("\tSTR R0,[R11,#-" + Integer.toString(deplacement+4) + "]");
+            write("\tSTR R0,[R11,#-" + Integer.toString(deplacement + 4) + "]       ;si la variable est locale");
         } else {
             Tds parent = currenTds.getParent();
             int deplacement = 0;
@@ -551,7 +544,7 @@ public class CodeGenerator implements AstVisitor<String> {
                 ny--;
             }
             int diff = nx - ny;
-            write("\tMOV R3,#" + diff);
+            write("\tMOV R3,#" + diff + "   ;sinon, on utilise le chaînage statique (R3 contient NX-NY)");
             write("\tLDR R10,[R11]");
             write("loop_chainage_statique_" + id);
             write("\tSUBS R3,R3,#1");
@@ -559,7 +552,8 @@ public class CodeGenerator implements AstVisitor<String> {
             write("\tLDR R10,[R10]");
             write("\tB loop_chainage_statique_" + id);
             write("exit_chainage_statique_" + id);
-            write("\tSTR R0,[R10,#-" + Integer.toString(deplacement+4) + "]");
+            write("\tSTR R0,[R10,#-" + Integer.toString(deplacement + 4)
+                    + "]       ;on met 'au bon endroit' la valeur de R0 (l'affectation)");
             id++;
         }
 
@@ -571,16 +565,17 @@ public class CodeGenerator implements AstVisitor<String> {
         write(";    if then else");
 
         ifthenelse.left.accept(this);
-        write("\tSTR R0,[R13,#-4]!");
+        write("\tSTR R0,[R13,#-4]!      ; on empile la condition pour les prochains 'if' potentiels");
         write("\tCMP R0,#0");
         if (ifthenelse.right != null) {
-            write("\tBEQ else_" + id);
+            write("\tBEQ else_" + id + "     ;cas if=FALSE, on va directement au else");
+            write("                       ;sinon, on fait le then");
             ifthenelse.middle.accept(this);
             write("\tB endif_" + id);
             write("else_" + id);
             ifthenelse.right.accept(this);
         } else {
-            write("\tBEQ endif_" + id);
+            write("\tBEQ endif_" + id + "    ;cas où la condition est FALSE");
             ifthenelse.middle.accept(this);
         }
         write("endif_" + id);
@@ -659,12 +654,12 @@ public class CodeGenerator implements AstVisitor<String> {
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
         write(";    déclaration de fonction");
-        write("\t B func_end_"+idbis);
-        write("func_" + ((Identifier)function_declaration.name).value);
-        write("\t STMFD R13!,{LR}");
+        write("\tB func_end_" + idbis + "     ;on saute la fonction si elle n'est pas appelée");
+        write("func_" + ((Identifier) function_declaration.name).value);
+        write("\tSTMFD R13!,{LR}   ;adresse de retour");
         function_declaration.body.accept(this);
-        write("\tLDMFD R13!,{PC}");
-        write("func_end_"+idbis);
+        write("\tLDMFD R13!,{PC}    ;on revient à l'adresse de retour");
+        write("func_end_" + idbis);
         currentBlock--;
         currentImbrication--;
         return null;

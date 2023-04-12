@@ -371,9 +371,9 @@ public class TdsCreator implements AstVisitor<String> {
 
     @Override
     public String visit(Whiledo whiledo) {
+        currentBlock++;
         Tds tds = new Tds("while", currentBlock, currentImbrication, currentTds);
         tdsList.add(tds);
-        currentTds = tds;
         String c = whiledo.cond.accept(this);
         if (c == null) {
             return null;

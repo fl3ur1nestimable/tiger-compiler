@@ -16,8 +16,8 @@ in
         )
     );
 
-    if a > 3 then (
-        a := 6
+    if a < 3 then (
+        a := 8
     )else(
         a := 7
     );

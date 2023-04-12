@@ -63,11 +63,11 @@ digraph "ast"{
 	N58 [label="Then", shape="box"];
 	N60 [label="a", shape="box"];
 	N61 [label="3", shape="box"];
-	N59 [label=">", shape="box"];
+	N59 [label="<", shape="box"];
 	N62 [label="Expr_seq", shape="box"];
 	N63 [label="Assignement", shape="box"];
 	N64 [label="a", shape="box"];
-	N65 [label="6", shape="box"];
+	N65 [label="8", shape="box"];
 	N66 [label="Else", shape="box"];
 	N67 [label="Expr_seq", shape="box"];
 	N68 [label="Assignement", shape="box"];

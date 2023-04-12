@@ -305,6 +305,7 @@ public class CodeGenerator implements AstVisitor<String> {
 
     @Override
     public String visit(Whiledo whiledo) {
+        currentBlock++;
         String label = "end_while_" + id;
         blocs.add(label);
         int idbis = id;
@@ -335,6 +336,8 @@ public class CodeGenerator implements AstVisitor<String> {
         currentImbrication++;
         Tds tds = getTds(currentBlock, currentImbrication);
         currenTds = tds;
+        System.out.println(currenTds.getName());
+        System.out.println(currentBlock + " " + currentImbrication);
         write(";    boucle for");
         write("\tSTMFD R13!,{R2,R4}     ;on empile les potentielles bornes du for précedent (s'il existe)");
         write("\tSTR R11,[R13,#-4]!     ;on empile l'ancienne base avant de la maj,chainage statique");
@@ -358,19 +361,24 @@ public class CodeGenerator implements AstVisitor<String> {
         blocs.remove(blocs.size() - 1);
         currentImbrication--;
         currentBlock--;
-        currenTds = getTds(currentBlock, currentImbrication);
+        currenTds = tds.getParent();
         return null;
 
     }
 
     @Override
     public String visit(Identifier identifier) {
+        System.out.println(currenTds.getName());
         int nx = currenTds.getNumImbrication();
         int ny = nx - 1;
         String valeur = identifier.value;
         TdsVariable e = (TdsVariable) currenTds.getElement(valeur);
+        for(TdsElement v : currenTds.getVars()){
+            System.out.println(v.getName());
+        }
         write(";    identifier");
         if (e != null) {
+            System.out.println("here");
             int deplacement = e.getDeplacement();
             write("\tLDR R0,[R11,#-" + Integer.toString(deplacement + 4)
                     + "]       ;si la variable est locale, on la met dans R0");
@@ -497,7 +505,6 @@ public class CodeGenerator implements AstVisitor<String> {
     public String visit(FunctionCall functionCall) {
         write(";    appel de fonction");
         write("\tSTR R11,[R13,#-4]!");
-        write("\tMOV R11,R13");
         if (functionCall.right != null) {
             Expr_list e = (Expr_list) functionCall.right;
             for (Ast a : e.array) {
@@ -521,11 +528,9 @@ public class CodeGenerator implements AstVisitor<String> {
     public String visit(Assignement assignement) {
         int nx = currenTds.getNumImbrication();
         int ny = nx - 1;
-        System.out.println(currentBlock + " " + currentImbrication);
-        Tds tds = getTds(currentBlock, currentImbrication);
         String v = assignement.left.accept(this);
         assignement.right.accept(this);
-        TdsVariable e = (TdsVariable) tds.getElement(v);
+        TdsVariable e = (TdsVariable) currenTds.getElement(v);
         write(";    assignement");
 
         if (e != null) {
@@ -660,8 +665,8 @@ public class CodeGenerator implements AstVisitor<String> {
         function_declaration.body.accept(this);
         write("\tLDMFD R13!,{PC}    ;on revient à l'adresse de retour");
         write("func_end_" + idbis);
-        currentBlock--;
         currentImbrication--;
+        currenTds = currenTds.getParent();
         return null;
     }
 
